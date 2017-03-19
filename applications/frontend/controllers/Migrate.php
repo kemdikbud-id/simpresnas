@@ -45,7 +45,7 @@ class Migrate extends Frontend_Controller
 		}
 		else
 		{
-			echo "  > Berhasil di migrate ke versi " . $result;
+			echo "  > Berhasil di migrate ke versi " . $result . "\n";
 		}
 	}
 	
