@@ -1,0 +1,23 @@
+{
+    "name": "fathonir/simpkmi",
+    "description": "Sistem pendaftaran online untuk program kewirausahaan mahasiswa oleh Kemenristekdikti",
+    "type": "project",
+    "require": {
+        "smarty/smarty": "~3.1",
+		"php": ">=5.2.4"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Fathoni",
+            "email": "m.fathoni@mail.com"
+        }
+    ],
+	"scripts": {
+		"post-install-cmd" : [
+			"chmod 0777 applications/frontend/{logs,sessions,views_compiled}",
+			"chmod 0777 applications/backend/{logs,sessions,views_compiled}",
+			"chmod 0777 upload/{file-proposal,request-user}"
+		]
+	}
+}

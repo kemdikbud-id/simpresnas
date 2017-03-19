@@ -1,0 +1,50 @@
+.DS_Store
+
+application/cache/*
+!application/cache/index.html
+!application/cache/.htaccess
+
+application/logs/*
+!application/logs/index.html
+!application/logs/.htaccess
+
+user_guide_src/build/*
+user_guide_src/cilexer/build/*
+user_guide_src/cilexer/dist/*
+user_guide_src/cilexer/pycilexer.egg-info/*
+/vendor/
+
+# IDE Files
+#-------------------------
+/nbproject/
+.idea/*
+
+## Sublime Text cache files
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+*.sublime-workspace
+*.sublime-project
+
+# User Guide
+/user_guide/
+
+# Folder Compiled
+applications/frontend/logs/*
+!applications/frontend/logs/index.html
+applications/frontend/sessions/*
+!applications/frontend/sessions/index.html
+applications/frontend/views_compiled/*
+!applications/frontend/views_compiled/index.html
+applications/backend/logs/*
+!applications/backend/logs/index.html
+applications/backend/sessions/*
+!applications/backend/sessions/index.html
+applications/backend/views_compiled/*
+!applications/backend/views_compiled/index.html
+
+# Upload File
+upload/file-proposal/*
+!upload/file-proposal/index.html
+upload/request-user/*
+!upload/request-user/index.html
