@@ -26,6 +26,9 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.sublime-workspace
 *.sublime-project
 
+# Exclude composer
+composer.phar
+
 # User Guide
 /user_guide/
 
