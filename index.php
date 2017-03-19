@@ -53,7 +53,12 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+	//define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+
+if ($_SERVER['SERVER_NAME'] == '103.66.199.201')
+	define('ENVIRONMENT', 'production');
+else
+	define('ENVIRONMENT', 'development');
 
 /*
  *---------------------------------------------------------------
@@ -185,7 +190,7 @@ switch (ENVIRONMENT)
 
 	if (ENVIRONMENT == 'production')
 	{
-		$assign_to_config['base_url'] = 'http://sim-pkmi.ristekdikti.go.id/';
+		$assign_to_config['base_url'] = 'http://103.66.199.201/';
 	}
 
 
