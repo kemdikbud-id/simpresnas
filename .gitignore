@@ -29,7 +29,8 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 # User Guide
 /user_guide/
 
-# Folder Compiled
+# Applications
+applications/shared/config/database.php
 applications/frontend/logs/*
 !applications/frontend/logs/index.html
 applications/frontend/sessions/*
