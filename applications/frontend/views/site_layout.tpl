@@ -48,7 +48,7 @@
 						<ul class="nav navbar-nav navbar-right">
 							{if $ci->session->user}
 								<li>
-									<a href="{site_url('site/logout')}">Logout ({$ci->session->user->username})</a>
+									<a href="{site_url('auth/logout')}">Logout ({$ci->session->user->username})</a>
 								</li>
 							{/if}
 						</ul>	
@@ -71,10 +71,9 @@
 
 		<footer class="footer">
 			<div class="container">
-				<p class="text-center">&copy; Direktorat Jenderal Pembelajaran dan Kemahasiswaan<br/>
-					Gedung D Lt 7, Jl. Jenderal Sudirman, Pintu I Senayan, Daerah Khusus Ibukota Jakarta 10270, Indonesia -
-					Telp: 021-57946073 / Fax: 021-57946072<br/>
-					Email: ditjenbelmawa[at]ristekdikti.go.id</p>
+				<p class="text-center">&copy; {date('Y')} Direktorat Jenderal Pembelajaran dan Kemahasiswaan<br/>
+					Gedung D Lt 7, Jl. Jenderal Sudirman, Pintu I Senayan, Daerah Khusus Ibukota Jakarta 10270, Indonesia<br/>
+					Email: kk.ditmawa@ristekdikti.go.id</p>
 			</div>
 		</footer>
 

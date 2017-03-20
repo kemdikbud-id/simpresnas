@@ -61,7 +61,10 @@ class Proposal extends Frontend_Controller
 		$this->smarty->assignForCombo('kategori_set', $kategori_set, 'id', 'nama_kategori');
 		$this->smarty->assign('syarat_set', $syarat_set);
 		
-		$this->smarty->display();
+		if ($this->session->program_id == PROGRAM_PBBT)
+			$this->smarty->display('proposal/create_pbbt.tpl');
+		if ($this->session->program_id == PROGRAM_KBMI)
+			$this->smarty->display('proposal/create_kbmi.tpl');
 	}
 	
 	private function _post_create()
