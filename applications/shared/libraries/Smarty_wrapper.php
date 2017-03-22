@@ -39,14 +39,20 @@ class Smarty_wrapper extends Smarty
 		{
 			$CI =& get_instance();
 			
-			$class_name	 = $CI->uri->rsegment(1);			// Class name sebagai nama folder
-			$method_name = $CI->uri->rsegment(2, 'index');	// Method sebagai nama file tpl
+			$class_name		= $CI->uri->rsegment(1);			// Class name sebagai nama folder
+			$method_name	= $CI->uri->rsegment(2, 'index');	// Method sebagai nama file tpl
+			$method_name_2	= str_replace('_', '-', $method_name);
 			
 			$template = APPPATH.'views'.DIRECTORY_SEPARATOR.$class_name.DIRECTORY_SEPARATOR.$method_name.'.tpl';
+			$template2 = APPPATH.'views'.DIRECTORY_SEPARATOR.$class_name.DIRECTORY_SEPARATOR.$method_name_2.'.tpl';
 			
 			if (file_exists($template))
 			{
 				parent::display($template, $cache_id, $compile_id, $parent);
+			}
+			else if (file_exists($template2))
+			{
+				parent::display($template2, $cache_id, $compile_id, $parent);
 			}
 			else
 			{
