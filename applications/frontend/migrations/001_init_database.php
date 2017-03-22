@@ -50,7 +50,7 @@ class Migration_Init_database extends CI_Migration
 		// Tabel Request user
 		echo "  > create table request_user ... ";
 		$this->dbforge->add_field('id'); // Primary Key
-		$this->dbforge->add_field('perguruan_tinggi_id INT NOT NULL');
+		$this->dbforge->add_field('perguruan_tinggi VARCHAR(100) NOT NULL');
 		$this->dbforge->add_field('program_id INT NOT NULL');
 		$this->dbforge->add_field('nama_pengusul VARCHAR(100) NOT NULL');
 		$this->dbforge->add_field('jabatan_pengusul VARCHAR(100) NOT NULL');
@@ -58,10 +58,9 @@ class Migration_Init_database extends CI_Migration
 		$this->dbforge->add_field('unit_lembaga VARCHAR(100) NOT NULL');
 		$this->dbforge->add_field('email VARCHAR(100) NOT NULL');
 		$this->dbforge->add_field("nama_file VARCHAR(100) NOT NULL COMMENT 'Nama file (encrypted) surat permintaan user'");
-		$this->dbforge->add_field("is_approved INT(1) NOT NULL DEFAULT '0'");
-		$this->dbforge->add_field("is_rejected INT(1) NOT NULL DEFAULT '0'");
+		$this->dbforge->add_field("approved_at DATETIME NULL");
+		$this->dbforge->add_field("rejected_at DATETIME NULL");
 		$this->dbforge->add_field('created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP');
-		$this->dbforge->add_field('FOREIGN KEY fk_req_user_pt (perguruan_tinggi_id) REFERENCES perguruan_tinggi (id)');
 		$this->dbforge->add_field('FOREIGN KEY fk_req_user_program (program_id) REFERENCES program (id)');
 		$this->dbforge->create_table('request_user', TRUE, $table_options);
 		echo "OK\n";
@@ -127,7 +126,7 @@ class Migration_Init_database extends CI_Migration
 		$this->dbforge->add_field('nim_anggota_4 VARCHAR(20) NULL');
 		$this->dbforge->add_field('nama_anggota_4 VARCHAR(100) NULL');
 		$this->dbforge->add_field('nim_anggota_5 VARCHAR(20) NULL');
-		$this->dbforge->add_field('nama_anggota_6 VARCHAR(100) NULL');
+		$this->dbforge->add_field('nama_anggota_5 VARCHAR(100) NULL');
 		$this->dbforge->add_field('is_submited INT(1) NOT NULL DEFAULT \'0\' COMMENT \'Status submit, Jika sudah submit tidak bisa edit, kecuali oleh admin\'');
 		$this->dbforge->add_field('is_reviewed INT(1) NOT NULL DEFAULT \'0\' COMMENT \'Status telah direview, Jika sudah disubmit review tidak bisa di edit, kecuali oleh admin\'');
 		$this->dbforge->add_field('created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP');

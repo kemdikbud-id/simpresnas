@@ -41,3 +41,9 @@ body > .container {
 code {
 	font-size: 80%;
 }
+
+/* Override Bootstrap Style */
+.table > tbody > tr > th,
+.table > tbody > tr > td {
+	vertical-align: middle;
+}

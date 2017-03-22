@@ -4,11 +4,49 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * @author Fathoni <m.fathoni@mail.com>
+ * @property RequestUser_model $requestuser_model
  */
 class Auth extends Frontend_Controller
 {
 	public function reg()
 	{
+		if ($_SERVER['REQUEST_METHOD'] == 'POST')
+		{
+			// load model
+			$this->load->model('RequestUser_model', 'requestuser_model');
+			
+			// Inisialisasi file upload
+			$this->load->library('upload', array(
+				'allowed_types' => 'pdf|doc|docx',
+				'max_size' => 5 * 1024, // 5 MB,
+				'encrypt_name' => TRUE
+			));
+					
+			$this->upload->upload_path = './upload/request-user/';
+			
+			// Coba upload dahulu, kemudian proses datanya
+			if ($this->upload->do_upload('file1'))
+			{
+				$data = $this->upload->data();
+				
+				$this->requestuser_model->nama_file = $data['file_name'];
+				$this->requestuser_model->insert();
+				
+				$this->session->set_flashdata('result', array(
+					'page_title' => 'Registrasi Akun SIM-PKMI',
+					'message'	=> 'Request user telah berhasil. Dokumen yang diupload akan diverifikasi oleh tim admin maksimal 1x24 jam. User login akan dikirimkan ke email : '.$this->input->post('email')
+				));
+				redirect(site_url('alert/success'));
+			}
+			else
+			{
+				$this->session->set_flashdata('result', array(
+					'page_title' => 'Registrasi Akun SIM-PKMI',
+					'message'	=> 'Gagal upload file. ' . $this->upload->display_errors('' ,'')
+				));
+				redirect(site_url('alert/error'));
+			}
+		}
 		
 		$this->smarty->display();
 	}

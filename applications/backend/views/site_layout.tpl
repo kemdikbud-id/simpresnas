@@ -44,14 +44,20 @@
 								</ul>
 							</li>
 							<li>
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Master <span class="caret"></span></a>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Perguruan Tinggi <span class="caret"></span></a>
 								<ul class="dropdown-menu">
+									<li><a href="{site_url('user/request')}">User Reqest</a></li>
+									<li role="separator" class="divider"></li>
 									<li><a href="{site_url('user')}">User</a></li>
 									<li><a href="{site_url('pt')}">Perguruan Tinggi</a></li>
 								</ul>
 							</li>
 							<li>
-								<a href="{site_url('proposal')}">Daftar Proposal Masuk</a>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Daftar Proposal Masuk <span class="caret"></span></a>
+								<ul class="dropdown-menu">
+									<li><a href="{site_url('proposal/index-pbbt')}">Program PBBT</a></li>
+									<li><a href="{site_url('proposal/index-kbmi')}">Program KBMI</a></li>
+								</ul>
 							</li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
@@ -80,9 +86,8 @@
 		<footer class="footer">
 			<div class="container">
 				<p class="text-center">&copy; Direktorat Jenderal Pembelajaran dan Kemahasiswaan<br/>
-					Gedung D Lt 7, Jl. Jenderal Sudirman, Pintu I Senayan, Daerah Khusus Ibukota Jakarta 10270, Indonesia -
-					Telp: 021-57946073 / Fax: 021-57946072<br/>
-					Email: ditjenbelmawa[at]ristekdikti.go.id</p>
+					Gedung D Lt 7, Jl. Jenderal Sudirman, Pintu I Senayan, Daerah Khusus Ibukota Jakarta 10270, Indonesia<br/>
+					Email: kk.ditmawa@ristekdikti.go.id</p>
 			</div>
 		</footer>
 

@@ -26,8 +26,6 @@
 							<td>
 								{if $data->jumlah_syarat == $data->syarat_terupload}
 									<span class="label label-success">LENGKAP</span>
-								{else if $data->syarat_wajib == $data->syarat_wajib_terupload}
-									<span class="label label-info">CUKUP MINIMAL</span>
 								{else}
 									<span class="label label-warning">BELUM LENGKAP</span>
 								{/if}

@@ -129,7 +129,7 @@ class Migration_Init_Sample_Data extends CI_Migration
 	
 	public function down()
 	{
-		$table_set = array('user', 'perguruan_tinggi', 'kegiatan','syarat','kategori','program');
+		$table_set = array('request_user', 'user', 'perguruan_tinggi', 'kegiatan','syarat','kategori','program');
 		
 		foreach ($table_set as $table)
 		{

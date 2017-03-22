@@ -12,7 +12,7 @@ class Site extends Backend_Controller
 			$password	= $this->input->post('password');
 			
 			$user = $this->db->get_where('user', array(
-				'username' => 'pbbt',   // nanti diganti admin
+				'username' => $username,
 				'tipe_user' => TIPE_USER_ADMIN
 			))->row();
 			
@@ -20,10 +20,8 @@ class Site extends Backend_Controller
 			if ($user != null)
 			{
 				// Bandingkan password, temporari --> password
-				// if ($user->password_hash == sha1($password))
-				if ($password == 'password')
+				if ($user->password_hash == sha1($password))
 				{
-					
 					// Assign data login ke session
 					$this->session->set_userdata('user', $user);
 					
@@ -35,5 +33,13 @@ class Site extends Backend_Controller
 		}
 		
 		$this->smarty->display();
+	}
+	
+	public function logout()
+	{
+		$this->session->unset_userdata('user');
+
+		// redirect to home
+		redirect(base_url());
 	}
 }

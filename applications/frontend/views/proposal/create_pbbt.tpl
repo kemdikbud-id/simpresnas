@@ -5,6 +5,7 @@
 		<div class="col-lg-12">
 
 			<form action="{current_url()}" method="post" enctype="multipart/form-data" class="form-horizontal">
+				<input type="hidden" name="kategori_id" value="1"/>{* konstanta kategori id *}
 				<fieldset>
 					<legend>Detail</legend>
 
@@ -12,15 +13,6 @@
 						<label for="judul" class="col-lg-2 control-label">Judul Proposal</label>
 						<div class="col-lg-10">
 							<input type="text" class="form-control" name="judul" placeholder="Tulis judul proposal disini" >
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="kategori" class="col-lg-2 control-label">Kategori</label>
-						<div class="col-lg-4">
-							<select name="kategori_id" class="form-control">
-								{html_options options=$kategori_set}
-							</select>
 						</div>
 					</div>
 
