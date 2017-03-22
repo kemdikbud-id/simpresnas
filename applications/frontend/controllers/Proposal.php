@@ -4,6 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * @author Fathoni <m.fathoni@mail.com>
+ * @property Proposal_model $proposal_model
+ * @property FileProposal_model $fileproposal_model
  */
 class Proposal extends Frontend_Controller
 {
@@ -12,6 +14,9 @@ class Proposal extends Frontend_Controller
 		parent::__construct();
 		
 		$this->check_credentials();
+		
+		$this->load->model('Proposal_model', 'proposal_model');
+		$this->load->model('FileProposal_model', 'fileproposal_model');
 	}
 	
 	public function index()
@@ -171,6 +176,51 @@ class Proposal extends Frontend_Controller
 		$this->smarty->assign('syarat_set', $syarat_set);
 		$this->smarty->assign('proposal', $proposal);
 		$this->smarty->assign('upload_path', $upload_path);
+		
+		if ($this->session->program_id == PROGRAM_PBBT)
+			$this->smarty->display('proposal/update_pbbt.tpl');
+		else if ($this->session->program_id == PROGRAM_KBMI)
+			$this->smarty->display('proposal/update_kbmi.tpl');
+	}
+	
+	public function delete($id)
+	{
+		$program_path = ($this->session->program_id == PROGRAM_PBBT) ? 'pbbt' : 'kbmi';
+		
+		// cleansing
+		$id = (int)$id;
+		
+		if ($_SERVER['REQUEST_METHOD'] == 'POST')
+		{
+			$this->db->trans_start();
+			
+			// Ambil list file proposal
+			$file_proposal_set = $this->fileproposal_model->list_by_proposal($id);
+			
+			// delete tiap file
+			foreach ($file_proposal_set as $file)
+				unlink('./upload/file-proposal/'.$program_path.'/'.$this->session->user->username.'/'.$id.'/'.$file->nama_file);
+			
+			// delete row file proposal
+			$this->fileproposal_model->delete_by_proposal($id);
+			
+			// delete proposal
+			$this->proposal_model->delete($id, $this->session->perguruan_tinggi->id);
+			
+			$this->db->trans_commit();
+			
+			$this->session->set_flashdata('result', array(
+				'page_title' => 'Hapus Proposal',
+				'message' => 'Proposal berhasil di hapus',
+				'link_1' => '<a href="'.site_url('proposal/index').'">Kembali ke Daftar Proposal</a>'
+			));
+			
+			redirect(site_url('alert/success'));
+		}
+		
+		$data = $this->proposal_model->get_single($id, $this->session->perguruan_tinggi->id);
+		
+		$this->smarty->assign('data', $data);
 		
 		$this->smarty->display();
 	}

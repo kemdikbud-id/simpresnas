@@ -2,6 +2,7 @@
 
 /**
  * @author Fathoni <m.fathoni@mail.com>
+ * @property CI_DB_query_builder $db
  */
 class Proposal_model extends CI_Model
 {
@@ -45,5 +46,38 @@ class Proposal_model extends CI_Model
 				proposal.program_id = 2
 			group by proposal.id, judul, nama_kategori, nim_ketua, nama_ketua, proposal.created_at
 			order by proposal.id")->result();
+	}
+	
+	/**
+	 * Mengambil satu data Proposal
+	 * @param int $id
+	 * @param int $perguruan_tinggi_id Harus ada untuk tampilan frontend sebagai pengaman
+	 */
+	public function get_single($id, $perguruan_tinggi_id = NULL)
+	{
+		if ($perguruan_tinggi_id != NULL)
+		{
+			return $this->db->get_where('proposal', array(
+				'id' => $id,
+				'perguruan_tinggi_id' => $perguruan_tinggi_id
+			), 1)->row();
+		}
+		else
+		{
+			return $this->db->get_where('proposal', array(
+				'id' => $id
+			), 1)->row();
+		}
+	}
+	
+	public function delete($id, $perguruan_tinggi_id = NULL)
+	{
+		if ($perguruan_tinggi_id != NULL)
+		{
+			return $this->db->delete('proposal', array(
+				'id' => $id,
+				'perguruan_tinggi_id' => $perguruan_tinggi_id
+			), 1);
+		}
 	}
 }

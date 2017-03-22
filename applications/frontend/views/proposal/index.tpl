@@ -12,8 +12,8 @@
 						<th>Kategori</th>
 						<th>Anggota</th>
 						<th>Kelengkapan Syarat</th>
-						<th>Aksi</th>
-						<th>Proses</th>
+						<th style="width: 120px">Aksi</th>
+						<th style="width: 78px;">Proses</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -32,6 +32,7 @@
 							</td>
 							<td>
 								<a href="{site_url("proposal/update/{$data->id}")}" class="btn btn-sm btn-default">Edit</a>
+								<a href="{site_url("proposal/delete/{$data->id}")}" class="btn btn-sm btn-danger">Hapus</a>
 							</td>
 							<td>
 								<a href="{site_url("proposal/submit/{$data->id}")}" class="btn btn-sm btn-success">Submit</a>
