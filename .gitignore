@@ -40,12 +40,12 @@ applications/frontend/sessions/*
 !applications/frontend/sessions/index.html
 applications/frontend/views_compiled/*
 !applications/frontend/views_compiled/index.html
-applications/backend/logs/*
-!applications/backend/logs/index.html
-applications/backend/sessions/*
-!applications/backend/sessions/index.html
-applications/backend/views_compiled/*
-!applications/backend/views_compiled/index.html
+applications/admin/logs/*
+!applications/admin/logs/index.html
+applications/admin/sessions/*
+!applications/admin/sessions/index.html
+applications/admin/views_compiled/*
+!applications/admin/views_compiled/index.html
 
 # Upload File
 upload/file-proposal/*
