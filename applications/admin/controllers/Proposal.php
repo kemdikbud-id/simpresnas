@@ -6,7 +6,7 @@
  * @author Fathoni
  * @property Proposal_model $proposal_model
  */
-class Proposal extends Backend_Controller
+class Proposal extends Admin_Controller
 {
 	public function __construct()
 	{

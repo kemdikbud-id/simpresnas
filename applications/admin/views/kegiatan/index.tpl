@@ -34,6 +34,15 @@
 						</tr>
 					{/foreach}
 				</tbody>
+				{if count($data_set) > 0}
+					<tfoot>
+						<tr>
+							<td colspan="9">
+								<a href="{site_url('kegiatan/add/')}">Tambah Kegiatan</a>
+							</td>
+						</tr>
+					</tfoot>
+				{/if}
 			</table>
 		</div>
 	</div>

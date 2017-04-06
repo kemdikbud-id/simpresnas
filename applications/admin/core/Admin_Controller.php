@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property CI_DB_query_builder $db
  * @property CI_DB_mysqli_driver $db
  */
-class Backend_Controller extends CI_Controller
+class Admin_Controller extends CI_Controller
 {
 	public function __construct()
 	{

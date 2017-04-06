@@ -4,7 +4,7 @@
  * @author Fathoni <m.fathoni@mail.com>
  * @property RequestUser_model $requestuser_model
  */
-class User extends Backend_Controller
+class User extends Admin_Controller
 {
 	public function __construct()
 	{

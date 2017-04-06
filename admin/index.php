@@ -114,7 +114,7 @@ switch (ENVIRONMENT)
  *
  * NO TRAILING SLASH!
  */
-	$application_folder = '../applications/backend';
+	$application_folder = '../applications/admin';
 
 /*
  *---------------------------------------------------------------
@@ -180,12 +180,12 @@ switch (ENVIRONMENT)
 	
 	if (ENVIRONMENT == 'development')
 	{
-		$assign_to_config['base_url'] = 'http://sim-pkmi.ristekdikti.go.id.dev/backend/'; // auto-detect
+		$assign_to_config['base_url'] = 'http://sim-pkmi.ristekdikti.go.id.dev/admin/'; // auto-detect
 	}
 
 	if (ENVIRONMENT == 'production')
 	{
-		$assign_to_config['base_url'] = 'http://sim-pkmi.ristekdikti.go.id/backend/';
+		$assign_to_config['base_url'] = 'http://sim-pkmi.ristekdikti.go.id/admin/';
 	}
 
 

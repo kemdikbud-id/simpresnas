@@ -5,7 +5,7 @@
  *
  * @author Fathoni
  */
-class Pt extends Backend_Controller
+class Pt extends Admin_Controller
 {
 	public function __construct()
 	{

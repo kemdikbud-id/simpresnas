@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Site extends Backend_Controller
+class Site extends Admin_Controller
 {
 	public function login()
 	{
