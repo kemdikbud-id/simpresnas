@@ -56,3 +56,4 @@ upload/request-user/*
 # Resource Project
 /Resources/
 assets/js/jquery-validation-*/
+assets/js/*.zip
