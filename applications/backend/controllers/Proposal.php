@@ -1,12 +1,10 @@
 <?php
 
 /**
- * Description of Proposal
- *
  * @author Fathoni
  * @property Proposal_model $proposal_model
  */
-class Proposal extends Admin_Controller
+class Proposal extends Backend_Controller
 {
 	public function __construct()
 	{

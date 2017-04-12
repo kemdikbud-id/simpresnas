@@ -184,18 +184,7 @@ switch (ENVIRONMENT)
  *
  * Un-comment the $assign_to_config array below to use this feature
  */
-	setlocale(LC_TIME, 'IND');
 	
-	if (ENVIRONMENT == 'development')
-	{
-		$assign_to_config['base_url'] = 'http://sim-pkmi.ristekdikti.go.id.dev/'; // auto-detect
-	}
-
-	if (ENVIRONMENT == 'production')
-	{
-		$assign_to_config['base_url'] = 'http://103.66.199.201/';
-	}
-
 
 // --------------------------------------------------------------------
 // END OF USER CONFIGURABLE SETTINGS.  DO NOT EDIT BELOW THIS LINE

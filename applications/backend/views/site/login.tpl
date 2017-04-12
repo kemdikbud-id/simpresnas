@@ -23,6 +23,8 @@
 					</div>
 				</div>
 			</form>
+					
+						<p><a href="..">Ke halaman utama</a></p>
         </div>
 				
 		<div class="col-lg-5">

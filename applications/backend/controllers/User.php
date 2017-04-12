@@ -3,8 +3,9 @@
 /**
  * @author Fathoni <m.fathoni@mail.com>
  * @property RequestUser_model $requestuser_model
+ * @property User_model $user_model
  */
-class User extends Admin_Controller
+class User extends Backend_Controller
 {
 	public function __construct()
 	{
@@ -13,20 +14,20 @@ class User extends Admin_Controller
 		$this->check_credentials();
 		
 		$this->load->model('RequestUser_model', 'requestuser_model');
+		$this->load->model('User_model', 'user_model');
 	}
 	
 	public function index()
 	{
-		$data_set = $this->db
-			->select('user.*, program.nama_program, perguruan_tinggi.nama_pt')
-			->from('user')
-			->join('program', 'program.id = user.program_id')
-			->join('perguruan_tinggi', 'user.perguruan_tinggi_id = perguruan_tinggi.id', 'LEFT')
-			->get()
-			->result();
+		$data_set = $this->user_model->list_user();
 		
 		$this->smarty->assign('data_set', $data_set);
 		
+		$this->smarty->display();
+	}
+	
+	public function update($id)
+	{		
 		$this->smarty->display();
 	}
 	

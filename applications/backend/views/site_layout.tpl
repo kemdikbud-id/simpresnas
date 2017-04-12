@@ -44,12 +44,15 @@
 								</ul>
 							</li>
 							<li>
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Perguruan Tinggi <span class="caret"></span></a>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Master Data <span class="caret"></span></a>
 								<ul class="dropdown-menu">
 									<li><a href="{site_url('user/request')}">User Reqest</a></li>
 									<li role="separator" class="divider"></li>
 									<li><a href="{site_url('user')}">User</a></li>
 									<li><a href="{site_url('pt')}">Perguruan Tinggi</a></li>
+									<li role="separator" class="divider"></li>
+									<li><a href="{site_url('user/reviewer')}">User Reviewer</a></li>
+									<li><a href="{site_url('user/plot-reviewer')}">Plot Reviewer</a></li>
 								</ul>
 							</li>
 							<li>
@@ -69,7 +72,7 @@
 						</ul>	
 					{else}
 						<ul class="nav navbar-nav">
-							<li><a href="{site_url()}">Halaman depan</a></li>
+							<li><a href="{site_url()}">Login</a></li>
 						</ul>
 					{/if}
 

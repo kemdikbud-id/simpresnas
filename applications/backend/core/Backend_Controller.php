@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * @author Fathoni <m.fathoni@mail.com>
  * 
- * @property Frontend_Session $session
+ * @property Backend_Session_Session $session
  * @property CI_Input $input
  * @property CI_Loader $load
  * @property CI_Upload $upload
@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property CI_DB_query_builder $db
  * @property CI_DB_mysqli_driver $db
  */
-class Admin_Controller extends CI_Controller
+class Backend_Controller extends CI_Controller
 {
 	public function __construct()
 	{

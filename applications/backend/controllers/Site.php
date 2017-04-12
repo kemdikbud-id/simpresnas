@@ -1,8 +1,9 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
-
-class Site extends Admin_Controller
+/**
+ * @author Fathoni <m.fathoni@mail.com>
+ */
+class Site extends Backend_Controller
 {
 	public function login()
 	{

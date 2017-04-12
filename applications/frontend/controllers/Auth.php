@@ -40,11 +40,9 @@ class Auth extends Frontend_Controller
 			}
 			else
 			{
-				$this->session->set_flashdata('result', array(
-					'page_title' => 'Registrasi Akun SIM-PKMI',
-					'message'	=> 'Gagal upload file. ' . $this->upload->display_errors('' ,'')
+				$this->smarty->assign('error', array(
+					'message' => 'Gagal upload file. ' . $this->upload->display_errors('' ,'')
 				));
-				redirect(site_url('alert/error'));
 			}
 		}
 		

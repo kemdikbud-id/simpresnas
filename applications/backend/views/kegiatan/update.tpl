@@ -32,7 +32,7 @@
 						<label class="col-md-2 control-label" for="tgl_awal_upload">Tanggal Awal Upload</label>
 						<div class="col-md-5">
 							{html_select_date field_order="DMY" prefix="awal_upload_" time=$data->tgl_awal_upload all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
-							<input type="text" name="awal_upload_HM" value="{$data->tgl_awal_upload|date_format:"%H:%M"}" placeholder="00:00" class="form-control input-md" style="display: inline-block; width: 75px" />
+							<input type="text" name="awal_upload_HMS" value="{$data->tgl_awal_upload|date_format:"%H:%M:%S"}" placeholder="00:00:00" class="form-control input-md" style="display: inline-block; width: 85px" />
 						</div>
 					</div>
 
@@ -41,7 +41,7 @@
 						<label class="col-md-2 control-label" for="tgl_akhir_upload">Tanggal Akhir Upload</label>
 						<div class="col-md-5">
 							{html_select_date field_order="DMY" prefix="akhir_upload_" time=$data->tgl_akhir_upload all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
-							<input type="text" name="akhir_upload_HM" value="{$data->tgl_akhir_upload|date_format:"%H:%M"}" placeholder="00:00" class="form-control input-md" style="display: inline-block; width: 75px" />
+							<input type="text" name="akhir_upload_HMS" value="{$data->tgl_akhir_upload|date_format:"%H:%M:%S"}" placeholder="00:00:00" class="form-control input-md" style="display: inline-block; width: 85px" />
 						</div>
 					</div>
 
@@ -50,7 +50,7 @@
 						<label class="col-md-2 control-label" for="tgl_awal_review">Tanggal Awal Review</label>
 						<div class="col-md-5">
 							{html_select_date field_order="DMY" prefix="awal_review_" time=$data->tgl_awal_review all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
-							<input type="text" name="awal_review_HM" value="{$data->tgl_awal_review|date_format:"%H:%M"}" placeholder="00:00" class="form-control input-md" style="display: inline-block; width: 75px" />
+							<input type="text" name="awal_review_HMS" value="{$data->tgl_awal_review|date_format:"%H:%M:%S"}" placeholder="00:00:00" class="form-control input-md" style="display: inline-block; width: 85px" />
 						</div>
 					</div>
 
@@ -59,7 +59,7 @@
 						<label class="col-md-2 control-label" for="tgl_akhir_review">Tanggal Akhir Review</label>
 						<div class="col-md-5">
 							{html_select_date field_order="DMY" prefix="akhir_review_" time=$data->tgl_akhir_review all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
-							<input type="text" name="akhir_review_HM" value="{$data->tgl_akhir_review|date_format:"%H:%M"}" placeholder="00:00" class="form-control input-md" style="display: inline-block; width: 75px" />
+							<input type="text" name="akhir_review_HMS" value="{$data->tgl_akhir_review|date_format:"%H:%M:%S"}" placeholder="00:00:00" class="form-control input-md" style="display: inline-block; width: 85px" />
 						</div>
 					</div>
 
@@ -68,7 +68,7 @@
 						<label class="col-md-2 control-label" for="tgl_pengumuman">Tanggal Pengumuman</label>
 						<div class="col-md-5">
 							{html_select_date field_order="DMY" prefix="pengumuman_" time=$data->tgl_pengumuman all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
-							<input type="text" name="pengumuman_HM" value="{$data->tgl_pengumuman|date_format:"%H:%M"}" placeholder="00:00" class="form-control input-md" style="display: inline-block; width: 75px" />
+							<input type="text" name="pengumuman_HMS" value="{$data->tgl_pengumuman|date_format:"%H:%M:%S"}" placeholder="00:00:00" class="form-control input-md" style="display: inline-block; width: 85px" />
 						</div>
 					</div>
 

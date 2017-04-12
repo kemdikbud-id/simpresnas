@@ -3,7 +3,11 @@
 	<h2 class="page-header">Registrasi Akun SIM-PKMI</h2>
 	<div class="row">
 		<div class="col-md-12">
-
+			
+			{if isset($error)}
+			<p>{$error['message']}</p>
+			{/if}
+			
 			<form action="{current_url()}" method="post" class="form-horizontal" id="signupForm" enctype="multipart/form-data">
 
 				<!-- Multiple Radios -->
@@ -59,7 +63,7 @@
 
 				<!-- Text input-->
 				<div class="form-group">
-					<label class="col-md-3 control-label" for="kontak_pengusul">Kontak</label>  
+					<label class="col-md-3 control-label" for="kontak_pengusul">No Kontak</label>  
 					<div class="col-md-3">
 						<input id="kontak_pengusul" name="kontak_pengusul" class="form-control input-md" type="text" value="{set_value('kontak_pengusul')}">
 					</div>
@@ -70,11 +74,11 @@
 					<label class="col-md-3 control-label" for="email">Email</label>  
 					<div class="col-md-5">
 						<input id="email" name="email" class="form-control input-md" type="email" value="{set_value('email')}">
-						<span class="help-block">
-							<span class="text-danger">Email resmi unit/lembaga yg akan digunakan untuk menerima login akun.
-								<strong>Tidak Boleh</strong> menggunakan email pribadi / email dosen
-							</span>
-						</span> 
+					</div>
+					<div class="col-md-4">
+						<span class="text-warning">Email resmi unit/lembaga yg akan digunakan untuk menerima login akun.
+							<strong>Tidak Boleh</strong> menggunakan email pribadi / email dosen. Misal : lpm@universitas.ac.id
+						</span>
 					</div>
 				</div>
 
@@ -83,6 +87,9 @@
 					<label class="col-md-3 control-label" for="file1">Scan Surat Permintaan Akun User</label>  
 					<div class="col-md-5">
 						<input id="file1" name="file1" class="form-control input-md" type="file">
+					</div>
+					<div class="col-md-4">
+						<span class="text-info">File yang di ijinkan: PDF</span>
 					</div>
 				</div>
 

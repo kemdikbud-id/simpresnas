@@ -4,7 +4,7 @@
 	
 	<div class="row">
 		<div class="col-lg-12">
-			<table class="table table-bordered">
+			<table class="table table-bordered table-condensed">
 				<thead>
 					<tr>
 						<th>Username</th>
