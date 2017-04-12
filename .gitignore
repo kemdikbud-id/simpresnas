@@ -46,6 +46,9 @@ applications/admin/sessions/*
 !applications/admin/sessions/index.html
 applications/admin/views_compiled/*
 !applications/admin/views_compiled/index.html
+assets/js/jquery-validation-*/
+assets/js/*.zip
+adminer-*.php
 
 # Upload File
 upload/file-proposal/*
@@ -55,5 +58,3 @@ upload/request-user/*
 
 # Resource Project
 /Resources/
-assets/js/jquery-validation-*/
-assets/js/*.zip
