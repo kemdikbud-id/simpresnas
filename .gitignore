@@ -55,6 +55,3 @@ upload/file-proposal/*
 !upload/file-proposal/index.html
 upload/request-user/*
 !upload/request-user/index.html
-
-# Resource Project
-/Resources/
