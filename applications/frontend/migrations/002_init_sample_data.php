@@ -59,6 +59,7 @@ class Migration_Init_Sample_Data extends CI_Migration
 		// Insert perguruan tinggi percobaan
 		echo '  > insert into perguruan_tinggi ... ';
 		$this->db->insert('perguruan_tinggi', [
+			'id' => 1,
 			'npsn' => '000001',
 			'nama_pt' => 'Universitas Ujicoba',
 			'email_pt' => 'email@pt.ac.id'
@@ -68,6 +69,7 @@ class Migration_Init_Sample_Data extends CI_Migration
 		// Insert default admin user
 		echo '  > insert into user ... ';
 		$this->db->insert('user', [
+			'id' => 1,
 			'username' => 'admin', 
 			'password_hash' => sha1('password'), 
 			'auth_key' => random_string('alnum', 16), 
@@ -80,6 +82,7 @@ class Migration_Init_Sample_Data extends CI_Migration
 		// Tambah user user PT : format npsn+xx
 		// xx = 01 pbbt, 02 kbmi
 		$this->db->insert('user', [
+			'id' => 2,
 			'username' => '00000101', 
 			'password_hash' => sha1('password'), 
 			'auth_key' => random_string('alnum', 16), 
@@ -91,6 +94,7 @@ class Migration_Init_Sample_Data extends CI_Migration
 		
 		// Tambah user reviewer : username = nidn
 		$this->db->insert('user', [
+			'id' => 3,
 			'username' => 'nidn01', 
 			'password_hash' => sha1('password'), 
 			'auth_key' => random_string('alnum', 16), 
@@ -103,6 +107,7 @@ class Migration_Init_Sample_Data extends CI_Migration
 		// Tambah user user PT : format npsn+xx
 		// xx = 01 pbbt, 02 kbmi
 		$this->db->insert('user', [
+			'id' => 4,
 			'username' => '00000102', 
 			'password_hash' => sha1('password'), 
 			'auth_key' => random_string('alnum', 16), 
@@ -114,6 +119,7 @@ class Migration_Init_Sample_Data extends CI_Migration
 		
 		// Tambah user reviewer : username = nidn
 		$this->db->insert('user', [
+			'id' => 5,
 			'username' => 'nidn01', 
 			'password_hash' => sha1('password'), 
 			'auth_key' => random_string('alnum', 16), 
@@ -133,8 +139,9 @@ class Migration_Init_Sample_Data extends CI_Migration
 		
 		foreach ($table_set as $table)
 		{
-			echo "  > delete from {$table} ... ";
+			echo "  > delete from {$table} (with reset auto increment) ... ";
 			$this->db->query("DELETE FROM {$table}");
+			$this->db->query("ALTER TABLE {$table} AUTO_INCREMENT = 1");
 			echo "OK\n";
 		}
 	}

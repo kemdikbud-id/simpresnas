@@ -42,8 +42,8 @@ class Migration_Init_database extends CI_Migration
 		echo "  > create table perguruan tinggi ... ";
 		$this->dbforge->add_field('id'); // Primary Key
 		$this->dbforge->add_field('npsn VARCHAR(6) NOT NULL');
-		$this->dbforge->add_field('nama_pt VARCHAR(50) NOT NULL');
-		$this->dbforge->add_field('email_pt VARCHAR(100) NOT NULL');
+		$this->dbforge->add_field('nama_pt VARCHAR(100) NOT NULL');
+		$this->dbforge->add_field('email_pt VARCHAR(100) NULL');
 		$this->dbforge->create_table('perguruan_tinggi', TRUE, $table_options);
 		echo "OK\n";
 		
