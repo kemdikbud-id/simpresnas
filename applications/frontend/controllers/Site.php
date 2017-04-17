@@ -27,4 +27,29 @@ class Site extends Frontend_Controller
 		
 		$this->smarty->display();
 	}
+	
+	public function test_send_mail()
+	{
+		$this->load->library('email');  // configuration file : applications/user/config/email.php
+		
+		$this->email->from('sim-pkmi@ristekdikti.go.id', 'SIM PKMI');
+		$this->email->to('m.fathoni@mail.com');
+		$this->email->cc('mokhammad.fathoni.rokhman@gmail.com');
+
+		$this->email->subject('Email test yang dikirim pada '. date('H:i:s d/m/Y'));
+		
+		//$this->smarty->assign('nama', "Yufi Yes");
+		//$this->smarty->assign('email', "yufiazmi@gmail.com");
+		//$this->smarty->assign('password', "IndonesiaMerdeka1945");
+		
+		$body = $this->smarty->fetch("email/registration.tpl");
+		$this->email->message($body);
+			
+		$result = $this->email->send();
+		
+		if ($result)
+			echo "Pengiriman berhasil";
+		else
+			echo "Pengiriman (koyoke) gagal";
+	}
 }
