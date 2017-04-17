@@ -1,5 +1,5 @@
 {extends file='site_layout.tpl'}
-{block name='header'}
+{block name='head'}
 	<style>
 		.jumbotron { background-color: transparent; padding: 20px; }
 		.jumbotron h1 { font-size: 60px; }

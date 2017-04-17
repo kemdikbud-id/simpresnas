@@ -5,19 +5,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * @author Fathoni <m.fathoni@mail.com>
  * @property RequestUser_model $requestuser_model
+ * @property LembagaPengusul_model $lembaga_model
+ * @property PerguruanTinggi_model $pt_model 
  */
 class Auth extends Frontend_Controller
 {
+	public function __construct()
+	{
+		parent::__construct();
+		
+		// Load default model
+		$this->load->model(MODEL_REQUEST_USER, 'requestuser_model');
+		$this->load->model(MODEL_PERGURUAN_TINGGI, 'pt_model');
+		$this->load->model(MODEL_LEMBAGA_PENGUSUL, 'lembaga_model');
+	}
+	
 	public function reg()
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
-			// load model
-			$this->load->model('RequestUser_model', 'requestuser_model');
-			
 			// Inisialisasi file upload
 			$this->load->library('upload', array(
-				'allowed_types' => 'pdf|doc|docx',
+				'allowed_types' => 'pdf',
 				'max_size' => 5 * 1024, // 5 MB,
 				'encrypt_name' => TRUE
 			));
@@ -45,6 +54,8 @@ class Auth extends Frontend_Controller
 				));
 			}
 		}
+		
+		$this->smarty->assign('lembaga_set', $this->lembaga_model->list_all());
 		
 		$this->smarty->display();
 	}
@@ -121,5 +132,14 @@ class Auth extends Frontend_Controller
 			// redirect to home
 			redirect(base_url());
 		}
+	}
+	
+	public function search_pt()
+	{
+		$term = $this->input->get('term');
+		
+		$result_set = $this->pt_model->list_by_fts($term);
+		
+		echo json_encode($result_set);
 	}
 }

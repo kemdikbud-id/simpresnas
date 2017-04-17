@@ -1,4 +1,7 @@
 {extends file='site_layout.tpl'}
+{block name='head'}
+	<link rel="stylesheet" href="{base_url('assets/jquery-ui-1.12.1.custom/jquery-ui.min.css')}" />
+{/block}
 {block name='content'}
 	<h2 class="page-header">Registrasi Akun SIM-PKMI</h2>
 	<div class="row">
@@ -33,7 +36,20 @@
 				<div class="form-group">
 					<label class="col-md-3 control-label" for="perguruan_tinggi">Perguruan Tinggi</label>  
 					<div class="col-md-5">
-						<input id="perguruan_tinggi" name="perguruan_tinggi" placeholder="Nama perguruan tinggi" class="form-control input-md" type="text" value="{set_value('perguruan_tinggi')}">
+						<input type='text' class="form-control input-md" name="perguruan_tinggi" value="{set_value('perguruan_tinggi')}"/>
+					</div>
+				</div>
+					
+				<!-- Select Basic -->
+				<div class="form-group">
+					<label class="col-md-3 control-label" for="lembaga_pengusul_id">Nama Lembaga</label>
+					<div class="col-md-5">
+						<select id="lembaga_pengusul_id" name="lembaga_pengusul_id" class="form-control">
+							<option value=""></option>
+							{foreach $lembaga_set as $lembaga}
+								<option value="{$lembaga->id}">{$lembaga->lembaga_pengusul}</option>
+							{/foreach}
+						</select>
 					</div>
 				</div>
 
@@ -107,19 +123,28 @@
 	</div>
 {/block}
 {block name='footer-script'}
+	<script src="{base_url('assets/jquery-ui-1.12.1.custom/jquery-ui.min.js')}" type="text/javascript"></script>
 	<script src="{base_url('assets/js/bootstrap-filestyle.min.js')}" type='text/javascript'></script>
 	<script src="{base_url('assets/js/jquery.validate.min.js')}" type="text/javascript"></script>
 	<script>
 		$(document).ready(function() {
+			
+			/* Autocomplete */
+			$('input[name="perguruan_tinggi"]').autocomplete({
+				source: '{site_url('auth/search_pt/')}',
+				minLength: 6
+			});
+		   
 			/* File Style */
 			$(':file').filestyle();
 			
 			/* Validation */
 			$('#signupForm').validate({
 				rules: {
-					pt: "required",
-					nama_pengusul: "required",
+					perguruan_tinggi: "required",
+					lembaga_pengusul_id: "required",
 					unit_lembaga: "required",
+					nama_pengusul: "required",
 					jabatan_pengusul: "required",
 					kontak_pengusul: "required",
 					email: "required",

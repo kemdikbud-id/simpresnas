@@ -14,7 +14,7 @@
 		{/if}
 		<link href="{base_url('assets/css/bootstrap-cerulean.min.css')}" rel="stylesheet"/>
 		<link href="{base_url('assets/css/site.css')}" rel="stylesheet"/>
-		{block name='header'}
+		{block name='head'}
 		{/block}
 	</head>
 	<body>
@@ -56,6 +56,10 @@
 						<ul class="nav navbar-nav">
 							<li><a href="{site_url()}">Halaman depan</a></li>
 							<li><a href="{site_url('auth/reg')}">Registrasi</a></li>
+							{*
+							<li><a href="#">Download</a></li>
+							<li><a href="#">Tanya Jawab</a></li>
+							*}
 						</ul>
 					{/if}
 

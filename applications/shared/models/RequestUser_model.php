@@ -26,19 +26,21 @@ class RequestUser_model extends CI_Model
 		return $this->db
 			->where('approved_at IS NULL', NULL, FALSE)
 			->where('rejected_at IS NULL', NULL, FALSE)
+			->order_by('created_at ASC')
 			->get('request_user')
 			->result();
 	}
 
 	public function insert()
 	{
-		$this->program_id		= $this->input->post('program_id');
-		$this->perguruan_tinggi	= $this->input->post('perguruan_tinggi');
-		$this->unit_lembaga		= $this->input->post('unit_lembaga');
-		$this->nama_pengusul	= $this->input->post('nama_pengusul');
-		$this->jabatan_pengusul	= $this->input->post('jabatan_pengusul');
-		$this->kontak_pengusul	= $this->input->post('kontak_pengusul');
-		$this->email			= $this->input->post('email');
+		$this->program_id			= $this->input->post('program_id');
+		$this->perguruan_tinggi		= trim($this->input->post('perguruan_tinggi'));
+		$this->lembaga_pengusul_id	= $this->input->post('lembaga_pengusul_id');
+		$this->unit_lembaga			= $this->input->post('unit_lembaga');
+		$this->nama_pengusul		= $this->input->post('nama_pengusul');
+		$this->jabatan_pengusul		= $this->input->post('jabatan_pengusul');
+		$this->kontak_pengusul		= $this->input->post('kontak_pengusul');
+		$this->email				= $this->input->post('email');
 		
 		$this->created_at		= date('Y-m-d H:i:s');
 		
@@ -57,6 +59,9 @@ class RequestUser_model extends CI_Model
 	
 	public function reject($id)
 	{
-		return $this->db->update('request_user', ['rejected_at' => date('Y-m-d H:i:s')], ['id' => $id]);
+		return $this->db->update('request_user', array(
+			'rejected_at' => date('Y-m-d H:i:s'),
+			'reject_message' => $this->input->post('reject_message')
+		), ['id' => $id]);
 	}
 }
