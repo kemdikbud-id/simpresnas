@@ -24,10 +24,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 if (ENVIRONMENT == 'development')
-	$config['base_url'] = 'http://sim-pkmi.ristekdikti.go.id.dev/';
+	$config['base_url'] = 'http://103.66.199.201/';
 
 if (ENVIRONMENT == 'production')
-	$config['base_url'] = 'http://103.66.199.201/';
+	$config['base_url'] = 'http://sim-pkmi.ristekdikti.go.id/';
 
 /*
 |--------------------------------------------------------------------------
