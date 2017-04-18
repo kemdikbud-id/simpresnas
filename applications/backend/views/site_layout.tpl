@@ -14,7 +14,7 @@
 		{/if}
 		<link href="{base_url('../assets/css/bootstrap-cerulean.min.css')}" rel="stylesheet"/>
 		<link href="{base_url('../assets/css/site.css')}" rel="stylesheet"/>
-		{block name='header'}
+		{block name='head'}
 		{/block}
 	</head>
 	<body>
@@ -66,7 +66,7 @@
 						<ul class="nav navbar-nav navbar-right">
 							{if $ci->session->user}
 								<li>
-									<a href="{site_url('site/logout')}">Logout ({$ci->session->user->username})</a>
+									<a href="{site_url('auth/logout')}">Logout ({$ci->session->user->username})</a>
 								</li>
 							{/if}
 						</ul>	

@@ -9,16 +9,18 @@
 class RequestUser_model extends CI_Model
 {
 	public $id;
-	public $program_id;
 	public $perguruan_tinggi;
+	public $program_id;
 	public $nama_pengusul;
 	public $jabatan_pengusul; 
 	public $kontak_pengusul; 
+	public $lembaga_pengusul_id;
 	public $unit_lembaga; 
 	public $email; 
 	public $nama_file; 
 	public $approved_at; 
 	public $rejected_at;
+	public $reject_message;
 	public $created_at;
 	
 	public function list_request()
@@ -47,6 +49,10 @@ class RequestUser_model extends CI_Model
 		return $this->db->insert('request_user', $this);
 	}
 	
+	/**
+	 * @param int $id
+	 * @return RequestUser_model
+	 */
 	public function get_single($id)
 	{
 		return $this->db->get_where('request_user', ['id' => $id], 1)->row();
@@ -54,14 +60,14 @@ class RequestUser_model extends CI_Model
 	
 	public function approve($id)
 	{
-		return $this->db->update('request_user', ['approved_at' => date('Y-m-d H:i:s')], ['id' => $id]);
+		return $this->db->update('request_user', array('approved_at' => date('Y-m-d H:i:s')), ['id' => $id]);
 	}
 	
-	public function reject($id)
+	public function reject($id, $reject_message)
 	{
 		return $this->db->update('request_user', array(
 			'rejected_at' => date('Y-m-d H:i:s'),
-			'reject_message' => $this->input->post('reject_message')
+			'reject_message' => $reject_message
 		), ['id' => $id]);
 	}
 }

@@ -6,29 +6,23 @@
 	<h2 class="page-header">Registrasi Akun SIM-PKMI</h2>
 	<div class="row">
 		<div class="col-md-12">
-			
+
 			{if isset($error)}
-			<p>{$error['message']}</p>
+				<p>{$error['message']}</p>
 			{/if}
-			
+
 			<form action="{current_url()}" method="post" class="form-horizontal" id="signupForm" enctype="multipart/form-data">
 
 				<!-- Multiple Radios -->
 				<div class="form-group">
 					<label class="col-md-3 control-label" for="program_id">Program</label>
-					<div class="col-md-1">
-						<div class="radio">
-							<label for="program_id-0">
-								<input name="program_id" id="program_id-0" value="1" type="radio" {set_radio('program_id', '1')}>PBBT
-							</label>
-						</div>
-					</div>
-					<div class="col-md-1">
-						<div class="radio">
-							<label for="program_id-1">
-								<input name="program_id" id="program_id-1" value="2" type="radio" {set_radio('program_id', '2')}>PKMI
-							</label>
-						</div>
+					<div class="col-md-5">
+						<label class="checkbox-inline">
+							<input name="program_id" id="program_id-0" value="1" type="radio" {set_radio('program_id', '1')}> PBBT
+						</label>
+						<label class="checkbox-inline">
+							<input name="program_id" id="program_id-1" value="2" type="radio" {set_radio('program_id', '2')}> KBMI
+						</label>
 					</div>
 				</div>
 
@@ -39,7 +33,7 @@
 						<input type='text' class="form-control input-md" name="perguruan_tinggi" value="{set_value('perguruan_tinggi')}"/>
 					</div>
 				</div>
-					
+
 				<!-- Select Basic -->
 				<div class="form-group">
 					<label class="col-md-3 control-label" for="lembaga_pengusul_id">Nama Lembaga</label>
@@ -127,20 +121,21 @@
 	<script src="{base_url('assets/js/bootstrap-filestyle.min.js')}" type='text/javascript'></script>
 	<script src="{base_url('assets/js/jquery.validate.min.js')}" type="text/javascript"></script>
 	<script>
-		$(document).ready(function() {
-			
+		$(document).ready(function () {
+
 			/* Autocomplete */
 			$('input[name="perguruan_tinggi"]').autocomplete({
 				source: '{site_url('auth/search_pt/')}',
 				minLength: 6
 			});
-		   
+
 			/* File Style */
 			$(':file').filestyle();
-			
+
 			/* Validation */
 			$('#signupForm').validate({
 				rules: {
+					program_id: "required",
 					perguruan_tinggi: "required",
 					lembaga_pengusul_id: "required",
 					unit_lembaga: "required",
@@ -151,21 +146,35 @@
 					file1: "required"
 				},
 				errorElement: "em",
-				errorPlacement: function ( error, element ) {
-					// Add the `help-block` class to the error element
-					error.addClass( "help-block" );
+				errorPlacement: function (error, element) {
+					error.addClass("help-block");
 
-					if ( element.prop( "type" ) === "checkbox" ) {
-						error.insertAfter( element.parent( "label" ) );
-					} else {
-						error.insertAfter( element );
+					if (element.prop("type") === "checkbox") {
+						error.insertAfter(element.parent("label"));
+					}
+					if (element.prop("type") === "radio") {
+						element.parent().parent().append(error);
+					}
+					else {
+						error.insertAfter(element);
 					}
 				},
-				highlight: function ( element, errorClass, validClass ) {
-					$( element ).parent().addClass( "has-error" ).removeClass( "has-success" );
+				highlight: function (element, errorClass, validClass) {
+					if ($(element).prop("type") === "radio") {
+						$(element).parent().parent().addClass("has-error").removeClass("has-success");
+					}
+					else {
+						$(element).parent().addClass("has-error").removeClass("has-success");
+					}
+					
 				},
 				unhighlight: function (element, errorClass, validClass) {
-					$( element ).parent().addClass( "has-success" ).removeClass( "has-error" );
+					if ($(element).prop("type") === "radio") {
+						$(element).parent().parent().addClass("has-success").removeClass("has-error");
+					}
+					else {
+						$(element).parent().addClass("has-success").removeClass("has-error");
+					}
 				}
 			});
 		});

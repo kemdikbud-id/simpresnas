@@ -1,5 +1,5 @@
 {extends file='site_layout.tpl'}
-{block name='header'}
+{block name='head'}
 {/block}
 {block name='content'}
 	<h1 class="page-header">Update Kegiatan</h1>

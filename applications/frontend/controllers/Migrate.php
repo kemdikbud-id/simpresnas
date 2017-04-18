@@ -20,6 +20,11 @@ class Migrate extends Frontend_Controller
 	
 	public function index()
 	{
+		// Get current version
+		$migration = $this->db->get('migrations')->row();
+		
+		echo "Current Version : {$migration->version}\n";
+		
 		echo "List Migration :\n";
 		
 		$migrations = $this->migration->find_migrations();

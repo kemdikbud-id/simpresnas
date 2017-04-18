@@ -3,7 +3,7 @@
 /**
  * @author Fathoni <m.fathoni@mail.com>
  */
-class Site extends Backend_Controller
+class Auth extends Backend_Controller
 {
 	public function login()
 	{
@@ -42,5 +42,10 @@ class Site extends Backend_Controller
 
 		// redirect to home
 		redirect(base_url());
+	}
+	
+	public function test_email_template($file_tpl)
+	{
+		$this->smarty->display("email/{$file_tpl}");
 	}
 }

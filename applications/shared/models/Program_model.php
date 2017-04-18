@@ -18,10 +18,10 @@ class Program_model extends CI_Model
 	
 	/**
 	 * @param int $id
-	 * @return mixed 
+	 * @return Program_model 
 	 */
 	public function get_single($id)
 	{
-		$this->db->get_where('program', ['id' => $id], 1)->row();
+		return $this->db->get_where('program', ['id' => $id], 1)->row();
 	}
 }

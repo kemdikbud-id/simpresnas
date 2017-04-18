@@ -85,8 +85,8 @@ class Auth extends Frontend_Controller
 			if ($user != null)
 			{
 				// Bandingkan password, temporari --> password
-				// if ($user->password_hash == sha1($password))
-				if ($password == 'password')
+				if ($user->password_hash == sha1($password))
+				//if ($password == 'password')
 				{
 					// Ambil data perguruan tinggi
 					$perguruan_tinggi = $this->db->get_where('perguruan_tinggi', array('id' => $user->perguruan_tinggi_id))->row();
