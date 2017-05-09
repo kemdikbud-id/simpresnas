@@ -47,3 +47,12 @@ code {
 .table > tbody > tr > td {
 	vertical-align: middle;
 }
+
+/* Bootstrap table add-on */
+.table.table-sm-condennsed {
+	
+}
+
+.table.table-xs-condennsed {
+	
+}

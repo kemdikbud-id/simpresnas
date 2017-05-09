@@ -47,4 +47,14 @@ class User_model extends CI_Model
 	{
 		return $this->db->insert('user', $user);
 	}
+	
+	public function login_failed($username, $password, $ip_address, $keterangan)
+	{
+		return $this->db->insert('login_failed', array(
+			'username' => $username,
+			'password' => $password,
+			'ip_address' => $ip_address,
+			'keterangan' => $keterangan
+		));
+	}
 }

@@ -56,6 +56,7 @@
 						<ul class="nav navbar-nav">
 							<li><a href="{site_url()}">Halaman depan</a></li>
 							<li><a href="{site_url('auth/reg')}">Registrasi</a></li>
+							<li><a href="{site_url('auth/login')}">Login</a></li>
 							{*
 							<li><a href="#">Download</a></li>
 							<li><a href="#">Tanya Jawab</a></li>

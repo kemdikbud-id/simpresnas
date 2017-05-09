@@ -7,9 +7,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property RequestUser_model $requestuser_model
  * @property LembagaPengusul_model $lembaga_model
  * @property PerguruanTinggi_model $pt_model 
+ * @property User_model $user_model
  */
 class Auth extends Frontend_Controller
 {
+	const CAPTCHA_TIMEOUT = 7200;
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -18,6 +21,7 @@ class Auth extends Frontend_Controller
 		$this->load->model(MODEL_REQUEST_USER, 'requestuser_model');
 		$this->load->model(MODEL_PERGURUAN_TINGGI, 'pt_model');
 		$this->load->model(MODEL_LEMBAGA_PENGUSUL, 'lembaga_model');
+		$this->load->model(MODEL_USER, 'user_model');
 	}
 	
 	public function reg()
@@ -60,61 +64,68 @@ class Auth extends Frontend_Controller
 		$this->smarty->display();
 	}
 	
-	public function login($mode)
+	public function login()
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
 			$username	= $this->input->post('username');
 			$password	= $this->input->post('password');
+			$captcha	= $this->input->post('captcha');
 			
-			// Jenis Program
-			if ($mode == 'pbbt' || $mode == 'pbbt-reviewer') $program_id = PROGRAM_PBBT;
-			if ($mode == 'kbmi' || $mode == 'kbmi-reviewer') $program_id = PROGRAM_KBMI;
+			// Ambil data user by username
+			$user = $this->db->get_where('user', ['username' => $username], 1)->row();
 			
-			// Tipe User
-			if ($mode == 'pbbt' || $mode == 'kbmi') $tipe_user = TIPE_USER_NORMAL;
-			if ($mode == 'pbbt-reviewer' || $mode == 'kbmi-reviewer') $tipe_user = TIPE_USER_REVIEWER;
-			
-			$user = $this->db->get_where('user', array(
-				'program_id' => $program_id,
-				'username' => $username,
-				'tipe_user' => $tipe_user
-			))->row();
+			// ambil data captcha
+			$captcha_count = $this->db->query(
+				"SELECT COUNT(*) AS count FROM captcha WHERE word = ? AND ip_address = ? AND captcha_time > ?",
+				array($captcha, $this->input->ip_address(), time() - $this::CAPTCHA_TIMEOUT))->row()->count;
 			
 			// Jika row ada
 			if ($user != null)
 			{
-				// Bandingkan password, temporari --> password
+				// Bandingkan password
 				if ($user->password_hash == sha1($password))
-				//if ($password == 'password')
 				{
-					// Ambil data perguruan tinggi
-					$perguruan_tinggi = $this->db->get_where('perguruan_tinggi', array('id' => $user->perguruan_tinggi_id))->row();
-					
-					// Assign data login ke session
-					$this->session->set_userdata('user', $user);
-					$this->session->set_userdata('perguruan_tinggi', $perguruan_tinggi);
-					$this->session->set_userdata('program_id', $program_id);
-					
-					// redirect
-					if ($tipe_user == TIPE_USER_NORMAL)
-						redirect(site_url('home'));
-					else if ($tipe_user == TIPE_USER_REVIEWER)
-						redirect(site_url('reviewer'));
+					// cek captcha
+					if ($captcha_count > 0)
+					{
+						// Ambil data perguruan tinggi
+						$perguruan_tinggi = $this->db->get_where('perguruan_tinggi', array('id' => $user->perguruan_tinggi_id))->row();
+
+						// Assign data login ke session
+						$this->session->set_userdata('user', $user);
+						$this->session->set_userdata('perguruan_tinggi', $perguruan_tinggi);
+						$this->session->set_userdata('program_id', $user->program_id);
+						
+						// update latest login
+						$this->db->update('user', array('latest_login' => date('Y-m-d H:i:s')), array('id' => $user->id));
+
+						// redirect
+						if ($user->tipe_user == TIPE_USER_NORMAL)
+							redirect(site_url('home'));
+						else if ($user->tipe_user == TIPE_USER_REVIEWER)
+							redirect(site_url('reviewer'));
+					}
+					else
+					{	
+						$this->user_model->login_failed($username, $password, $this->input->ip_address(), 'CAPTCHA_FAIL');
+						$this->session->set_flashdata('failed_login', 'Isian captcha tidak sesuai. Silahkan ulangi login');
+					}
+				}
+				else
+				{
+					$this->user_model->login_failed($username, $password, $this->input->ip_address(), 'WRONG_PASSWORD');
+					$this->session->set_flashdata('failed_login', 'Password tidak sesuai. Silahkan ulangi login.');
 				}
 			}
-			
-			$this->session->set_flashdata('failed_login', TRUE);
+			else
+			{
+				$this->user_model->login_failed($username, $password, $this->input->ip_address(), 'USER_NOT_FOUND');
+				$this->session->set_flashdata('failed_login', 'Username tidak ditemukan. Silahkan ulangi login.');
+			}
 		}
 		
-		$judul_set = array(
-			'pbbt' => 'Pendaftaran PBBT',
-			'pbbt-reviewer' => 'Reviewer PBBT',
-			'kbmi' => 'Pendaftaran KBMI',
-			'kbmi-reviewer' => 'Reviewer KBMI'
-		);
-		
-		$this->smarty->assign('judul', $judul_set[$mode]);
+		$this->smarty->assign('img_captcha', $this->get_captcha());
 		
 		$this->smarty->display();
 	}
@@ -141,5 +152,46 @@ class Auth extends Frontend_Controller
 		$result_set = $this->pt_model->list_by_fts($term);
 		
 		echo json_encode($result_set);
+	}
+	
+	public function get_captcha()
+	{		
+		$this->load->helper('captcha');
+		
+		// Captcha Parameter
+		$captcha_params = array(
+			'img_path'		=> './assets/captcha/',
+			'img_url'		=> base_url('assets/captcha/'),
+			'font_path'		=> './assets/fonts/OpenSans-Semibold.ttf',
+			'img_width'     => 180,
+			'img_height'    => 60,
+			'expiration'    => $this::CAPTCHA_TIMEOUT,
+			'word_length'   => 4,
+			'font_size'     => 28,
+			'pool'          => '0123456789',
+			'img_id'		=> time(),
+
+			// White background and border, black text and red grid
+			'colors'        => array(
+					'background' => array(255, 255, 255),
+					'border' => array(0, 0, 0),
+					'text' => array(0, 0, 0),
+					'grid' => array(rand(0, 255), rand(0, 255), rand(0, 255))
+			)
+		);
+		
+		$captcha = create_captcha($captcha_params);
+		
+		$data = array(
+			'captcha_time'  => $captcha['time'],
+			'ip_address'    => $this->input->ip_address(),
+			'word'          => $captcha['word'],
+			'filename'		=> $captcha['filename']
+		);
+		
+		$this->db->insert('captcha', $data);
+		
+		return $captcha['image'];
+		
 	}
 }

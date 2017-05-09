@@ -32,6 +32,16 @@ class RequestUser_model extends CI_Model
 			->get('request_user')
 			->result();
 	}
+	
+	public function list_request_rejected()
+	{
+		return $this->db
+			->where('approved_at IS NULL', NULL, FALSE)
+			->where('rejected_at IS NOT NULL', NULL, FALSE)
+			->order_by('created_at ASC')
+			->get('request_user')
+			->result();
+	}
 
 	public function insert()
 	{
