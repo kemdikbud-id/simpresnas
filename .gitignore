@@ -49,6 +49,7 @@ applications/backend/views_compiled/*
 !applications/backend/views_compiled/index.html
 assets/js/jquery-validation-*/
 assets/js/*.zip
+assets/captcha/*
 adminer-*.php
 
 # Upload File
