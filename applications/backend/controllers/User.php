@@ -88,7 +88,6 @@ class User extends Backend_Controller
 		
 		$data = $this->request_user_model->get_single($id);
 		
-		
 		if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
 			// start transaction
@@ -110,47 +109,55 @@ class User extends Backend_Controller
 			if ($data->program_id == PROGRAM_KBMI)
 				$user->username = trim($pt->npsn) . '02';
 			
-			// generate password
-			$user->password = random_string();
-			// hash password
-			$user->password_hash = sha1($user->password);
-			
-			$user->created_at = date('Y-m-d H:i:s');
-			
-			$result = $this->user_model->create_user($user);
-			
-			// approve
-			if ($result) $this->request_user_model->approve($id);
-			
-			// commit if success
-			$this->db->trans_commit();
-			
-			// Assign variable
-			$this->smarty->assign('nama', $data->nama_pengusul);
-			$this->smarty->assign('nama_program', $program->nama_program);
-			$this->smarty->assign('login_link', 'http://sim-pkmi.ristekdikti.go.id');
-			$this->smarty->assign('username', $user->username);
-			$this->smarty->assign('password', $user->password);
-			$body = $this->smarty->fetch("email/request_user_approve.tpl");
-			
-			// Kirim Email
-			
-			$this->email->from('no-reply@sim-pkmi.ristekdikti.go.id', 'Notifikasi SIM-PKMI');
-			$this->email->to($data->email);
-			$this->email->subject('Informasi Akun SIM-PKMI');
-			$this->email->message($body);
-			$result = $this->email->send();
-			
-			$this->session->set_flashdata('result', array(
-				'page_title' => 'Daftar User Request',
-				'message' => 'Berhasil',
-				'link_1' => '<a href="'.site_url('user/request').'">Kembali ke daftar user request</a>'
-			));
-			
-			redirect(site_url('alert/success'));
+			// Cek Exist User
+			if ($this->user_model->is_exist($user->username, $user->program_id, $user->tipe_user))
+			{
+				$this->session->set_flashdata('failed', TRUE);
+			}
+			else
+			{
+				// generate password
+				$user->password = random_string();
+				// hash password
+				$user->password_hash = sha1($user->password);
+
+				$user->created_at = date('Y-m-d H:i:s');
+
+				$result = $this->user_model->create_user($user);
+
+				// approve
+				if ($result) $this->request_user_model->approve($id);
+
+				// commit if success
+				$this->db->trans_commit();
+
+				// Assign variable
+				$this->smarty->assign('nama', $data->nama_pengusul);
+				$this->smarty->assign('nama_program', $program->nama_program);
+				$this->smarty->assign('login_link', 'http://sim-pkmi.ristekdikti.go.id');
+				$this->smarty->assign('username', $user->username);
+				$this->smarty->assign('password', $user->password);
+				$body = $this->smarty->fetch("email/request_user_approve.tpl");
+
+				// Kirim Email
+
+				$this->email->from('no-reply@sim-pkmi.ristekdikti.go.id', 'Notifikasi SIM-PKMI');
+				$this->email->to($data->email);
+				$this->email->subject('Informasi Akun SIM-PKMI');
+				$this->email->message($body);
+				$result = $this->email->send();
+
+				$this->session->set_flashdata('result', array(
+					'page_title' => 'Daftar User Request',
+					'message' => 'Berhasil',
+					'link_1' => '<a href="'.site_url('user/request').'">Kembali ke daftar user request</a>'
+				));
+
+				redirect(site_url('alert/success'));
+			}
 		}
 		
-		$this->smarty->assign('pt_set', $this->pt_model->list_by_name($data->perguruan_tinggi.'a'));
+		$this->smarty->assign('pt_set', $this->pt_model->list_by_name($data->perguruan_tinggi));
 		$this->smarty->assign('program', $this->program_model->get_single($data->program_id));
 		
 		$this->smarty->assign('data', $data);

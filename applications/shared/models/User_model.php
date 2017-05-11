@@ -29,6 +29,16 @@ class User_model extends CI_Model
 		return $this->db->get_where('user', ['id' => $id], 1)->row();
 	}
 	
+	public function is_exist($username, $program_id, $tipe_user)
+	{
+		return $this->db
+			->where(array(
+				'username'		=> $username,
+				'program_id'	=> $program_id,
+				'tipe_user'		=> $tipe_user
+			))->count_all_results('user') > 0;
+	}
+	
 	public function list_user()
 	{
 		return $this->db

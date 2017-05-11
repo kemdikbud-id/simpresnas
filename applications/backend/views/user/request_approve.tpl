@@ -4,7 +4,15 @@
 {/block}
 {block name='content'}
 	<h2 class="page-header">Daftar User Request</h2>
-
+	
+	{if $ci->session->flashdata('failed')}
+		<div class="alert alert-danger alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<strong>Gagal Membuat User !</strong> User untuk perguruan tinggi ini sudah ada. Silahkan gunakan fitur 
+			Kirim Ulang / Reset Password pada halaman daftar user.
+		</div>
+	{/if}
+	
 	<div class="row">
 		<div class="col-lg-6">
 

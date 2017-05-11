@@ -11,6 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property Smarty_wrapper $smarty
  * @property CI_DB_query_builder $db
  * @property CI_DB_mysqli_driver $db
+ * @property CI_Session $session
  */
 class Backend_Controller extends CI_Controller
 {
