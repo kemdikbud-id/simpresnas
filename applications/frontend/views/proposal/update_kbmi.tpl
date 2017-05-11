@@ -97,7 +97,7 @@
 								<p class="help-block">{$syarat->keterangan}</p>
 							</div>
 							<div class="col-lg-4">
-								<p class="form-control-static"><a href="{$upload_path}/{$syarat->nama_file}" target="_blank">{$syarat->nama_asli}</a></p>
+								<p class="form-control-static"><a href="{$upload_path}{$syarat->nama_file}" target="_blank">{$syarat->nama_asli}</a></p>
 							</div>
 						</div>	
 					{/foreach}

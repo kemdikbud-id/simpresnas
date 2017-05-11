@@ -13,6 +13,8 @@ class Proposal extends Backend_Controller
 		$this->check_credentials();
 		
 		$this->load->model('Proposal_model', 'proposal_model');
+		
+		$this->load->helper('time_elapsed_helper');
 	}
 	
 	public function index_pbbt()

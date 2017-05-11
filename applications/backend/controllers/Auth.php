@@ -4,9 +4,16 @@
  * @author Fathoni <m.fathoni@mail.com>
  */
 class Auth extends Backend_Controller
-{
+{	
 	public function login()
 	{
+		// jika sudah ada login, redirect ke home
+		if ($this->session->userdata('user') != NULL)
+		{
+			redirect(site_url('home'));
+			exit();
+		}
+			
 		if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
 			$username	= $this->input->post('username');

@@ -9,6 +9,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Proposal extends Frontend_Controller
 {
+	const MAX_FILE_SIZE = 5242880;
+	
 	public function __construct()
 	{
 		parent::__construct();
@@ -79,7 +81,7 @@ class Proposal extends Frontend_Controller
 		// Inisialisasi file upload
 		$this->load->library('upload', array(
 			'allowed_types' => 'pdf',
-			'max_size' => 5 * 1024 * 1024, // 5 MB,
+			'max_size' => $this::MAX_FILE_SIZE, // 5 MB,
 			'encrypt_name' => TRUE
 		));
 		
@@ -149,8 +151,13 @@ class Proposal extends Frontend_Controller
 	}
 	
 	public function update($id)
-	{
+	{	
 		$proposal_id = (int)$id;
+		
+		if ($_SERVER['REQUEST_METHOD'] == 'POST')
+		{
+			
+		}
 		
 		$kategori_set = $this->db->get_where('kategori', array('program_id' => $this->session->program_id))->result();
 		//$syarat_set = $this->db->get_where('syarat', array('program_id' => $this->session->program_id))->result();
