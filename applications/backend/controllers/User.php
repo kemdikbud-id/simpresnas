@@ -21,6 +21,11 @@ class User extends Backend_Controller
 		$this->load->model(MODEL_PERGURUAN_TINGGI, 'pt_model');
 		$this->load->model(MODEL_PROGRAM, 'program_model');
 		$this->load->model(MODEL_REJECT_MESSAGE, 'reject_message_model');
+		
+		$this->load->library('email');
+		
+		$this->load->helper('string_helper');
+		$this->load->helper('time_elapsed');
 	}
 	
 	public function index()
@@ -39,8 +44,6 @@ class User extends Backend_Controller
 	
 	public function request()
 	{
-		$this->load->helper('time_elapsed');
-		
 		$data_set = $this->request_user_model->list_request();
 		
 		foreach ($data_set as &$data)
@@ -54,13 +57,37 @@ class User extends Backend_Controller
 		$this->smarty->display();
 	}
 	
+	public function request_rejected()
+	{
+		$data_set = $this->request_user_model->list_request_rejected();
+		
+		foreach ($data_set as &$data)
+		{
+			// get elapsed time
+			$data->waktu = time_elapsed_string($data->created_at);
+		}
+		
+		$this->smarty->assign('data_set', $data_set);
+		
+		$this->smarty->display();
+	}
+	
+	public function request_unreject()
+	{
+		if ($_SERVER['REQUEST_METHOD'] == 'POST')
+		{
+			$id = (int)$this->input->get('id');
+			
+			return $this->db->update('request_user', ['rejected_at' => NULL, 'reject_message' => NULL], ['id' => $id], 1);
+		}
+	}
+	
 	public function request_approve()
 	{
 		$id = (int)$this->input->get('id');
 		
-		$this->load->helper('random_password');
-		
 		$data = $this->request_user_model->get_single($id);
+		
 		
 		if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
@@ -84,9 +111,9 @@ class User extends Backend_Controller
 				$user->username = trim($pt->npsn) . '02';
 			
 			// generate password
-			$password = get_random_password(8, 8, FALSE, TRUE, FALSE);
+			$user->password = random_string();
 			// hash password
-			$user->password_hash = sha1($password);
+			$user->password_hash = sha1($user->password);
 			
 			$user->created_at = date('Y-m-d H:i:s');
 			
@@ -103,11 +130,11 @@ class User extends Backend_Controller
 			$this->smarty->assign('nama_program', $program->nama_program);
 			$this->smarty->assign('login_link', 'http://sim-pkmi.ristekdikti.go.id');
 			$this->smarty->assign('username', $user->username);
-			$this->smarty->assign('password', $password);
+			$this->smarty->assign('password', $user->password);
 			$body = $this->smarty->fetch("email/request_user_approve.tpl");
 			
 			// Kirim Email
-			$this->load->library('email');
+			
 			$this->email->from('no-reply@sim-pkmi.ristekdikti.go.id', 'Notifikasi SIM-PKMI');
 			$this->email->to($data->email);
 			$this->email->subject('Informasi Akun SIM-PKMI');
@@ -123,7 +150,7 @@ class User extends Backend_Controller
 			redirect(site_url('alert/success'));
 		}
 		
-		$this->smarty->assign('pt_set', $this->pt_model->list_by_name($data->perguruan_tinggi));
+		$this->smarty->assign('pt_set', $this->pt_model->list_by_name($data->perguruan_tinggi.'a'));
 		$this->smarty->assign('program', $this->program_model->get_single($data->program_id));
 		
 		$this->smarty->assign('data', $data);
@@ -147,14 +174,10 @@ class User extends Backend_Controller
 			$this->request_user_model->reject($id, $reject_message);
 			
 			// Kirim email
-			$this->load->library('email');  // configuration file : applications/user/config/email.php
-		
 			$this->email->from('no-reply@sim-pkmi.ristekdikti.go.id', 'Notifikasi SIM-PKMI');
 			$this->email->to($data->email);
 			$this->email->subject('Registrasi User SIM PKMI Tidak Disetujui '. date('H:i:s d/m/Y'));
-
 			$this->smarty->assign('message', $reject_message);
-
 			$body = $this->smarty->fetch("email/request_user_reject.tpl");
 			$this->email->message($body);
 
@@ -173,5 +196,83 @@ class User extends Backend_Controller
 		
 		$this->smarty->assign('data', $data);
 		$this->smarty->display();
+	}
+	
+	public function reset()
+	{
+		if ($_SERVER['REQUEST_METHOD'] == 'POST')
+		{
+			$id = (int)$this->input->get('id');
+			$user = $this->user_model->get_single($id);
+			$new_password = random_string();
+			
+			$change_result = $this->user_model->change_password($id, $new_password);
+			
+			$program = $this->program_model->get_single($user->program_id);
+			
+			// Assign variable
+			$this->smarty->assign('nama_program', $program->nama_program);
+			$this->smarty->assign('login_link', 'http://sim-pkmi.ristekdikti.go.id');
+			$this->smarty->assign('username', $user->username);
+			$this->smarty->assign('password', $new_password);
+			$body = $this->smarty->fetch("email/user_reset_password.tpl");
+			
+			// Kirim Email
+			$this->email->from('no-reply@sim-pkmi.ristekdikti.go.id', 'Notifikasi SIM-PKMI');
+			$this->email->to($user->email);
+			$this->email->subject('Reset Password Berhasil - SIM-PKMI');
+			$this->email->message($body);
+			$mail_result = $this->email->send();
+			
+			echo json_encode(array(
+				'change_result' => $change_result,
+				'mail_result' => $mail_result
+			));
+		}
+	}
+	
+	public function resend()
+	{
+		if ($_SERVER['REQUEST_METHOD'] == 'POST')
+		{
+			$id = (int)$this->input->get('id');
+			$user = $this->user_model->get_single($id);
+			$program = $this->program_model->get_single($user->program_id);
+			
+			// Assign variable
+			$this->smarty->assign('nama_program', $program->nama_program);
+			$this->smarty->assign('login_link', 'http://sim-pkmi.ristekdikti.go.id');
+			$this->smarty->assign('username', $user->username);
+			$this->smarty->assign('password', $user->password);
+			$body = $this->smarty->fetch("email/user_resend_login.tpl");
+			
+			// Kirim Email
+			$this->email->from('no-reply@sim-pkmi.ristekdikti.go.id', 'Notifikasi SIM-PKMI');
+			$this->email->to($user->email);
+			$this->email->subject('Informasi Login - SIM-PKMI');
+			$this->email->message($body);
+			$mail_result = $this->email->send();
+			
+			echo json_encode(array('result' => $mail_result));
+		}
+	}
+	
+	public function find_pt_for_select2()
+	{
+		$q = $this->input->get('q');
+		
+		$pt_set = $this->db
+			->select("id, concat('[', npsn, ,'] ', nama_pt) as nama_pt")
+			->where("nama_pt like '%{$q}%'", NULL, FALSE)
+			->from('perguruan_tinggi')
+			->get()->result();
+			
+		$result = array(
+			'total_count' => count($pt_set),
+			'incomplete_results' => false,
+			'items' => $pt_set
+		);
+		
+		echo json_encode($result);
 	}
 }

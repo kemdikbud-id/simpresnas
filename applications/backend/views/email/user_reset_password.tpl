@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Registrasi Berhasil</title>
 		<style type="text/css">
 			body {
 				background-color: #fff;
@@ -43,17 +42,14 @@
 	</head>
 	<body>
 		<div id="container">
-			<h2>Registrasi Berhasil</h2>
-			<p><strong>Terima kasih {if isset($nama)}{$nama}{else}$nama{/if}, permintaan user anda di <a href="http://sim-pkmi.ristekdikti.go.id">SIM-PKMI</a> telah berhasil.</strong></p>
-			<p>Berikut ini informasi <i>account</i> anda :</p>
+			<h2>Informasi Reset Password</h2>
+			<p><strong>Password anda telah berhasil di reset. Berikut ini informasi <i>account</i> anda :</strong></p>
 			<ul>
 				<li>Program : <code>{if isset($nama_program)}{$nama_program}{else}$nama_program{/if}</code></li>
 				<li>Halaman Login : {if isset($login_link)}<a href="{$login_link}">{$login_link}</a>{else}$login_link{/if}</li>
 				<li>Username : <code>{if isset($username)}{$username}{else}$username{/if}</code></li>
 				<li>Password : <code>{if isset($password)}{$password}{else}$password{/if}</code></li>
 			</ul>
-			<p>Harap disimpan baik-baik user login ini. Untuk keamanan silahkan ganti password sesaat setelah login pertama kali.</p>
-			<p></p>
 			<p><i style="font-size: 11px">Email ini otomatis. Tidak perlu dibalas.</i></p>
 		</div>
 		<div id="footer">

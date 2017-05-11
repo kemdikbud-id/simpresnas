@@ -19,7 +19,7 @@ if (!function_exists('time_elapsed_string'))
 			'd' => 'hari',
 			'h' => 'jam',
 			'i' => 'menit',
-			's' => 'detk',
+			's' => 'detik',
 		);
 		foreach ($string as $k => &$v)
 		{

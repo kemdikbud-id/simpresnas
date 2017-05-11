@@ -8,6 +8,7 @@ class User_model extends CI_Model
 {
 	public $id;
 	public $username;
+	public $password;
 	public $password_hash;
 	public $password_reset_token;
 	public $email;
@@ -18,6 +19,15 @@ class User_model extends CI_Model
 	public $status = 1;
 	public $created_at;
 	public $updated_at;
+	
+	/**
+	 * @param int $id
+	 * @return User_model 
+	 */
+	public function get_single($id)
+	{
+		return $this->db->get_where('user', ['id' => $id], 1)->row();
+	}
 	
 	public function list_user()
 	{
@@ -56,5 +66,14 @@ class User_model extends CI_Model
 			'ip_address' => $ip_address,
 			'keterangan' => $keterangan
 		));
+	}
+	
+	public function change_password($user_id, $new_password)
+	{
+		return $this->db->update('user', array(
+			'password'		=> $new_password,
+			'password_hash'	=> sha1($new_password),
+			'updated_at'	=> date('Y-m-d H:i:s')
+		), ['id' => $user_id], 1);
 	}
 }

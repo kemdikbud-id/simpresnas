@@ -29,9 +29,9 @@
 						<span class="icon-bar"></span>
 					</button>
 					{if $ci->session->user}
-						<a class="navbar-brand" href="{site_url('home')}">SIM-PKMI</a>
+						<a class="navbar-brand" href="{site_url('home')}">SIM-PKMI Admin</a>
 					{else}
-						<a class="navbar-brand" href="{base_url()}">SIM-PKMI</a>
+						<a class="navbar-brand" href="{base_url()}">SIM-PKMI Admin</a>
 					{/if}
 				</div>
 				<div id="navbar" class="collapse navbar-collapse">
@@ -46,7 +46,8 @@
 							<li>
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Master Data <span class="caret"></span></a>
 								<ul class="dropdown-menu">
-									<li><a href="{site_url('user/request')}">User Reqest</a></li>
+									<li><a href="{site_url('user/request')}">User Request</a></li>
+									<li><a href="{site_url('user/request_rejected')}">User Request Ditolak</a></li>
 									<li role="separator" class="divider"></li>
 									<li><a href="{site_url('user')}">User</a></li>
 									<li><a href="{site_url('pt')}">Perguruan Tinggi</a></li>
@@ -69,10 +70,6 @@
 									<a href="{site_url('auth/logout')}">Logout ({$ci->session->user->username})</a>
 								</li>
 							{/if}
-						</ul>	
-					{else}
-						<ul class="nav navbar-nav">
-							<li><a href="{site_url()}">Login</a></li>
 						</ul>
 					{/if}
 

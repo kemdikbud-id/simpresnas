@@ -1,6 +1,6 @@
 {extends file='site_layout.tpl'}
 {block name='content'}
-	<h1 class="page-header">Daftar User Request</h1>
+	<h2 class="page-header">Daftar User Request</h2>
 
 	<div class="row">
 		<div class="col-lg-12">
@@ -8,14 +8,14 @@
 				<thead>
 					<tr>
 						<th>Perguruan Tinggi</th>
-						<th>Nama Lembaga / Unit</th>
+						<th>Lembaga / Unit</th>
 						<th>Nama Pengusul</th>
 						<th>Kontak</th>
 						<th>Email</th>
 						<th>File</th>
 						<th>Program</th>
 						<th>Waktu Usul</th>
-						<th></th>
+						<th style="width: 100px"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -26,12 +26,12 @@
 							<td>{$data->nama_pengusul}</td>
 							<td>{$data->kontak_pengusul}</td>
 							<td><code>{$data->email}</code></td>
-							<td><a href="{base_url("../upload/request-user/{$data->nama_file}")}" target="_blank">Lihat Berkas</a></td>
+							<td class="text-center"><a href="{base_url("../upload/request-user/{$data->nama_file}")}" target="_blank"><span class="glyphicon glyphicon-file" aria-hidden="true"></span></a></td>
 							<td>{if $data->program_id == 1}PBBT{else}KBMI{/if}</td>
 							<td>{$data->waktu}</td>
 							<td>
-								<a href="{site_url("user/request-reject?id={$data->id}")}" class="btn btn-sm btn-warning reject">Tolak</a>
-								<a href="{site_url("user/request-approve?id={$data->id}")}" class="btn btn-sm btn-success approve">Setujui</a>
+								<a href="{site_url("user/request-reject?id={$data->id}")}" class="btn btn-xs btn-warning reject">Tolak</a>
+								<a href="{site_url("user/request-approve?id={$data->id}")}" class="btn btn-xs btn-success approve">Setujui</a>
 							</td>
 						</tr>
 					{foreachelse}

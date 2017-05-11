@@ -31,6 +31,11 @@ class Migration_Alter_Database extends CI_Migration
 		$this->dbforge->add_field('created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP');
 		$this->dbforge->create_table('login_failed', TRUE);
 		echo "OK\n";
+		
+		// alter table user
+		echo "  > rename column user.auth_key --> user.password ... ";
+		$this->db->query("ALTER TABLE `user` CHANGE auth_key password VARCHAR(32)");
+		echo "OK\n";
 	}
 	
 	function down()
@@ -43,6 +48,11 @@ class Migration_Alter_Database extends CI_Migration
 		// Drop table
 		echo "  > drop table captcha ... ";
 		$this->dbforge->drop_table('captcha');
+		echo "OK\n";
+		
+		// alter table user
+		echo "  > rename column user.password --> user.auth_key ... ";
+		$this->db->query("ALTER TABLE `user` CHANGE password auth_key VARCHAR(32)");
 		echo "OK\n";
 	}
 }
