@@ -75,10 +75,19 @@ class Auth extends Frontend_Controller
 			// Ambil data user by username
 			$user = $this->db->get_where('user', ['username' => $username], 1)->row();
 			
+			$expiration = time() - $this::CAPTCHA_TIMEOUT;
+			
+			// Hapus file captcha lama yang expired
+			$captcha_set = $this->db->where('captcha_time < ', $expiration)->get('captcha')->result();
+			foreach ($captcha_set as $captcha_row)
+				@unlink('./assets/captcha/'.$captcha_row->filename);
+			// Hapus record db
+			$this->db->where('captcha_time < ', $expiration)->delete('captcha');
+			
 			// ambil data captcha
 			$captcha_count = $this->db->query(
 				"SELECT COUNT(*) AS count FROM captcha WHERE word = ? AND ip_address = ? AND captcha_time > ?",
-				array($captcha, $this->input->ip_address(), time() - $this::CAPTCHA_TIMEOUT))->row()->count;
+				array($captcha, $this->input->ip_address(), $expiration))->row()->count;
 			
 			// Jika row ada
 			if ($user != null)
