@@ -37,6 +37,12 @@ class User extends Backend_Controller
 		$this->smarty->display();
 	}
 	
+	public function data_index()
+	{
+		$data_set = $this->user_model->list_user();
+		echo json_encode(array('data' => $data_set));
+	}
+	
 	public function update($id)
 	{		
 		$this->smarty->display();

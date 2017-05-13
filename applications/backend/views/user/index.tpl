@@ -1,17 +1,20 @@
 {extends file='site_layout.tpl'}
+{block name='head'}
+	<link rel="stylesheet" href="{base_url('../assets/css/dataTables.bootstrap.min.css')}" />
+	<style>.table>thead>tr>th, .table>tbody>tr>td { font-size: 13px }</style>
+{/block}
 {block name='content'}
 	<h2 class="page-header">Daftar User</h2>
 
 	<div class="row">
 		<div class="col-lg-12">
-			<table class="table table-bordered table-condensed table-striped">
+			<table class="table table-bordered table-condensed table-striped" id="table">
 				<thead>
 					<tr>
 						<th>Username</th>
 						<th>Password</th>
 						<th>Perguruan Tinggi</th>
 						<th>Program</th>
-						<th>Jenis User</th>
 						<th style="width: 165px"></th>
 					</tr>
 				</thead>
@@ -21,8 +24,7 @@
 							<td>{$data->username}</td>
 							<td>{$data->password}</td>
 							<td>{$data->nama_pt}</td>
-							<td>{if $data->program_id == 1}PBBT{else}KBMI{/if}</td>
-							<td>{if $data->tipe_user == 1}Pengusul{else if $data->tipe_user == 2}Reviewer{else if $data->tipe_user == 99}Admin{/if}</td>
+							<td>{$data->nama_program_singkat}</td>
 							<td>
 								<a href="{site_url("user/update/{$data->id}")}" class="btn btn-xs btn-default">Edit</a>
 								<a class="btn btn-xs btn-danger" 
@@ -88,7 +90,14 @@
 	</div>
 {/block}
 {block name='footer-script'}
+	<script src="{base_url('../assets/js/jquery.dataTables.min.js')}"></script>
+	<script src="{base_url('../assets/js/dataTables.bootstrap.min.js')}"></script>
 	<script type="text/javascript">
+		
+		$('#table').DataTable({
+			paging: false
+		});
+		
 		$('#resetDialog').on('show.bs.modal', function (event) {
 			var sourceButton = $(event.relatedTarget);
 			$('#resetSubmitButton').data('id', sourceButton.data('id'));

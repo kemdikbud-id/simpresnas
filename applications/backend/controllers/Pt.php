@@ -17,10 +17,12 @@ class Pt extends Backend_Controller
 	
 	public function index()
 	{
-		$data_set = $this->pt_model->list_all();
-		
-		$this->smarty->assign('data_set', $data_set);
-		
 		$this->smarty->display();
+	}
+	
+	public function data_pt_all()
+	{
+		$data_set = $this->pt_model->list_all();
+		echo json_encode(array('data' => $data_set));
 	}
 }

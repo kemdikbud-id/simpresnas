@@ -7,7 +7,7 @@
 	
 	<div class="row">
 		<div class="col-lg-12">
-			<table id="table" class="table table-bordered table-condensed table-striped" style="display: none">
+			<table id="table" class="table table-bordered table-condensed table-striped">
 				<thead>
 					<tr>
 						<th>Kode</th>
@@ -16,16 +16,7 @@
 						<th></th>
 					</tr>
 				</thead>
-				<tbody>
-					{foreach $data_set as $data}
-						<tr>
-							<td>{$data->npsn}</td>
-							<td>{$data->nama_pt}</td>
-							<td>{$data->email_pt}</td>
-							<td><a href="{site_url("pt/update/{$data->id}")}" class="btn btn-sm btn-default">Edit</a></td>
-						</tr>
-					{/foreach}
-				</tbody>
+				<tbody></tbody>
 			</table>
 		</div>
 	</div>
@@ -35,8 +26,21 @@
 	<script src="{base_url('../assets/js/dataTables.bootstrap.min.js')}"></script>
 	<script>
 		$(document).ready(function() {
-			$('#table').DataTable();
-			$('#table').show('slow');
+			$('#table').DataTable({
+				ajax: '{site_url('pt/data-pt-all')}',
+				columns: [
+					{ data: 'npsn' },
+					{ data: 'nama_pt' },
+					{ data: 'email_pt' },
+					{ 
+						data: 'id', orderable: false,
+						render: function(data) {
+							return '<a href="{site_url('pt/update')}/'+data+'" class="btn btn-xs btn-default">Edit</a>';
+						}
+					}
+				],
+				stateSave: true
+			});
 		});
 	</script>
 {/block}

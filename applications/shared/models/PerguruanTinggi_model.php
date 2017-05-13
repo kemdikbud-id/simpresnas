@@ -13,7 +13,7 @@ class PerguruanTinggi_model extends CI_Model
 	
 	public function list_all()
 	{
-		return $this->db->order_by('nama_pt')->get('perguruan_tinggi')->result();
+		return $this->db->get('perguruan_tinggi')->result();
 	}
 	
 	/**
