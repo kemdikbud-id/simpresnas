@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property CI_DB_forge $dbforge
  * @property CI_DB_query_builder $db
  */
-class Migration_Alter_Database extends CI_Migration
+class Migration_Alter_Database_01 extends CI_Migration
 {
 	function up()
 	{
