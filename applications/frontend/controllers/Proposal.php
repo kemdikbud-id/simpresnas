@@ -111,8 +111,6 @@ class Proposal extends Frontend_Controller
 		// Mendapatkan PK yg baru terinsert
 		$proposal_id = $this->db->insert_id();
 		
-		$syarat_set = $this->db->get_where('syarat', array('program_id' => $this->session->program_id))->result();
-		
 		// Set lokasi simpan
 		$this->upload->upload_path = './upload/file-proposal/'.$program_path.'/'.$this->session->user->username.'/'.$proposal_id.'/';
 		
@@ -125,6 +123,8 @@ class Proposal extends Frontend_Controller
 				show_error("Permission denied : ".$this->upload->upload_path);
 			}
 		}
+		
+		$syarat_set = $this->db->get_where('syarat', array('program_id' => $this->session->program_id))->result();
 		
 		// Baca tiap-tiap syarat
 		foreach ($syarat_set as $syarat)
@@ -158,12 +158,9 @@ class Proposal extends Frontend_Controller
 	
 	public function update($id)
 	{	
-		$proposal_id = (int)$id;
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') { $this->_post_update($id); }
 		
-		if ($_SERVER['REQUEST_METHOD'] == 'POST')
-		{
-			
-		}
+		$proposal_id = (int)$id;
 		
 		$kategori_set = $this->db->get_where('kategori', array('program_id' => $this->session->program_id))->result();
 		//$syarat_set = $this->db->get_where('syarat', array('program_id' => $this->session->program_id))->result();
@@ -194,6 +191,100 @@ class Proposal extends Frontend_Controller
 			$this->smarty->display('proposal/update_pbbt.tpl');
 		else if ($this->session->program_id == PROGRAM_KBMI)
 			$this->smarty->display('proposal/update_kbmi.tpl');
+	}
+	
+	private function _post_update($id)
+	{
+		$program_path = ($this->session->program_id == PROGRAM_PBBT) ? 'pbbt' : 'kbmi';
+		
+		// Inisialisasi file upload
+		$this->load->library('upload', array(
+			'allowed_types' => 'pdf',
+			'max_size' => $this::MAX_FILE_SIZE, // 5 MB,
+			'encrypt_name' => TRUE
+		));
+		
+		// Start transaksi
+		$this->db->trans_start();
+		
+		// update informasi proposal
+		$this->db->update('proposal', array(
+			'judul' => $this->input->post('judul'),
+			'kategori_id' => $this->input->post('kategori_id'),
+			'nim_ketua' => $this->input->post('nim_ketua'),
+			'nama_ketua' => $this->input->post('nama_ketua'),
+			'nim_anggota_1' => $this->input->post('nim_anggota_1'),
+			'nama_anggota_1' => $this->input->post('nama_anggota_1'),
+			'nim_anggota_2' => $this->input->post('nim_anggota_2'),
+			'nama_anggota_2' => $this->input->post('nama_anggota_2'),
+			'nim_anggota_3' => $this->input->post('nim_anggota_3'),
+			'nama_anggota_3' => $this->input->post('nama_anggota_3'),
+			'nim_anggota_4' => $this->input->post('nim_anggota_4'),
+			'nama_anggota_4' => $this->input->post('nama_anggota_4'),
+			'nim_anggota_5' => $this->input->post('nim_anggota_5'),
+			'nama_anggota_5' => $this->input->post('nama_anggota_5'),
+		), array('id' => $id));
+		
+		$proposal_id = $id;
+		
+		$this->upload->upload_path = './upload/file-proposal/'.$program_path.'/'.$this->session->user->username.'/'.$proposal_id.'/';
+		
+		// Buat folder jika belum ada
+		if ( ! file_exists($this->upload->upload_path))
+		{
+			if (mkdir($this->upload->upload_path, 0777, true) == false)
+			{
+				// jika create directory gagal, tampilkan error
+				show_error("Permission denied : ".$this->upload->upload_path);
+			}
+		}
+		
+		$syarat_set = $this->db->get_where('syarat', array('program_id' => $this->session->program_id))->result();
+		
+		// Baca tiap-tiap syarat
+		foreach ($syarat_set as $syarat)
+		{
+			if ($this->upload->do_upload('file_syarat_'.$syarat->id))
+			{
+				$data = $this->upload->data();
+				
+				$file_row_exist = $this->db->where(array(
+					'proposal_id' => $proposal_id,
+					'syarat_id' => $syarat->id
+				))->count_all_results('file_proposal') > 0;
+				
+				// if file record exist : update
+				if ($file_row_exist)
+				{
+					$this->db->update('file_proposal', array(
+						'nama_asli' => $data['orig_name'],
+						'nama_file' => $data['file_name']
+					), array('proposal_id' => $proposal_id, 'syarat_id' => $syarat->id));
+				}
+				else // update
+				{
+					$this->db->insert('file_proposal', array(
+						'proposal_id' => $proposal_id,
+						'nama_asli' => $data['orig_name'],
+						'nama_file' => $data['file_name'],
+						'syarat_id' => $syarat->id
+					));
+				}
+			}
+		}
+		
+		if ($this->db->trans_complete())
+		{
+			// set message
+			$this->session->set_flashdata('result', array(
+				'page_title' => 'Update Proposal',
+				'success_message' => 'Update proposal sudah berhasil !',
+				'link_1' => '<a href="'.site_url('proposal').'" class="alert-link">Kembali ke daftar proposal</a>',
+				'link_2' => null
+			));
+			
+			redirect(site_url('proposal/result_message'));
+		}
 	}
 	
 	public function delete($id)
