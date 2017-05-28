@@ -24,9 +24,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 
-// Automatic base url
-$config['base_url'] = 'http' . ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : '')
-	.'://'.$_SERVER['HTTP_HOST'].str_replace(array('//', '\\/'),array('/', '/'),dirname($_SERVER['SCRIPT_NAME']).'/');
+// Automatic base url for non cli
+if (php_sapi_name() !== PHP_SAPI)
+{
+	$config['base_url'] = 'http' . ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : '')
+		.'://'.$_SERVER['HTTP_HOST'].str_replace(array('//', '\\/'),array('/', '/'),dirname($_SERVER['SCRIPT_NAME']).'/');
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -237,7 +240,7 @@ $config['log_threshold'] = 1;
 | application/logs/ directory. Use a full server path with trailing slash.
 |
 */
-$config['log_path'] =  APPPATH . 'logs';
+$config['log_path'] =  APPPATH . 'logs/';
 
 /*
 |--------------------------------------------------------------------------
