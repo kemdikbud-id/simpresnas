@@ -24,12 +24,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 
-// Automatic base url for non cli
-if (php_sapi_name() !== PHP_SAPI)
-{
-	$config['base_url'] = 'http' . ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : '')
-		.'://'.$_SERVER['HTTP_HOST'].str_replace(array('//', '\\/'),array('/', '/'),dirname($_SERVER['SCRIPT_NAME']).'/');
-}
+if (ENVIRONMENT == 'production')
+	$config['base_url'] = 'http://sim-pkmi.ristekdikti.go.id/';
+else
+	$config['base_url'] = '';
 
 /*
 |--------------------------------------------------------------------------
