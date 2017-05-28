@@ -118,7 +118,13 @@ class Proposal extends Frontend_Controller
 		
 		// Buat folder jika belum ada
 		if ( ! file_exists($this->upload->upload_path))
-			mkdir($this->upload->upload_path, 0777, true);
+		{
+			if (mkdir($this->upload->upload_path, 0777, true) == false)
+			{
+				// jika create directory gagal, tampilkan error
+				show_error("Permission denied : ".$this->upload->upload_path);
+			}
+		}
 		
 		// Baca tiap-tiap syarat
 		foreach ($syarat_set as $syarat)

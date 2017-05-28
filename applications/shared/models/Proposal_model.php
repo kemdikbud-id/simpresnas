@@ -10,13 +10,14 @@ class Proposal_model extends CI_Model
 	{
 		return $this->db->query(
 			"select 
-				proposal.id, judul, nama_kategori, nim_ketua, nama_ketua,
+				proposal.id, judul, pt.nama_pt, nama_kategori, nim_ketua, nama_ketua,
 				count(syarat.id) jumlah_syarat, 
 				count(file_proposal.id) syarat_terupload,
 				sum(syarat.is_wajib) syarat_wajib, 
 				sum(if(syarat.is_wajib = 1 AND file_proposal.id IS NOT NULL, 1,0)) syarat_wajib_terupload,
 				proposal.created_at
 			from proposal
+			join perguruan_tinggi pt on pt.id = proposal.perguruan_tinggi_id
 			join program on program.id = proposal.program_id
 			join kategori on kategori.id = proposal.kategori_id
 			join syarat on syarat.program_id = program.id

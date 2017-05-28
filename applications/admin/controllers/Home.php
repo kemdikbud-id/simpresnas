@@ -3,7 +3,7 @@
 /**
  * @author Fathoni <m.fathoni@mail.com>
  */
-class Home extends Backend_Controller
+class Home extends Admin_Controller
 {
 	public function __construct()
 	{

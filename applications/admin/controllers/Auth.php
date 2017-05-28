@@ -3,7 +3,7 @@
 /**
  * @author Fathoni <m.fathoni@mail.com>
  */
-class Auth extends Backend_Controller
+class Auth extends Admin_Controller
 {	
 	public function login()
 	{

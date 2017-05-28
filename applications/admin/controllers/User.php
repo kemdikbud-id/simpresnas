@@ -8,7 +8,7 @@
  * @property Program_model $program_model
  * @property RejectMessage_model $reject_message_model
  */
-class User extends Backend_Controller
+class User extends Admin_Controller
 {
 	public function __construct()
 	{

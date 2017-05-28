@@ -4,7 +4,7 @@
  * @author Fathoni <m.fathoni@mail.com>
  * @property Kegiatan_model $kegiatan_model 
  */
-class Kegiatan extends Backend_Controller
+class Kegiatan extends Admin_Controller
 {
 	public function __construct()
 	{

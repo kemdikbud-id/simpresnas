@@ -3,7 +3,7 @@
 /**
  * @author Fathoni
  */
-class Alert extends Backend_Controller
+class Alert extends Admin_Controller
 {
 	public function error()
 	{

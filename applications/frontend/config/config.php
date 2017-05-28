@@ -23,11 +23,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-if (ENVIRONMENT == 'development')
-	$config['base_url'] = 'http://103.66.199.201/';
 
-if (ENVIRONMENT == 'production')
-	$config['base_url'] = 'http://sim-pkmi.ristekdikti.go.id/';
+// Automatic base url
+$config['base_url'] = 'http' . ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : '')
+	.'://'.$_SERVER['HTTP_HOST'].str_replace(array('//', '\\/'),array('/', '/'),dirname($_SERVER['SCRIPT_NAME']).'/');
 
 /*
 |--------------------------------------------------------------------------

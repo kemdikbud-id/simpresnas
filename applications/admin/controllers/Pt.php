@@ -4,7 +4,7 @@
  * @author Fathoni <m.fathoni@mail.com>
  * @property PerguruanTinggi_model $pt_model
  */
-class Pt extends Backend_Controller
+class Pt extends Admin_Controller
 {
 	public function __construct()
 	{

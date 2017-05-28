@@ -1,25 +1,27 @@
 {extends file='site_layout.tpl'}
+{block name='head'}
+	<link rel="stylesheet" href="{base_url('../assets/css/dataTables.bootstrap.min.css')}" />
+	<style>.table>thead>tr>th, .table>tbody>tr>td { font-size: 13px; }</style>
+{/block}
 {block name='content'}
-	<h1 class="page-header">Daftar Proposal PBBT Masuk</h1>
+	<h2 class="page-header">Daftar Proposal PBBT Masuk</h2>
 
 	<div class="row">
 		<div class="col-lg-12">
-
-			<table class="table table-bordered table-striped table-hover">
+			
+			<table class="table table-bordered table-condensed table-striped table-hover" id="table">
 				<thead>
 					<tr>
-						<th>#</th>
 						<th>Judul</th>
 						<th>Perguruan Tinggi</th>
 						<th>Kelengkapan Syarat</th>
 						<th>Waktu Upload</th>
-						<th></th>
+						<th style="width: 30px"></th>
 					</tr>
 				</thead>
 				<tbody>
 					{foreach $data_set as $data}
 						<tr>
-							<td>{$data@index + 1}</td>
 							<td>{$data->judul}</td>
 							<td>{$data->nama_pt}</td>
 							<td>
@@ -31,9 +33,9 @@
 									<span class="label label-warning">BELUM LENGKAP</span>
 								{/if}
 							</td>
-							<td></td>
+							<td>{$data->waktu}</td>
 							<td>
-								<a href="{site_url("proposal/view?id={$data->id}")}" class="btn btn-sm btn-default">Lihat</a>
+								<a href="{site_url("proposal/view?id={$data->id}")}" class="btn btn-xs btn-default">Lihat</a>
 							</td>
 						</tr>
 					{foreachelse}
@@ -46,4 +48,15 @@
 
 		</div>
 	</div>
+{/block}
+{block name='footer-script'}
+	<script src="{base_url('../assets/js/jquery.dataTables.min.js')}"></script>
+	<script src="{base_url('../assets/js/dataTables.bootstrap.min.js')}"></script>
+	<script type="text/javascript">
+		$('#table').DataTable({
+			columnDefs: [
+				{ targets: [-1], orderable: false }
+			]
+		});
+	</script>
 {/block}

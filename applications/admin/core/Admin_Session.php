@@ -6,4 +6,4 @@
  * @property User_model $user
  * @property PerguruanTinggi_model $perguruan_tinggi
  */
-class Backend_Session extends CI_Session { }
+class Admin_Session extends CI_Session { }
