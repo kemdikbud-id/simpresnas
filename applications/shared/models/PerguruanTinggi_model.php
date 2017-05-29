@@ -46,7 +46,7 @@ class PerguruanTinggi_model extends CI_Model
 		
 		return $this->db
 			->select('*')->from('perguruan_tinggi')
-			->where("trim(nama_pt) like '{$nama_pt}'", NULL, TRUE)
+			->like('nama_pt', $nama_pt)
 			->get()
 			->result();
 	}

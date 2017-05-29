@@ -17,6 +17,9 @@ class Pt extends Admin_Controller
 	
 	public function index()
 	{
+		$data_set = $this->pt_model->list_all();
+		$this->smarty->assign('data_set', $data_set);
+		
 		$this->smarty->display();
 	}
 	
