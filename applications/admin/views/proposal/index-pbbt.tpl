@@ -40,7 +40,7 @@
 						</tr>
 					{foreachelse}
 						<tr>
-							<td colspan="7">Tidak ada data ditemukan</td>
+							<td colspan="5">Tidak ada data ditemukan</td>
 						</tr>
 					{/foreach}
 				</tbody>

@@ -9,7 +9,7 @@
 
 	<div class="row">
 		<div class="col-lg-12">
-			<table class="table table-bordered table-striped table-condensed">
+			<table class="table table-bordered table-striped table-condensed" id="table">
 				<thead>
 					<tr>
 						<th>Judul</th>
@@ -20,9 +20,45 @@
 						<th></th>
 					</tr>
 				</thead>
-				<tbody></tbody>
+				<tbody>
+					{foreach $data_set as $data}
+						<tr>
+							<td>{$data->judul}</td>
+							<td>{$data->nama_kategori}</td>
+							<td>{$data->nama_pt}</td>
+							<td>
+								{if $data->jumlah_syarat == $data->syarat_terupload}
+									<span class="label label-success">LENGKAP</span>
+								{else if $data->syarat_wajib == $data->syarat_wajib_terupload}
+									<span class="label label-info">CUKUP MINIMAL</span>
+								{else}
+									<span class="label label-warning">BELUM LENGKAP</span>
+								{/if}
+							</td>
+							<td>{$data->waktu}</td>
+							<td>
+								<a href="{site_url("proposal/view?id={$data->id}")}" class="btn btn-xs btn-default">Lihat</a>
+							</td>
+						</tr>
+					{foreachelse}
+						<tr>
+							<td colspan="6">Tidak ada data ditemukan</td>
+						</tr>
+					{/foreach}
+				</tbody>
 			</table>
 
 		</div>
 	</div>
+{/block}
+{block name='footer-script'}
+	<script src="{base_url('../assets/js/jquery.dataTables.min.js')}"></script>
+	<script src="{base_url('../assets/js/dataTables.bootstrap.min.js')}"></script>
+	<script type="text/javascript">
+		$('#table').DataTable({
+			columnDefs: [
+				{ targets: [-1], orderable: false }
+			]
+		});
+	</script>
 {/block}

@@ -45,7 +45,7 @@ class Proposal extends Admin_Controller
 			// get elapsed time
 			$data->waktu = time_elapsed_string($data->created_at);
 		}
-		
+			
 		$this->smarty->assign('data_set', $data_set);
 		
 		$this->smarty->display();
