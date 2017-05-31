@@ -1,5 +1,6 @@
 {extends file='site_layout.tpl'}
 {block name='head'}
+	<link rel="stylesheet" href="{base_url('../assets/css/dataTables.bootstrap.min.css')}" />
 	<style>
 		.table>thead>tr>th, .table>tbody>tr>td { font-size: 13px; }
 	</style>
