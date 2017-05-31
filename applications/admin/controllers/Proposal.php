@@ -4,6 +4,7 @@
  * @author Fathoni
  * @property Proposal_model $proposal_model
  * @property FileProposal_model $fileproposal_model
+ * @property PerguruanTinggi_model $pt_model
  */
 class Proposal extends Admin_Controller
 {
@@ -17,6 +18,7 @@ class Proposal extends Admin_Controller
 		
 		$this->load->model('Proposal_model', 'proposal_model');
 		$this->load->model('FileProposal_model', 'fileproposal_model');
+		$this->load->model('PerguruanTinggi_model', 'pt_model');
 		
 		$this->load->helper('time_elapsed_helper');
 	}
@@ -53,11 +55,21 @@ class Proposal extends Admin_Controller
 	
 	public function view()
 	{
+		// id proposal
 		$id = (int)$this->input->get('id');
 		
 		$data = $this->proposal_model->get_single($id);
 		$data->file_proposal_set = $this->fileproposal_model->list_by_proposal($id);
 		$this->smarty->assign('data', $data);
+		
+		$pt = $this->pt_model->get_single($data->perguruan_tinggi_id);
+		
+		if ($data->program_id == PROGRAM_PBBT) { $program_path = 'pbbt'; $username = $pt->npsn . '01'; }
+		if ($data->program_id == PROGRAM_KBMI) { $program_path = 'kbmi'; $username = $pt->npsn . '02'; }
+		
+		// file location
+		$path = base_url() . '../upload/file-proposal/'.$program_path.'/'.$username.'/'.$id.'/';
+		$this->smarty->assign('file_path', $path);
 		
 		$this->smarty->display();
 	}

@@ -59,7 +59,8 @@
 		$('#table').DataTable({
 			columnDefs: [
 				{ targets: [-1], orderable: false }
-			]
+			],
+			stateSave: true
 		});
 	</script>
 {/block}

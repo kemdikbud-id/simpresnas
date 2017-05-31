@@ -66,9 +66,12 @@ class Proposal_model extends CI_Model
 		}
 		else
 		{
-			return $this->db->get_where('proposal', array(
-				'id' => $id
-			), 1)->row();
+			$sql = 
+				"select p.*, k.nama_kategori from proposal p
+				join kategori k on k.id = p.kategori_id
+				where p.id = ?";
+			
+			return $this->db->query($sql, array($id))->row();
 		}
 	}
 	

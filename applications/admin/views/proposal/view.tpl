@@ -14,10 +14,48 @@
 						<p class="form-control-static">{$data->judul}</p>
 					</div>
 				</div>
+				{if $data->program_id == 2}
+					<div class="form-group">
+						<label class="col-md-2 control-label">Kategori</label>
+						<div class="col-md-10">
+							<p class="form-control-static">{$data->nama_kategori}</p>
+						</div>
+					</div>
+				{/if}
 				<div class="form-group">
 					<label class="col-md-2 control-label">Ketua</label>
 					<div class="col-md-10">
 						<p class="form-control-static">{$data->nim_ketua} - {$data->nama_ketua}</p>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-2 control-label">Anggota 1</label>
+					<div class="col-md-10">
+						<p class="form-control-static">{$data->nim_anggota_1} - {$data->nama_anggota_1}</p>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-2 control-label">Anggota 2</label>
+					<div class="col-md-10">
+						<p class="form-control-static">{$data->nim_anggota_2} - {$data->nama_anggota_2}</p>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-2 control-label">Anggota 3</label>
+					<div class="col-md-10">
+						<p class="form-control-static">{$data->nim_anggota_3} - {$data->nama_anggota_3}</p>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-2 control-label">Anggota 4</label>
+					<div class="col-md-10">
+						<p class="form-control-static">{$data->nim_anggota_4} - {$data->nama_anggota_4}</p>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-2 control-label">Anggota 5</label>
+					<div class="col-md-10">
+						<p class="form-control-static">{$data->nim_anggota_5} - {$data->nama_anggota_5}</p>
 					</div>
 				</div>
 				<h4>File Proposal</h4>
@@ -25,7 +63,7 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label">File</label>
 						<div class="col-md-10">
-							<p class="form-control-static">{$file_proposal->nama_asli}</p>
+							<p class="form-control-static"><a href="{$file_path}{$file_proposal->nama_file}" target="_blank">{$file_proposal->nama_asli}</a></p>
 						</div>
 					</div>
 				{/foreach}
