@@ -57,9 +57,7 @@
 	<script src="{base_url('../assets/js/dataTables.bootstrap.min.js')}"></script>
 	<script type="text/javascript">
 		$('#table').DataTable({
-			columnDefs: [
-				{ targets: [-1], orderable: false }
-			],
+			ordering: false,
 			stateSave: true
 		});
 	</script>
