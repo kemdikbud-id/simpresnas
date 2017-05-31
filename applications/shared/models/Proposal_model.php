@@ -25,7 +25,7 @@ class Proposal_model extends CI_Model
 			where
 				proposal.program_id = 1
 			group by proposal.id, judul, nama_kategori, nim_ketua, nama_ketua, proposal.created_at
-			order by proposal.created_at desc")->result();
+			order by proposal.created_at asc")->result();
 	}
 	
 	public function list_kbmi_all()
@@ -47,7 +47,7 @@ class Proposal_model extends CI_Model
 			where
 				proposal.program_id = 2
 			group by proposal.id, judul, nama_kategori, nim_ketua, nama_ketua, proposal.created_at
-			order by proposal.created_at desc")->result();
+			order by proposal.created_at asc")->result();
 	}
 	
 	/**
