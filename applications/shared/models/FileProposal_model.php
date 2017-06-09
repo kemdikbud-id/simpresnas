@@ -25,6 +25,11 @@ class FileProposal_model extends CI_Model
 		))->result();
 	}
 	
+	public function get_single($id)
+	{
+		return $this->db->get_where('file_proposal', ['id' => $id], 1)->row();
+	}
+	
 	public function insert()
 	{
 		

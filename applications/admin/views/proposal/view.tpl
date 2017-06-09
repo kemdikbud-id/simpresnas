@@ -63,7 +63,7 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label">File</label>
 						<div class="col-md-10">
-							<p class="form-control-static"><a href="{$file_path}{$file_proposal->nama_file}" target="_blank">{$file_proposal->nama_asli}</a></p>
+							<p class="form-control-static"><a href="{$ci->config->item('global_base_url')}/index.php/download/?id={$file_proposal->id}" target="_blank">{$file_proposal->nama_asli}</a></p>
 						</div>
 					</div>
 				{/foreach}
