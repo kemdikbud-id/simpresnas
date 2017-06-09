@@ -5,6 +5,7 @@
  * @property Proposal_model $proposal_model
  * @property FileProposal_model $fileproposal_model
  * @property PerguruanTinggi_model $pt_model
+ * @property Kegiatan_model $kegiatan_model
  */
 class Proposal extends Admin_Controller
 {
@@ -16,16 +17,18 @@ class Proposal extends Admin_Controller
 		
 		$this->check_credentials();
 		
-		$this->load->model('Proposal_model', 'proposal_model');
-		$this->load->model('FileProposal_model', 'fileproposal_model');
-		$this->load->model('PerguruanTinggi_model', 'pt_model');
+		$this->load->model(MODEL_PROPOSAL, 'proposal_model');
+		$this->load->model(MODEL_FILE_PROPOSAL, 'fileproposal_model');
+		$this->load->model(MODEL_PERGURUAN_TINGGI, 'pt_model');
+		$this->load->model(MODEL_KEGIATAN, 'kegiatan_model');
 		
 		$this->load->helper('time_elapsed_helper');
 	}
 	
 	public function index_pbbt()
 	{
-		$data_set = $this->proposal_model->list_pbbt_all();
+		// PBBT 2017 --> 1
+		$data_set = $this->proposal_model->list_all_per_kegiatan(1);
 		
 		foreach ($data_set as &$data)
 		{
@@ -40,7 +43,8 @@ class Proposal extends Admin_Controller
 	
 	public function index_kbmi()
 	{
-		$data_set = $this->proposal_model->list_kbmi_all();
+		// KBMI 2017 --> 2
+		$data_set = $this->proposal_model->list_all_per_kegiatan(2);
 		
 		foreach ($data_set as &$data)
 		{
@@ -59,13 +63,14 @@ class Proposal extends Admin_Controller
 		$id = (int)$this->input->get('id');
 		
 		$data = $this->proposal_model->get_single($id);
+		$data->kegiatan = $this->kegiatan_model->get_single($data->kegiatan_id);
 		$data->file_proposal_set = $this->fileproposal_model->list_by_proposal($id);
 		$this->smarty->assign('data', $data);
 		
 		$pt = $this->pt_model->get_single($data->perguruan_tinggi_id);
 		
-		if ($data->program_id == PROGRAM_PBBT) { $program_path = 'pbbt'; $username = $pt->npsn . '01'; }
-		if ($data->program_id == PROGRAM_KBMI) { $program_path = 'kbmi'; $username = $pt->npsn . '02'; }
+		if ($data->kegiatan->program_id == PROGRAM_PBBT) { $program_path = 'pbbt'; $username = $pt->npsn . '01'; }
+		if ($data->kegiatan->program_id == PROGRAM_KBMI) { $program_path = 'kbmi'; $username = $pt->npsn . '02'; }
 		
 		// file location
 		$path = base_url() . '../upload/file-proposal/'.$program_path.'/'.$username.'/'.$id.'/';

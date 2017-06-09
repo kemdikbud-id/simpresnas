@@ -12,6 +12,8 @@ define('MODEL_PROPOSAL', 'Proposal_model');
 define('MODEL_REQUEST_USER', 'RequestUser_model');
 define('MODEL_USER', 'User_model');
 define('MODEL_REJECT_MESSAGE', 'RejectMessage_model');
+define('MODEL_REVIEWER', 'Reviewer_model');
+define('MODEL_TAHAPAN', 'Tahapan_model');
 
 // Jenis Program
 defined('PROGRAM_PBBT')	or define('PROGRAM_PBBT', 1);

@@ -4,6 +4,8 @@
  * @author Fathoni <m.fathoni@mail.com>
  * @property Reviewer_model $reviewer_model
  * @property User_model $user_model
+ * @property Kegiatan_model $kegiatan_model
+ * @property Tahapan_model $tahapan_model
  */
 class User_Reviewer extends Admin_Controller
 {
@@ -13,8 +15,10 @@ class User_Reviewer extends Admin_Controller
 		
 		$this->check_credentials();
 		
-		$this->load->model('Reviewer_model', 'reviewer_model');
+		$this->load->model(MODEL_REVIEWER, 'reviewer_model');
 		$this->load->model(MODEL_USER, 'user_model');
+		$this->load->model(MODEL_KEGIATAN, 'kegiatan_model');
+		$this->load->model(MODEL_TAHAPAN, 'tahapan_model');
 	}
 	
 	public function index()
@@ -69,17 +73,6 @@ class User_Reviewer extends Admin_Controller
 	
 	public function plotting()
 	{
-		$kegiatan_set = $this->db
-			->select('k.id, concat(p.nama_program, \' Tahun \', k.tahun) nama_program')
-			->from('kegiatan k')->join('program p', 'p.id = k.program_id')
-			->where('k.is_aktif', 1)->get()->result_array();
-		$kegiatan_option_set = array_column($kegiatan_set, 'nama_program', 'id');
-		$this->smarty->assign('kegiatan_option_set', $kegiatan_option_set);
-		
-		$tahapan_set = $this->db->get('tahapan')->result_array();
-		$tahapan_option_set = array_column($tahapan_set, 'tahapan', 'id');
-		$this->smarty->assign('tahapan_option_set', $tahapan_option_set);
-		
 		$kegiatan_id = $this->input->get('kegiatan_id');
 		$tahapan_id = $this->input->get('tahapan_id');
 		
@@ -99,6 +92,9 @@ class User_Reviewer extends Admin_Controller
 			
 			$this->smarty->assign('data_set', $data_set);
 		}
+		
+		$this->smarty->assign('kegiatan_option_set', $this->kegiatan_model->list_aktif_for_option());
+		$this->smarty->assign('tahapan_option_set', $this->tahapan_model->list_all_for_option());
 		
 		$this->smarty->display();
 	}

@@ -21,4 +21,9 @@ class Reviewer_model extends CI_Model
 	{
 		return $this->db->get_where('reviewer', ['id' => $id], 1)->row();
 	}
+	
+	public function get_plot_single($plot_reviewer_id)
+	{
+		return $this->db->get_where('plot_reviewer', ['id' => $plot_reviewer_id])->row();
+	}
 }

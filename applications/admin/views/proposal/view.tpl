@@ -14,7 +14,7 @@
 						<p class="form-control-static">{$data->judul}</p>
 					</div>
 				</div>
-				{if $data->program_id == 2}
+				{if $data->kegiatan->program_id == 2}
 					<div class="form-group">
 						<label class="col-md-2 control-label">Kategori</label>
 						<div class="col-md-10">
@@ -70,9 +70,9 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label"></label>
 					<div class="col-md-10">
-						{if $data->program_id == 1}
+						{if $data->kegiatan->program_id == 1}
 							<a href="{site_url('proposal/index-pbbt')}" class="btn btn-default">Kembali</a>
-						{else if $data->program_id == 2}
+						{else if $data->kegiatan->program_id == 2}
 							<a href="{site_url('proposal/index-kbmi')}" class="btn btn-default">Kembali</a>
 						{/if}
 					</div>

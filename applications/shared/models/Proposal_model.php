@@ -6,48 +6,21 @@
  */
 class Proposal_model extends CI_Model
 {
-	public function list_pbbt_all()
+	public function list_all_per_kegiatan($kegiatan_id)
 	{
-		return $this->db->query(
-			"select 
-				proposal.id, judul, pt.nama_pt, nama_kategori, nim_ketua, nama_ketua,
-				count(syarat.id) jumlah_syarat, 
-				count(file_proposal.id) syarat_terupload,
-				sum(syarat.is_wajib) syarat_wajib, 
-				sum(if(syarat.is_wajib = 1 AND file_proposal.id IS NOT NULL, 1,0)) syarat_wajib_terupload,
-				proposal.created_at
-			from proposal
-			join perguruan_tinggi pt on pt.id = proposal.perguruan_tinggi_id
-			join program on program.id = proposal.program_id
-			join kategori on kategori.id = proposal.kategori_id
-			join syarat on syarat.program_id = program.id
-			left join file_proposal on file_proposal.proposal_id = proposal.id and file_proposal.syarat_id = syarat.id
-			where
-				proposal.program_id = 1
-			group by proposal.id, judul, nama_kategori, nim_ketua, nama_ketua, proposal.created_at
-			order by proposal.created_at asc")->result();
-	}
-	
-	public function list_kbmi_all()
-	{
-		return $this->db->query(
-			"select 
-				proposal.id, judul, pt.nama_pt, nama_kategori, nim_ketua, nama_ketua,
-				count(syarat.id) jumlah_syarat, 
-				count(file_proposal.id) syarat_terupload,
-				sum(syarat.is_wajib) syarat_wajib, 
-				sum(if(syarat.is_wajib = 1 AND file_proposal.id IS NOT NULL, 1,0)) syarat_wajib_terupload,
-				proposal.created_at
-			from proposal
-			join perguruan_tinggi pt on pt.id = proposal.perguruan_tinggi_id
-			join program on program.id = proposal.program_id
-			join kategori on kategori.id = proposal.kategori_id
-			join syarat on syarat.program_id = program.id
-			left join file_proposal on file_proposal.proposal_id = proposal.id and file_proposal.syarat_id = syarat.id
-			where
-				proposal.program_id = 2
-			group by proposal.id, judul, nama_kategori, nim_ketua, nama_ketua, proposal.created_at
-			order by proposal.created_at asc")->result();
+		return $this->db
+			->select("p.id, p.judul, pt.nama_pt, ktg.nama_kategori, p.nim_ketua, p.nama_ketua, p.created_at")
+			->select('count(s.id) as jumlah_syarat, sum(s.is_wajib) as syarat_wajib', FALSE)
+			->select('count(fp.id) as syarat_terupload, sum(if(s.is_wajib = 1 AND fp.id IS NOT NULL, 1,0)) as syarat_wajib_terupload', FALSE)
+			->from('proposal p')
+			->join('kegiatan k', 'k.id = p.kegiatan_id')
+			->join('perguruan_tinggi pt', 'pt.id = p.perguruan_tinggi_id')
+			->join('kategori ktg', 'ktg.id = p.kategori_id')
+			->join('syarat s', 's.kegiatan_id = k.id', 'LEFT')
+			->join('file_proposal fp', 'fp.proposal_id = p.id AND fp.syarat_id = s.id', 'LEFT')
+			->where(['p.kegiatan_id' => $kegiatan_id])
+			->group_by("p.id, p.judul, pt.nama_pt, ktg.nama_kategori, p.nim_ketua, p.nama_ketua, p.created_at")
+			->get()->result();
 	}
 	
 	/**
@@ -101,5 +74,19 @@ class Proposal_model extends CI_Model
 				'perguruan_tinggi_id' => $perguruan_tinggi_id
 			))
 			->count_all_results();
+	}
+	
+	public function list_proposal_per_reviewer($kegiatan_id, $tahapan_id, $reviewer_id)
+	{
+		$sql = 
+			"select pr.id, p.judul, pt.nama_pt, pr.nilai_reviewer
+			from plot_reviewer pr
+			join tahapan_proposal tp on tp.id = pr.tahapan_proposal_id
+			join proposal p on p.id = tp.proposal_id
+			join perguruan_tinggi pt on pt.id = p.perguruan_tinggi_id
+			where tp.kegiatan_id = ? and tp.tahapan_id = ? and pr.reviewer_id = ?";
+		return $this->db->query($sql, array(
+			$kegiatan_id, $tahapan_id, $reviewer_id
+		))->result();
 	}
 }
