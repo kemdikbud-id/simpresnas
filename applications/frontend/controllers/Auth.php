@@ -95,7 +95,7 @@ class Auth extends Frontend_Controller
 				// Bandingkan password
 				if ($user->password_hash == sha1($password))
 				{
-					// cek captcha
+					// jika captcha OK
 					if ($captcha_count > 0)
 					{
 						// Ambil data perguruan tinggi
@@ -111,9 +111,14 @@ class Auth extends Frontend_Controller
 
 						// redirect
 						if ($user->tipe_user == TIPE_USER_NORMAL)
-							redirect(site_url('home'));
+							redirect(site_url('home'));  // Home Controller dari applikasi Frontend
 						else if ($user->tipe_user == TIPE_USER_REVIEWER)
-							redirect(site_url('reviewer'));
+							redirect(base_url() . 'reviewer');
+						else if ($user->tipe_user == TIPE_USER_ADMIN)
+							redirect(base_url() . 'admin');
+						
+						// end output after redirect
+						exit();
 					}
 					else
 					{	

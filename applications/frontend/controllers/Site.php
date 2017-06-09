@@ -9,6 +9,14 @@ class Site extends Frontend_Controller
 {
 	public function index()
 	{
+		if ($this->session->userdata('user') !== NULL)
+		{
+			if ($this->session->userdata('user')->tipe_user == TIPE_USER_ADMIN)
+				redirect(GLOBAL_BASE_URL . '/admin/');
+			else
+				redirect('home');
+		}
+		
 		$tahun = date('Y');
 		
 		$kegiatan_pbbt = $this->db->get_where('kegiatan', array(

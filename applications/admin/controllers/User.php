@@ -31,7 +31,7 @@ class User extends Admin_Controller
 	public function index()
 	{
 		$data_set = $this->user_model->list_user();
-		
+			
 		$this->smarty->assign('data_set', $data_set);
 		
 		$this->smarty->display();

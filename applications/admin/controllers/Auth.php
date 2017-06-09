@@ -5,7 +5,7 @@
  */
 class Auth extends Admin_Controller
 {	
-	public function login()
+	public function login_disabled()
 	{
 		// jika sudah ada login, redirect ke home
 		if ($this->session->userdata('user') != NULL)

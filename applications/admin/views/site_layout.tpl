@@ -52,8 +52,9 @@
 									<li><a href="{site_url('user')}">User</a></li>
 									<li><a href="{site_url('pt')}">Perguruan Tinggi</a></li>
 									<li role="separator" class="divider"></li>
-									<li><a href="{site_url('user/reviewer')}">User Reviewer</a></li>
-									<li><a href="{site_url('user/plot-reviewer')}">Plot Reviewer</a></li>
+									<li><a href="{site_url('user-reviewer')}">Reviewer</a></li>
+									<li><a href="{site_url('user-reviewer/plotting')}">Plotting Reviewer</a></li>
+									<li><a href="{site_url('user-reviewer/rekap')}">Rekap Reviewer</a></li>
 								</ul>
 							</li>
 							<li>

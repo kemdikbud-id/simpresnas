@@ -6,6 +6,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author Fathoni <m.fathoni@mail.com>
  * @property Proposal_model $proposal_model
  * @property FileProposal_model $fileproposal_model
+ * @property Kegiatan_model $kegiatan_model
+ * @property Program_model $program_model
  */
 class Proposal extends Frontend_Controller
 {
@@ -17,8 +19,10 @@ class Proposal extends Frontend_Controller
 		
 		$this->check_credentials();
 		
-		$this->load->model('Proposal_model', 'proposal_model');
-		$this->load->model('FileProposal_model', 'fileproposal_model');
+		$this->load->model(MODEL_PROPOSAL, 'proposal_model');
+		$this->load->model(MODEL_FILE_PROPOSAL, 'fileproposal_model');
+		$this->load->model(MODEL_KEGIATAN, 'kegiatan_model');
+		$this->load->model(MODEL_PROGRAM, 'program_model');
 	}
 	
 	public function index()
@@ -61,6 +65,31 @@ class Proposal extends Frontend_Controller
 	public function create()
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') { $this->_post_create(); }
+		
+		// Cek maksimal upload per proposal
+		$kegiatan = $this->kegiatan_model->get_aktif($this->session->program_id);
+		
+		if ($kegiatan != null)
+		{
+			$program = $this->program_model->get_single($kegiatan->program_id);
+			$jumlah_proposal = $this->proposal_model->get_jumlah_per_pt($kegiatan->id, $this->session->perguruan_tinggi->id);
+			
+			if ($kegiatan->proposal_per_pt <= $jumlah_proposal)
+			{
+				$this->smarty->assign('kegiatan', $kegiatan);
+				$this->smarty->assign('nama_program', $program->nama_program);
+				$this->smarty->assign('tahun', $kegiatan->tahun);
+				$this->smarty->display('proposal/create_unable.tpl'); 
+				exit();
+			}
+		}
+		else
+		{
+			// tidak ada kegiatan yg aktif pada program terpilih
+			$this->smarty->assign('kegiatan', $kegiatan);
+			$this->smarty->display('proposal/create_unable.tpl'); 
+			exit();
+		}
 		
 		$kategori_set = $this->db->get_where('kategori', array('program_id' => $this->session->program_id))->result();
 		$syarat_set = $this->db->get_where('syarat', array('program_id' => $this->session->program_id))->result();

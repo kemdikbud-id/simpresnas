@@ -36,7 +36,7 @@
 					</table>
 
 					<p>
-						<a class="btn btn-primary" href="{site_url('auth/login')}">Login PBBT</a>
+						<a class="btn btn-primary" href="{site_url('auth/login')}">Login</a>
 						{*<a class="btn btn-warning" href="{site_url('auth/login/pbbt-reviewer')}">Login Reviewer</a>*}
 					</p>
 				</div>
@@ -67,7 +67,7 @@
 					</table>
 
 					<p>
-						<a class="btn btn-primary" href="{site_url('auth/login')}">Login KBMI</a>
+						<a class="btn btn-primary" href="{site_url('auth/login')}">Login</a>
 						{*<a class="btn btn-warning" href="{site_url('auth/login/kbmi-reviewer')}">Login Reviewer</a>*}
 					</p>
 				</div>

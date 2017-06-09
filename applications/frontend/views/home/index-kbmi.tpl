@@ -1,6 +1,6 @@
 {extends file='site_layout.tpl'}
 {block name='content'}
-	<h1 class="page-header">Program Kompetisi Bisnis Mahasiswa Indonesia (KBMI)</h1>
+	<h2 class="page-header">Program Kompetisi Bisnis Mahasiswa Indonesia (KBMI)</h2>
     <div class="row">
 		<div class="col-lg-12">
 			<div class="panel panel-default">
@@ -17,7 +17,7 @@
 				</div>
 			</div>
 			<p>
-				<a href="{site_url('proposal')}" class="btn btn-lg btn-primary">Usulan Proposal</a>
+				<a href="{site_url('proposal')}" class="btn btn-primary">Usulan Proposal</a>
 			</p>
 		</div>
 	</div>

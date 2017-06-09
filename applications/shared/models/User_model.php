@@ -29,6 +29,11 @@ class User_model extends CI_Model
 		return $this->db->get_where('user', ['id' => $id], 1)->row();
 	}
 	
+	public function get_single_by_reviewer($reviewer_id)
+	{
+		return $this->db->get_where('user', ['reviewer_id' => $reviewer_id], 1)->row();
+	}
+	
 	public function is_exist($username, $program_id, $tipe_user)
 	{
 		return $this->db

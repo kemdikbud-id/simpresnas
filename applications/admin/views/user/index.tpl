@@ -8,7 +8,7 @@
 
 	<div class="row">
 		<div class="col-lg-12">
-			<table class="table table-bordered table-condensed table-striped" id="table">
+			<table class="table table-bordered table-condensed table-striped" id="table" style="display:none;">
 				<thead>
 					<tr>
 						<th>Username</th>
@@ -94,9 +94,8 @@
 	<script src="{base_url('../assets/js/dataTables.bootstrap.min.js')}"></script>
 	<script type="text/javascript">
 		
-		$('#table').DataTable({
-			paging: false
-		});
+		$('#table').DataTable();
+		$('#table').show();
 		
 		$('#resetDialog').on('show.bs.modal', function (event) {
 			var sourceButton = $(event.relatedTarget);

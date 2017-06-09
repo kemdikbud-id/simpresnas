@@ -12,15 +12,18 @@ class Smarty_wrapper extends Smarty
 		
 		$CI =& get_instance();
 		
-		// Config Initialize
-		$this->setTemplateDir(APPPATH.'views');
-		$this->setCompileDir(APPPATH.'views_compiled');
-		$this->assignByRef('ci', $CI);
+		$views_folder			= 'views';
+		$views_compiled_folder	= 'views_compiled';
 		
+		// Config Initialize
+		$this->setTemplateDir(APPPATH.$views_folder);
+		$this->setCompileDir(APPPATH.$views_compiled_folder);
+		$this->assignByRef('ci', $CI);
+				
 		// create folder if not exist
-		if ( ! file_exists(APPPATH.'views_compiled'))
+		if ( ! file_exists(APPPATH.$views_compiled_folder))
 		{
-			mkdir(APPPATH.'views_compiled', 0777);
+			mkdir(APPPATH.$views_compiled_folder, 0777);
 		}
 	}
 	

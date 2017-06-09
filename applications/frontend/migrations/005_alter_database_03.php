@@ -11,7 +11,7 @@ class Migration_Alter_Database_03 extends CI_Migration
 	function up()
 	{
 		// add column
-		echo "  > add column nama_program_singkat to program ... ";
+		echo "  > add column program.nama_program_singkat ... ";
 		$this->dbforge->add_column('program', array(
 			'COLUMN nama_program_singkat VARCHAR(10) NULL'
 		));
@@ -27,6 +27,8 @@ class Migration_Alter_Database_03 extends CI_Migration
 	function down()
 	{
 		// drop column
-		echo "  > skip drop column nama_program_singkat ... OK\n";
+		echo "  > drop column program.nama_program_singkat ... ";
+		$this->dbforge->drop_column('program', 'nama_program_singkat');
+		echo "OK\n";
 	}
 }

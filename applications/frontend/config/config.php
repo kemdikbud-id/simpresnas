@@ -23,11 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-
-if (ENVIRONMENT == 'production')
-	$config['base_url'] = 'http://sim-pkmi.ristekdikti.go.id/';
-else
-	$config['base_url'] = 'http://103.66.199.201/sim-pkmi/';
+$config['base_url'] = GLOBAL_BASE_URL . '/';
 
 /*
 |--------------------------------------------------------------------------
@@ -382,9 +378,9 @@ $config['encryption_key'] = '';
 |
 */
 $config['sess_driver'] = 'files';
-$config['sess_cookie_name'] = 'simpkmi_fe';
+$config['sess_cookie_name'] = 'simpkmi';
 $config['sess_expiration'] = 3600;
-$config['sess_save_path'] = APPPATH . 'sessions';
+$config['sess_save_path'] = APPPATH . '../sessions';
 $config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;

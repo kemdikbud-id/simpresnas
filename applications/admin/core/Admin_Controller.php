@@ -18,13 +18,15 @@ class Admin_Controller extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
+		
+		$this->check_credentials();
 	}
 	
 	public function check_credentials()
 	{
 		if ($this->session->userdata('user') == NULL)
 		{
-			redirect($this->config->item('base_url'));
+			redirect($this->config->item('global_base_url'));
 		}
 	}
 }

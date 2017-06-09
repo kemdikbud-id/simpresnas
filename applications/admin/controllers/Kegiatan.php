@@ -59,8 +59,10 @@ class Kegiatan extends Admin_Controller
 		}
 		
 		$data = $this->kegiatan_model->get_single((int)$id);
-		
 		$this->smarty->assign('data', $data);
+		
+		$aktif_set = array(0 => 'NONAKTIF', 1 => 'AKTIF');
+		$this->smarty->assign('aktif_set', $aktif_set);
 		
 		$this->smarty->display();
 	}

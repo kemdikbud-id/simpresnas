@@ -1,6 +1,6 @@
 {extends file='site_layout.tpl'}
 {block name='content'}
-	<h1 class="page-header">Daftar Proposal</h1>
+	<h2 class="page-header">Daftar Proposal {if $ci->session->program_id == 1}PBBT{else}KBMI{/if}</h2>
 	<div class="row">
 		<div class="col-lg-12">
 

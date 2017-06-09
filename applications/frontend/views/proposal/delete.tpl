@@ -1,6 +1,6 @@
 {extends file='site_layout.tpl'}
 {block name='content'}
-	<h1 class="page-header">Hapus Proposal</h1>
+	<h2 class="page-header">Hapus Proposal</h2>
 	<div class="row">
 		<div class="col-lg-6 col-md-12">
 

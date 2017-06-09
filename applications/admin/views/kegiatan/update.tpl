@@ -71,7 +71,17 @@
 							<input type="text" name="pengumuman_HMS" value="{$data->tgl_pengumuman|date_format:"%H:%M:%S"}" placeholder="00:00:00" class="form-control input-md" style="display: inline-block; width: 85px" />
 						</div>
 					</div>
-
+						
+					<!-- Select Box -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="is_aktif">Status Kegiatan</label>
+						<div class="col-md-3">
+							<select name="is_aktif" class="form-control input-md">
+							{html_options options=$aktif_set selected=$data->is_aktif}
+							</select>
+						</div>
+					</div>
+					
 					<!-- Button -->
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="singlebutton"></label>

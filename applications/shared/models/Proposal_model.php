@@ -85,4 +85,21 @@ class Proposal_model extends CI_Model
 			), 1);
 		}
 	}
+	
+	/**
+	 * Jumlah proposal per kegiatan per perguruan tinggi
+	 * @param int $kegiatan_id
+	 * @param int $perguruan_tinggi_id
+	 * @return int 
+	 */
+	public function get_jumlah_per_pt($kegiatan_id, $perguruan_tinggi_id)
+	{
+		return $this->db->from('proposal p')
+			->join('kegiatan k', 'k.id = p.kegiatan_id')
+			->where(array(
+				'kegiatan_id' => $kegiatan_id,
+				'perguruan_tinggi_id' => $perguruan_tinggi_id
+			))
+			->count_all_results();
+	}
 }

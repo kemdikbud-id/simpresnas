@@ -24,10 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 
-if (ENVIRONMENT == 'production')
-	$config['base_url'] = 'http://sim-pkmi.ristekdikti.go.id/admin/';
-else
-	$config['base_url'] = 'http://103.66.199.201/sim-pkmi/admin/';
+$config['base_url'] = GLOBAL_BASE_URL . '/admin/';
 
 /*
 |--------------------------------------------------------------------------
@@ -382,9 +379,9 @@ $config['encryption_key'] = '';
 |
 */
 $config['sess_driver'] = 'files';
-$config['sess_cookie_name'] = 'simpkmi-be';
+$config['sess_cookie_name'] = 'simpkmi';
 $config['sess_expiration'] = 7200;
-$config['sess_save_path'] = APPPATH . 'sessions';
+$config['sess_save_path'] = APPPATH . '../sessions';
 $config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;
