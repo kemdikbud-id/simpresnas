@@ -37,8 +37,8 @@ applications/shared/config/database.php
 applications/shared/config/email.php
 applications/*/logs/*
 !applications/*/logs/index.html
-applications/*/sessions/*
-!applications/*/sessions/index.html
+applications/sessions/*
+!applications/sessions/index.html
 applications/*/views_compiled/*
 !applications/*/views_compiled/index.html
 assets/js/jquery-validation-*/
