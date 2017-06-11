@@ -1,10 +1,13 @@
 {extends file='site_layout.tpl'}
+{block name='head'}
+	<style>.table { font-size: 14px; }</style>
+{/block}
 {block name='content'}
 	<h2 class="page-header">Daftar Proposal {if $ci->session->program_id == 1}PBBT{else}KBMI{/if}</h2>
 	<div class="row">
 		<div class="col-lg-12">
 
-			<table class="table table-bordered table-striped table-hover">
+			<table class="table table-bordered table-striped table-hover table-condensed">
 				<thead>
 					<tr>
 						<th>#</th>
@@ -31,11 +34,17 @@
 								{/if}
 							</td>
 							<td>
-								<a href="{site_url("proposal/update/{$data->id}")}" class="btn btn-sm btn-default">Edit</a>
-								<a href="{site_url("proposal/delete/{$data->id}")}" class="btn btn-sm btn-danger">Hapus</a>
+								{if $data->tp_id == ''}
+									<a href="{site_url("proposal/update/{$data->id}")}" class="btn btn-sm btn-default">Edit</a>
+									<a href="{site_url("proposal/delete/{$data->id}")}" class="btn btn-sm btn-danger">Hapus</a>
+								{/if}
 							</td>
 							<td>
-								<a href="{site_url("proposal/submit/{$data->id}")}" class="btn btn-sm btn-success">Submit</a>
+								{if $data->tp_id == ''}
+									<a href="{site_url("proposal/submit/{$data->id}")}" class="btn btn-sm btn-success">Submit</a>
+								{else}
+									<span class="label label-info">Evaluasi Proposal</span>
+								{/if}
 							</td>
 						</tr>
 					{foreachelse}

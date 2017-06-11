@@ -27,33 +27,38 @@ class Proposal extends Frontend_Controller
 	
 	public function index()
 	{
+		/*
 		$data_set = $this->db
 			->select('proposal.*, kategori.nama_kategori')
 			->from('proposal')
 			->join('kategori', 'kategori.id = proposal.kategori_id')
 			->where(array(
-				'proposal.program_id' => $this->session->program_id,
+				'proposal.kegiatan_id' => $this->session->kegiatan->program_id,
 				'proposal.perguruan_tinggi_id' => $this->session->perguruan_tinggi->id
 			))->get()->result();
+		*/
 		
 		$data_set = $this->db->query(
 			"select 
-				proposal.id, judul, nama_kategori, nim_ketua, nama_ketua,
+				proposal.id, judul, nama_kategori, nim_ketua, nama_ketua, tp.id as tp_id,
 				count(syarat.id) jumlah_syarat, 
 				count(file_proposal.id) syarat_terupload,
 				sum(syarat.is_wajib) syarat_wajib, 
 				sum(if(syarat.is_wajib = 1 AND file_proposal.id IS NOT NULL, 1,0)) syarat_wajib_terupload
 			from proposal
-			join program on program.id = proposal.program_id
+			join kegiatan on kegiatan.id = proposal.kegiatan_id
+			join program on program.id = kegiatan.program_id
 			join kategori on kategori.id = proposal.kategori_id
-			join syarat on syarat.program_id = program.id
+			join syarat on syarat.kegiatan_id = kegiatan.id
 			left join file_proposal on file_proposal.proposal_id = proposal.id and file_proposal.syarat_id = syarat.id
+			left join tahapan_proposal tp on tp.kegiatan_id = kegiatan.id AND tp.proposal_id = proposal.id
 			where
-				proposal.program_id = ? and
-				proposal.perguruan_tinggi_id = ?
-			group by proposal.id, judul, nama_kategori, nim_ketua, nama_ketua
+				proposal.kegiatan_id = ? and
+				proposal.perguruan_tinggi_id = ? and
+				tp.tahapan_id = 1  /* Submit --> Tahapan Evaluasi Proposal */
+			group by proposal.id, judul, nama_kategori, nim_ketua, nama_ketua, tp.id
 			order by proposal.id", array(
-				$this->session->program_id,
+				$this->session->kegiatan->id,
 				$this->session->perguruan_tinggi->id
 			))->result();
 		
@@ -198,7 +203,7 @@ class Proposal extends Frontend_Controller
 			->from('syarat')
 			->join('file_proposal file', 'file.syarat_id = syarat.id AND file.proposal_id = '.$proposal_id, 'LEFT')
 			->where(array(
-				'syarat.program_id' => $this->session->program_id
+				'syarat.kegiatan_id' => $this->session->kegiatan->id
 			))->get()->result();
 		
 		// get proposal row

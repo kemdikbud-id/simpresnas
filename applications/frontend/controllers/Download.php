@@ -17,6 +17,12 @@ class Download extends Frontend_Controller
 		
 		// file proposal id
 		$id = $this->input->get('id');
+		$mode = $this->input->get('mode');
+		
+		if ($mode == 'download')
+			$disposition = 'attachment';
+		else
+			$disposition = 'inline';
 		
 		$file_proposal = $this->fileproposal_model->get_single($id);
 		$proposal = $this->proposal_model->get_single($file_proposal->proposal_id);
@@ -31,13 +37,17 @@ class Download extends Frontend_Controller
 		if (file_exists($file_location))
 		{
 			header('Content-Type: application/pdf');
-			header('Content-Disposition: inline; filename="'.$file_proposal->nama_asli.'"');
+			header('Content-Disposition: '.$disposition.'; filename="'.$file_proposal->nama_asli.'"');
 			header('Expires: 0');
 			header('Cache-Control: must-revalidate');
 			header('Pragma: public');
 			header('Content-Length: ' . filesize($file_location));
 			readfile($file_location);
 			exit;
+		}
+		else
+		{
+			show_404();
 		}
 	}
 }

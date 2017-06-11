@@ -30,22 +30,10 @@ class Proposal_model extends CI_Model
 	 */
 	public function get_single($id, $perguruan_tinggi_id = NULL)
 	{
+		$this->db->where(['id' => $id]);
 		if ($perguruan_tinggi_id != NULL)
-		{
-			return $this->db->get_where('proposal', array(
-				'id' => $id,
-				'perguruan_tinggi_id' => $perguruan_tinggi_id
-			), 1)->row();
-		}
-		else
-		{
-			$sql = 
-				"select p.*, k.nama_kategori from proposal p
-				join kategori k on k.id = p.kategori_id
-				where p.id = ?";
-			
-			return $this->db->query($sql, array($id))->row();
-		}
+			$this->db->where(['perguruan_tinggi_id' => $perguruan_tinggi_id]);
+		return $this->db->get('proposal', 1)->row();
 	}
 	
 	public function delete($id, $perguruan_tinggi_id = NULL)

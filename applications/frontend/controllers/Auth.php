@@ -8,6 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property LembagaPengusul_model $lembaga_model
  * @property PerguruanTinggi_model $pt_model 
  * @property User_model $user_model
+ * @property Kegiatan_model $kegiatan_model
  */
 class Auth extends Frontend_Controller
 {
@@ -22,6 +23,7 @@ class Auth extends Frontend_Controller
 		$this->load->model(MODEL_PERGURUAN_TINGGI, 'pt_model');
 		$this->load->model(MODEL_LEMBAGA_PENGUSUL, 'lembaga_model');
 		$this->load->model(MODEL_USER, 'user_model');
+		$this->load->model(MODEL_KEGIATAN, 'kegiatan_model');
 	}
 	
 	public function reg()
@@ -99,12 +101,16 @@ class Auth extends Frontend_Controller
 					if ($captcha_count > 0)
 					{
 						// Ambil data perguruan tinggi
-						$perguruan_tinggi = $this->db->get_where('perguruan_tinggi', array('id' => $user->perguruan_tinggi_id))->row();
+						$perguruan_tinggi = $this->pt_model->get_single($user->perguruan_tinggi_id);
+						
+						// Ambil kegiatan yang aktif
+						$kegiatan = $this->kegiatan_model->get_aktif($user->program_id);
 
 						// Assign data login ke session
 						$this->session->set_userdata('user', $user);
 						$this->session->set_userdata('perguruan_tinggi', $perguruan_tinggi);
 						$this->session->set_userdata('program_id', $user->program_id);
+						$this->session->set_userdata('kegiatan', $kegiatan);
 						
 						// update latest login
 						$this->db->update('user', array('latest_login' => date('Y-m-d H:i:s')), array('id' => $user->id));
