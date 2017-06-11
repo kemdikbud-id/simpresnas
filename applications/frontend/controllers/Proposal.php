@@ -51,11 +51,10 @@ class Proposal extends Frontend_Controller
 			join kategori on kategori.id = proposal.kategori_id
 			join syarat on syarat.kegiatan_id = kegiatan.id
 			left join file_proposal on file_proposal.proposal_id = proposal.id and file_proposal.syarat_id = syarat.id
-			left join tahapan_proposal tp on tp.kegiatan_id = kegiatan.id AND tp.proposal_id = proposal.id
+			left join tahapan_proposal tp on tp.kegiatan_id = kegiatan.id AND tp.proposal_id = proposal.id and tp.tahapan_id = 1 /* Submit --> Tahapan Evaluasi Proposal */
 			where
 				proposal.kegiatan_id = ? and
-				proposal.perguruan_tinggi_id = ? and
-				tp.tahapan_id = 1  /* Submit --> Tahapan Evaluasi Proposal */
+				proposal.perguruan_tinggi_id = ?
 			group by proposal.id, judul, nama_kategori, nim_ketua, nama_ketua, tp.id
 			order by proposal.id", array(
 				$this->session->kegiatan->id,
