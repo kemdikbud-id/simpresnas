@@ -33,7 +33,7 @@ class Proposal extends Admin_Controller
 		foreach ($data_set as &$data)
 		{
 			// get elapsed time
-			$data->waktu = time_elapsed_string($data->created_at);
+			//$data->waktu = time_elapsed_string($data->created_at);
 		}
 		
 		$this->smarty->assign('data_set', $data_set);
@@ -49,7 +49,7 @@ class Proposal extends Admin_Controller
 		foreach ($data_set as &$data)
 		{
 			// get elapsed time
-			$data->waktu = time_elapsed_string($data->created_at);
+			//$data->waktu = time_elapsed_string($data->created_at);
 		}
 			
 		$this->smarty->assign('data_set', $data_set);

@@ -33,7 +33,7 @@
 									<span class="label label-warning">BELUM LENGKAP</span>
 								{/if}
 							</td>
-							<td>{$data->waktu}</td>
+							<td>{$data->created_at}</td>
 							<td>
 								<a href="{site_url("proposal/view?id={$data->id}")}" class="btn btn-xs btn-default">Lihat</a>
 							</td>
