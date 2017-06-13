@@ -54,7 +54,6 @@
 									<li role="separator" class="divider"></li>
 									<li><a href="{site_url('user-reviewer')}">Reviewer</a></li>
 									<li><a href="{site_url('user-reviewer/plotting')}">Plotting Reviewer</a></li>
-									<li><a href="{site_url('user-reviewer/rekap')}">Rekap Reviewer</a></li>
 								</ul>
 							</li>
 							<li>
@@ -62,6 +61,12 @@
 								<ul class="dropdown-menu">
 									<li><a href="{site_url('proposal/index-pbbt')}">Program PBBT</a></li>
 									<li><a href="{site_url('proposal/index-kbmi')}">Program KBMI</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Penilaian <span class="caret"></span></a>
+								<ul class="dropdown-menu">
+									<li><a href="{site_url('penilaian')}">Hasil Penilaian Proposal</a></li>
 								</ul>
 							</li>
 						</ul>

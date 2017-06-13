@@ -9,6 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property PerguruanTinggi_model $pt_model 
  * @property User_model $user_model
  * @property Kegiatan_model $kegiatan_model
+ * @property Reviewer_model $reviewer_model 
  */
 class Auth extends Frontend_Controller
 {
@@ -24,6 +25,7 @@ class Auth extends Frontend_Controller
 		$this->load->model(MODEL_LEMBAGA_PENGUSUL, 'lembaga_model');
 		$this->load->model(MODEL_USER, 'user_model');
 		$this->load->model(MODEL_KEGIATAN, 'kegiatan_model');
+		$this->load->model(MODEL_REVIEWER, 'reviewer_model');
 	}
 	
 	public function reg()
@@ -119,7 +121,11 @@ class Auth extends Frontend_Controller
 						if ($user->tipe_user == TIPE_USER_NORMAL)
 							redirect(site_url('home'));  // Home Controller dari applikasi Frontend
 						else if ($user->tipe_user == TIPE_USER_REVIEWER)
+						{
+							// tambahkan session reviewer
+							$this->session->user->reviewer = $this->reviewer_model->get_single($this->session->user->reviewer_id);
 							redirect(base_url() . 'reviewer');
+						}
 						else if ($user->tipe_user == TIPE_USER_ADMIN)
 							redirect(base_url() . 'admin');
 						

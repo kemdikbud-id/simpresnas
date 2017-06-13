@@ -67,7 +67,7 @@ class Proposal_model extends CI_Model
 	public function list_proposal_per_reviewer($kegiatan_id, $tahapan_id, $reviewer_id)
 	{
 		$sql = 
-			"select pr.id, p.judul, pt.nama_pt, pr.nilai_reviewer
+			"select pr.id, p.judul, pt.nama_pt, pr.biaya_rekomendasi, pr.nilai_reviewer
 			from plot_reviewer pr
 			join tahapan_proposal tp on tp.id = pr.tahapan_proposal_id
 			join proposal p on p.id = tp.proposal_id

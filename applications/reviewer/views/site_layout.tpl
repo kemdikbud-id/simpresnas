@@ -44,7 +44,7 @@
 						<ul class="nav navbar-nav navbar-right">
 							{if $ci->session->user}
 								<li>
-									<a href="{site_url('auth/logout')}">Logout ({$ci->session->user->username})</a>
+									<a href="{site_url('auth/logout')}">Logout ({$ci->session->user->reviewer->nama})</a>
 								</li>
 							{/if}
 						</ul>

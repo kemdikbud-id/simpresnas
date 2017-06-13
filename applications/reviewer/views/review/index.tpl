@@ -2,6 +2,7 @@
 {block name='head'}
 	<link rel="stylesheet" href="{base_url('../assets/css/dataTables.bootstrap.min.css')}" />
 	<style type="text/css">
+		.table>thead>tr>th,.table>tbody>tr>td { color: #333; }
 		.table-condensed>thead>tr>th,.table-condensed>tbody>tr>td { font-size: 13px; }
 	</style>
 {/block}
@@ -29,11 +30,12 @@
 				<button type="submit" class="btn btn-sm btn-default">Lihat</button>
 			</form>
 					
-			<table class="table table-bordered table-condensed" id="table">
+			<table class="table table-bordered table-striped table-condensed" id="table">
 				<thead>
 					<tr>
 						<th>Judul</th>
 						<th>Perguruan Tinggi</th>
+						<th>Rekom</th>
 						<th>Nilai</th>
 						<th></th>
 					</tr>
@@ -44,6 +46,7 @@
 							<tr>
 								<td>{$data->judul}</td>
 								<td>{$data->nama_pt}</td>
+								<td class="text-right">{$data->biaya_rekomendasi|number_format:0:".":","}</td>
 								<td class="text-center"><strong>{$data->nilai_reviewer}</strong></td>
 								<td>
 									<a class="btn btn-sm btn-info" href="{site_url('review/penilaian/')}{$data->id}">Nilai</a>{* id = plot_reviewer_id *}
@@ -58,4 +61,14 @@
 			
 		</div>
 	</div>
+{/block}
+{block name='footer-script'}
+	<script src="{base_url('../assets/js/jquery.dataTables.min.js')}"></script>
+	<script src="{base_url('../assets/js/dataTables.bootstrap.min.js')}"></script>
+	<script type="text/javascript">
+		$('#table').DataTable({
+			paging: false, searching: false,
+			stateSave: true
+		});
+	</script>
 {/block}

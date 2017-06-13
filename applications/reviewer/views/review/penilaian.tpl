@@ -36,32 +36,38 @@
 			<form method="post" action="{current_url()}" class="form-horizontal">
 						
 				<div class="form-group">
-					<label class="col-xs-2 control-label">Judul</label>
-					<div class="col-xs-10">
+					<label class="col-md-2 col-sm-3 control-label">Judul</label>
+					<div class="col-md-10 col-sm-9">
 						<p class="form-control-static">{$proposal->judul}</p>
 					</div>
 				</div>
 					
 				<div class="form-group">
-					<label class="col-xs-2 control-label">PT</label>
-					<div class="col-xs-10">
+					<label class="col-md-2 col-sm-3 control-label">PT</label>
+					<div class="col-md-10 col-sm-9">
 						<p class="form-control-static">{$pt->nama_pt}</p>
 					</div>
 				</div>
 					
 				<div class="form-group">
-					<label class="col-xs-2 control-label">Lama Kegiatan</label>
-					<div class="col-xs-2">
-						<div class="input-group" style="width: 110px">
-							<input type="text" class="form-control" name="lama_kegiatan" value="{$proposal->lama_kegiatan}">
+					<label class="col-md-2 col-sm-3 control-label">Lama Kegiatan</label>
+					<div class="col-md-2 col-sm-3">
+						<div class="input-group">
+							<input type="text" class="form-control" name="lama_kegiatan_thn" value="{$proposal->lama_kegiatan_thn}">
 							<div class="input-group-addon">tahun</div>
+						</div>
+					</div>
+					<div class="col-md-2 col-sm-3">
+						<div class="input-group">
+							<input type="text" class="form-control" name="lama_kegiatan_bln" value="{$proposal->lama_kegiatan_bln}">
+							<div class="input-group-addon">bulan</div>
 						</div>
 					</div>
 				</div>
 					
 				<div class="form-group">
-					<label class="col-xs-2 control-label">Biaya Diusulkan ke Belmawa</label>
-					<div class="col-xs-3" style="padding-top: 5px;">
+					<label class="col-md-2 col-sm-3 control-label">Biaya Diusulkan ke Belmawa</label>
+					<div class="col-md-3 col-sm-4" style="padding-top: 5px;">
 						<div class="input-group">
 							<div class="input-group-addon">Rp.</div>
 							<input type="text" class="form-control number" name="biaya_diusulkan" value="{$proposal->biaya_diusulkan}">
@@ -70,28 +76,23 @@
 				</div>
 					
 				<div {if form_error('biaya_rekomendasi')}class="form-group has-error"{else}class="form-group"{/if}>
-					<label class="col-xs-2 control-label">Biaya Direkomendasikan</label>
-					<div class="col-xs-3" style="padding-top: 5px;">
+					<label class="col-md-2 col-sm-3 control-label">Biaya Direkomendasikan</label>
+					<div class="col-md-3 col-sm-4" style="padding-top: 5px;">
 						<div class="input-group">
 							<div class="input-group-addon">Rp.</div>
-							{if $plot_reviewer->no_urut == 1}
-								<input type="text" class="form-control number" name="biaya_rekomendasi" value="{$proposal->biaya_rekomendasi}"/>
-							{else}
-								<input type="text" class="form-control number" value="{$proposal->biaya_rekomendasi}" readonly />
-								<input type="hidden" name="biaya_rekomendasi" value="{$proposal->biaya_rekomendasi}" />
-							{/if}
+							<input type="text" class="form-control number" name="biaya_rekomendasi" value="{$plot_reviewer->biaya_rekomendasi}"/>
 						</div>
 					</div>
 					{if form_error('biaya_rekomendasi')}
-						<div class="col-xs-7" style="padding-top: 5px;">
+						<div class="col-md-7 col-sm-4" style="padding-top: 5px;">
 							{form_error('biaya_rekomendasi')}
 						</div>
 					{/if}
 				</div>
 					
 				<div class="form-group">
-					<label class="col-xs-2 control-label">Kontribusi PT</label>
-					<div class="col-xs-3">
+					<label class="col-md-2 col-sm-3 control-label">Kontribusi PT</label>
+					<div class="col-md-3 col-sm-4">
 						<div class="input-group">
 							<div class="input-group-addon">Rp.</div>
 							<input type="text" class="form-control number" name="biaya_kontribusi_pt" value="{$proposal->biaya_kontribusi_pt}">
@@ -100,8 +101,8 @@
 				</div>
 					
 				<div class="form-group">
-					<label class="col-xs-2 control-label">Kontribusi UMKM</label>
-					<div class="col-xs-3">
+					<label class="col-md-2 col-sm-3 control-label">Kontribusi UMKM</label>
+					<div class="col-md-3 col-sm-4">
 						<div class="input-group">
 							<div class="input-group-addon">Rp.</div>
 							<input type="text" class="form-control number" name="biaya_kontribusi_umkm" value="{$proposal->biaya_kontribusi_pt}">
@@ -110,8 +111,8 @@
 				</div>
 					
 				<div class="form-group">
-					<label class="col-xs-2 control-label">File Upload</label>
-					<div class="col-xs-10">
+					<label class="col-md-2 col-sm-3 control-label">File Upload</label>
+					<div class="col-md-10 col-sm-9">
 						{foreach $file_proposal_set as $file_proposal}
 							<p class="form-control-static" style="min-height: 0; padding: 2px 0">
 								{$file_proposal->nama_asli} 

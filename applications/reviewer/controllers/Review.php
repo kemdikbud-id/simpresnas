@@ -60,6 +60,8 @@ class Review extends Reviewer_Controller
 		$kegiatan			= $this->kegiatan_model->get_single($proposal->kegiatan_id);
 		$pt					= $this->pt_model->get_single($proposal->perguruan_tinggi_id);
 		
+		$reviewer_id = $this->session->userdata('user')->reviewer_id;
+		
 		// Ambil komponen penilaian di left join dengan hasil penilaian per reviewer
 		// dimulai dari tabel plot reviewer
 		$penilaian_set = $this->db
@@ -69,7 +71,7 @@ class Review extends Reviewer_Controller
 			->join('kegiatan k', 'k.id = tp.kegiatan_id')
 			->join('tahapan t', 't.id = tp.tahapan_id')
 			->join('komponen_penilaian kp', 'kp.kegiatan_id = k.id AND kp.tahapan_id = t.id')
-			->join('hasil_penilaian hp', 'hp.tahapan_proposal_id = tp.id AND hp.komponen_penilaian_id = kp.id', 'LEFT')
+			->join('hasil_penilaian hp', 'hp.plot_reviewer_id = pr.id AND hp.komponen_penilaian_id = kp.id', 'LEFT')
 			->where(['pr.id' => $plot_reviewer_id])
 			->order_by('kp.urutan')
 			->get()->result();
@@ -79,13 +81,9 @@ class Review extends Reviewer_Controller
 			// replace input
 			$_POST['biaya_rekomendasi'] = str_replace('.', '', $_POST['biaya_rekomendasi']);
 			
-			// Ketika reviewer ke satu, wajib mengisi biaya rekomendasi
-			if ($plot_reviewer->no_urut == 1)
-			{
-				// Isian biaya_rekomendasi wajib ada, minimal 1
-				$this->form_validation->set_rules('biaya_rekomendasi', 'Biaya Rekomendasi', 'greater_than[0]', 
-					array('greater_than' => "Biaya rekomendasi Wajib di isi !"));
-			}
+			// Isian biaya_rekomendasi wajib ada, minimal 1
+			$this->form_validation->set_rules('biaya_rekomendasi', 'Biaya Rekomendasi', 'greater_than[0]', 
+				array('greater_than' => "Biaya rekomendasi Wajib di isi !"));
 			
 			// Isian komponen nilai
 			foreach ($this->input->post('skor') as $komponen_penilaian_id => $skor)
@@ -94,17 +92,17 @@ class Review extends Reviewer_Controller
 			}
 			
 			// Pre-updated object
-			$proposal->lama_kegiatan			= $this->input->post('lama_kegiatan');
+			$proposal->lama_kegiatan_thn		= $this->input->post('lama_kegiatan_thn');
+			$proposal->lama_kegiatan_bln		= $this->input->post('lama_kegiatan_bln');
 			$proposal->biaya_diusulkan			= str_replace('.', '', $this->input->post('biaya_diusulkan'));
-			$proposal->biaya_rekomendasi		= str_replace('.', '', $this->input->post('biaya_rekomendasi'));
 			$proposal->biaya_kontribusi_pt		= str_replace('.', '', $this->input->post('biaya_kontribusi_pt'));
 			$proposal->biaya_kontribusi_umkm	= str_replace('.', '', $this->input->post('biaya_kontribusi_umkm'));
 			$proposal->updated_at				= date('Y-m-d H:i:s');
 			
-			$plot_reviewer->nilai_reviewer	= 0; // di 0 kan dulu sebelum di counting ulang
-			$plot_reviewer->komentar		= $this->input->post('komentar');
-			$plot_reviewer->updated_at		= date('Y-m-d H:i:s');
-			
+			$plot_reviewer->nilai_reviewer		= 0; // di 0 kan dulu sebelum di counting ulang
+			$plot_reviewer->biaya_rekomendasi	= str_replace('.', '', $this->input->post('biaya_rekomendasi'));
+			$plot_reviewer->komentar			= $this->input->post('komentar');
+			$plot_reviewer->updated_at			= date('Y-m-d H:i:s');
 			
 			// Pre-updated object
 			foreach ($penilaian_set as &$penilaian)
@@ -133,9 +131,8 @@ class Review extends Reviewer_Controller
 					if ($penilaian->hp_id == '')  // hasil_penilaian_id kosong artinya belum ada record, perlu INSERT
 					{
 						$this->db->insert('hasil_penilaian', array(
-							'tahapan_proposal_id'	=> $plot_reviewer->tahapan_proposal_id,
+							'plot_reviewer_id'		=> $plot_reviewer->id,
 							'komponen_penilaian_id'	=> $penilaian->komponen_penilaian_id,
-							'reviewer_id'			=> $plot_reviewer->reviewer_id,
 							'skor'					=> $penilaian->skor,	// nilai sudah di dapat : lihat line 107
 							'nilai'					=> $penilaian->nilai	// nilai sudah di dapat : lihat line 110
 						));
