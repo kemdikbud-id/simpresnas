@@ -72,7 +72,8 @@ class Proposal_model extends CI_Model
 			join tahapan_proposal tp on tp.id = pr.tahapan_proposal_id
 			join proposal p on p.id = tp.proposal_id
 			join perguruan_tinggi pt on pt.id = p.perguruan_tinggi_id
-			where tp.kegiatan_id = ? and tp.tahapan_id = ? and pr.reviewer_id = ?";
+			where tp.kegiatan_id = ? and tp.tahapan_id = ? and pr.reviewer_id = ?
+			order by p.judul";
 		return $this->db->query($sql, array(
 			$kegiatan_id, $tahapan_id, $reviewer_id
 		))->result();

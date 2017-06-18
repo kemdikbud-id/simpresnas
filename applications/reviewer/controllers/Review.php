@@ -32,22 +32,22 @@ class Review extends Reviewer_Controller
 	}
 	
 	public function index()
-	{
-		$kegiatan_id = $this->input->get('kegiatan_id');
-		$tahapan_id = $this->input->get('tahapan_id');
-		
-		// Jika ada isinya
-		if ($kegiatan_id && $tahapan_id)
-		{
-			$data_set = $this->proposal_model->list_proposal_per_reviewer($kegiatan_id, $tahapan_id, $this->session->userdata('user')->reviewer_id);
-			$this->smarty->assign('data_set', $data_set);
-		}
-		
+	{		
 		$this->smarty->assign('kegiatan_option_set', $this->kegiatan_model->list_aktif_for_option());
 		$this->smarty->assign('tahapan_option_set', $this->tahapan_model->list_all_for_option());
 		$this->smarty->assign('reviewer_id', $this->session->userdata('user')->reviewer_id);
 		
 		$this->smarty->display();
+	}
+	
+	public function index_data()
+	{
+		$kegiatan_id = $this->input->get('kegiatan_id');
+		$tahapan_id = $this->input->get('tahapan_id');
+		
+		$data_set = $this->proposal_model->list_proposal_per_reviewer($kegiatan_id, $tahapan_id, $this->session->userdata('user')->reviewer_id);
+		
+		echo json_encode(array('data' => $data_set));
 	}
 	
 	public function penilaian($plot_reviewer_id)
@@ -94,15 +94,19 @@ class Review extends Reviewer_Controller
 			// Pre-updated object
 			$proposal->lama_kegiatan_thn		= $this->input->post('lama_kegiatan_thn');
 			$proposal->lama_kegiatan_bln		= $this->input->post('lama_kegiatan_bln');
+			// Nilai diupdate dari isian reviewer, tp tidak ditampilkan
 			$proposal->biaya_diusulkan			= str_replace('.', '', $this->input->post('biaya_diusulkan'));
 			$proposal->biaya_kontribusi_pt		= str_replace('.', '', $this->input->post('biaya_kontribusi_pt'));
 			$proposal->biaya_kontribusi_umkm	= str_replace('.', '', $this->input->post('biaya_kontribusi_umkm'));
 			$proposal->updated_at				= date('Y-m-d H:i:s');
 			
-			$plot_reviewer->nilai_reviewer		= 0; // di 0 kan dulu sebelum di counting ulang
-			$plot_reviewer->biaya_rekomendasi	= str_replace('.', '', $this->input->post('biaya_rekomendasi'));
-			$plot_reviewer->komentar			= $this->input->post('komentar');
-			$plot_reviewer->updated_at			= date('Y-m-d H:i:s');
+			$plot_reviewer->nilai_reviewer			= 0; // di 0 kan dulu sebelum di counting ulang
+			$plot_reviewer->biaya_diusulkan			= str_replace('.', '', $this->input->post('biaya_diusulkan'));
+			$plot_reviewer->biaya_rekomendasi		= str_replace('.', '', $this->input->post('biaya_rekomendasi'));
+			$plot_reviewer->biaya_kontribusi_pt		= str_replace('.', '', $this->input->post('biaya_kontribusi_pt'));
+			$plot_reviewer->biaya_kontribusi_umkm	= str_replace('.', '', $this->input->post('biaya_kontribusi_umkm'));
+			$plot_reviewer->komentar				= $this->input->post('komentar');
+			$plot_reviewer->updated_at				= date('Y-m-d H:i:s');
 			
 			// Pre-updated object
 			foreach ($penilaian_set as &$penilaian)
@@ -110,8 +114,11 @@ class Review extends Reviewer_Controller
 				$penilaian->skor = (int)$this->input->post("skor[{$penilaian->komponen_penilaian_id}]");
 				
 				// update nilai jika ada isian skor
-				if ($skor != '') $penilaian->nilai = $penilaian->bobot * $penilaian->skor;
-				
+				if ($skor != '')
+				{
+					$penilaian->nilai = $penilaian->bobot * $penilaian->skor;
+				}
+
 				$plot_reviewer->nilai_reviewer += $penilaian->nilai;
 			}
 			
@@ -124,7 +131,6 @@ class Review extends Reviewer_Controller
 				
 				$this->db->update('proposal', $proposal, ['id' => $proposal->id]);
 				$this->db->update('plot_reviewer', $plot_reviewer, ['id' => $plot_reviewer->id]);
-				
 				
 				foreach ($penilaian_set as $penilaian)
 				{

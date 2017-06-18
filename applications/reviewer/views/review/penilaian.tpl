@@ -70,7 +70,7 @@
 					<div class="col-md-3 col-sm-4" style="padding-top: 5px;">
 						<div class="input-group">
 							<div class="input-group-addon">Rp.</div>
-							<input type="text" class="form-control number" name="biaya_diusulkan" value="{$proposal->biaya_diusulkan}">
+							<input type="text" class="form-control number" name="biaya_diusulkan" value="{$plot_reviewer->biaya_diusulkan}">
 						</div>
 					</div>
 				</div>
@@ -95,7 +95,7 @@
 					<div class="col-md-3 col-sm-4">
 						<div class="input-group">
 							<div class="input-group-addon">Rp.</div>
-							<input type="text" class="form-control number" name="biaya_kontribusi_pt" value="{$proposal->biaya_kontribusi_pt}">
+							<input type="text" class="form-control number" name="biaya_kontribusi_pt" value="{$plot_reviewer->biaya_kontribusi_pt}">
 						</div>
 					</div>
 				</div>
@@ -105,7 +105,7 @@
 					<div class="col-md-3 col-sm-4">
 						<div class="input-group">
 							<div class="input-group-addon">Rp.</div>
-							<input type="text" class="form-control number" name="biaya_kontribusi_umkm" value="{$proposal->biaya_kontribusi_pt}">
+							<input type="text" class="form-control number" name="biaya_kontribusi_umkm" value="{$plot_reviewer->biaya_kontribusi_pt}">
 						</div>
 					</div>
 				</div>

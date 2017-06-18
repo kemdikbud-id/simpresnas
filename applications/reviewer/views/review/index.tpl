@@ -12,7 +12,7 @@
 	<div class="row">
 		<div class="col-lg-12">
 
-			<form class="form-inline" action="{current_url()}" method="get" style="margin-bottom: 10px">
+			<form class="form-inline" action="{current_url()}" method="get" style="margin-bottom: 10px" id="formFilter">
 				<div class="form-group">
 					<label for="kegiatan_id">Kegiatan</label>
 					<select name="kegiatan_id" class="form-control input-sm">
@@ -33,6 +33,7 @@
 			<table class="table table-bordered table-striped table-condensed" id="table">
 				<thead>
 					<tr>
+						<th>#</th>
 						<th>Judul</th>
 						<th>Perguruan Tinggi</th>
 						<th>Rekom</th>
@@ -40,23 +41,6 @@
 						<th></th>
 					</tr>
 				</thead>
-				<tbody>
-					{if isset($data_set)}
-						{foreach $data_set as $data}
-							<tr>
-								<td>{$data->judul}</td>
-								<td>{$data->nama_pt}</td>
-								<td class="text-right">{$data->biaya_rekomendasi|number_format:0:".":","}</td>
-								<td class="text-center"><strong>{$data->nilai_reviewer}</strong></td>
-								<td>
-									<a class="btn btn-sm btn-info" href="{site_url('review/penilaian/')}{$data->id}">Nilai</a>{* id = plot_reviewer_id *}
-								</td>
-							</tr>
-						{/foreach}
-					{else}
-						<tr><td colspan="5">Pilih Kegiatan dan Tahapan</td></tr>
-					{/if}
-				</tbody>
 			</table>
 			
 		</div>
@@ -66,9 +50,37 @@
 	<script src="{base_url('../assets/js/jquery.dataTables.min.js')}"></script>
 	<script src="{base_url('../assets/js/dataTables.bootstrap.min.js')}"></script>
 	<script type="text/javascript">
-		$('#table').DataTable({
-			paging: false, searching: false,
-			stateSave: true
+		
+		var keg_id = '{if isset($smarty.get.kegiatan_id)}{$smarty.get.kegiatan_id}{else}0{/if}';
+		var thp_id = '{if isset($smarty.get.tahapan_id)}{$smarty.get.tahapan_id}{else}0{/if}';
+		
+		var dataTable = $('#table').DataTable({
+			lengthMenu: [[10,20,25,50,-1],[10,20,25,50,'Semua']],
+			stateSave: true,
+			ajax: '{site_url('review/index-data/')}?kegiatan_id='+keg_id+'&tahapan_id='+thp_id,
+			columns: [
+				{
+					data: null, className: 'text-center', defaultContent: '', orderable: false
+					// render: function(data, type, row, meta) { return meta.row + 1; }
+				},
+				{ data: 'judul' }, { data: 'nama_pt' }, 
+				{ data: 'biaya_rekomendasi', className: 'text-center', render: $.fn.dataTable.render.number('.') }, 
+				{ data: 'nilai_reviewer', className: 'text-center' }, 
+				{
+					data: 'id', 
+					render: function(data, type, row, meta) {
+						return '<a class="btn btn-sm btn-info" href="{site_url('review/penilaian/')}'+data+'">Nilai</a>';
+					},
+					orderable: false
+				}
+			]
 		});
+		
+		// Numbering
+		dataTable.on('order.dt search.dt', function() {
+			dataTable.column(0, { search:'applied', order:'applied' }).nodes().each(function(cell, i) {
+				cell.innerHTML = i+1;
+        	});
+		}).draw();
 	</script>
 {/block}
