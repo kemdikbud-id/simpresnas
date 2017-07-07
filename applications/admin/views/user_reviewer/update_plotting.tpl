@@ -43,6 +43,15 @@
 					</div>
 				</div>
 				<div class="form-group">
+					<label class="col-md-2 control-label">Reviewer 3</label>
+					<div class="col-md-10">
+						<select name="reviewer_id[3]" class="form-control">
+							<option value="">-- Pilih Reviewer --</option>
+							{html_options options=$reviewer_option_set selected=$reviewer_3->reviewer_id}
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
 					<div class="col-md-offset-2 col-md-10">
 						<button type="submit" class="btn btn-primary">Simpan</button>
 						<a href="{site_url('user-reviewer/plotting/')}?kegiatan_id={$data->kegiatan_id}&tahapan_id={$data->tahapan_id}" class="btn btn-default">Kembali</a>

@@ -80,7 +80,7 @@ class User_Reviewer extends Admin_Controller
 		if ($kegiatan_id && $tahapan_id)
 		{
 			$data_set = $this->db
-				->select("tp.id, p.judul, nama_pt, r1.nama as reviewer_1, r2.nama as reviewer_2")
+				->select("tp.id, p.judul, nama_pt, r1.nama as reviewer_1, r2.nama as reviewer_2, r3.nama as reviewer_3")
 				->from('tahapan_proposal tp')
 				->join('proposal p', 'p.id = tp.proposal_id')
 				->join('perguruan_tinggi pt', 'pt.id = p.perguruan_tinggi_id')
@@ -88,6 +88,8 @@ class User_Reviewer extends Admin_Controller
 				->join('reviewer r1', 'r1.id = pr1.reviewer_id', 'LEFT')
 				->join('plot_reviewer pr2', 'pr2.tahapan_proposal_id = tp.id AND pr2.no_urut = 2', 'LEFT')
 				->join('reviewer r2', 'r2.id = pr2.reviewer_id', 'LEFT')
+				->join('plot_reviewer pr3', 'pr3.tahapan_proposal_id = tp.id AND pr3.no_urut = 3', 'LEFT')
+				->join('reviewer r3', 'r3.id = pr3.reviewer_id', 'LEFT')
 				->where(['tp.kegiatan_id' => $kegiatan_id, 'tp.tahapan_id' => $tahapan_id])->get()->result();
 			
 			$this->smarty->assign('data_set', $data_set);
@@ -107,7 +109,7 @@ class User_Reviewer extends Admin_Controller
 			
 			$this->db->trans_begin();
 			
-			for ($i = 1; $i <= 2; $i++)
+			for ($i = 1; $i <= 3; $i++)
 			{
 				// proses hanya diisi
 				if ($reviewer_ids[$i] != '')
@@ -169,14 +171,17 @@ class User_Reviewer extends Admin_Controller
 		
 		$reviewer_1 = $this->db->get_where('plot_reviewer', ['tahapan_proposal_id' => $data->id, 'no_urut' => 1])->row();
 		$reviewer_2 = $this->db->get_where('plot_reviewer', ['tahapan_proposal_id' => $data->id, 'no_urut' => 2])->row();
+		$reviewer_3 = $this->db->get_where('plot_reviewer', ['tahapan_proposal_id' => $data->id, 'no_urut' => 3])->row();
 		
 		// Prevent Error
 		if ($reviewer_1 == NULL) { $reviewer_1 = new stdClass(); $reviewer_1->reviewer_id = -1; }
 		if ($reviewer_2 == NULL) { $reviewer_2 = new stdClass(); $reviewer_2->reviewer_id = -1; }
-		
+		if ($reviewer_3 == NULL) { $reviewer_3 = new stdClass(); $reviewer_3->reviewer_id = -1; }
+
 		$this->smarty->assign('reviewer_1', $reviewer_1);
 		$this->smarty->assign('reviewer_2', $reviewer_2);
-		
+		$this->smarty->assign('reviewer_3', $reviewer_3);
+
 		$this->smarty->display();
 	}
 	

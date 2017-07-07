@@ -35,6 +35,7 @@
 						<th>Perguruan Tinggi</th>
 						<th style="width: 10%">Reviewer 1</th>
 						<th style="width: 10%">Reviewer 2</th>
+						<th style="width: 10%">Reviewer 3</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -46,6 +47,7 @@
 								<td>{$data->nama_pt}</td>
 								<td>{$data->reviewer_1}</td>
 								<td>{$data->reviewer_2}</td>
+								<td>{$data->reviewer_3}</td>
 								<td>
 									<a href="{site_url('user-reviewer/update-plotting/')}{$data->id}">Edit</a>
 								</td>
