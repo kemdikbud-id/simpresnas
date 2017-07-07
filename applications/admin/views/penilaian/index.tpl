@@ -1,5 +1,6 @@
 {extends file='site_layout.tpl'}
 {block name='head'}
+	<link rel="stylesheet" href="{base_url('../assets/css/dataTables.bootstrap.min.css')}" />
 	<style>.table>thead>tr>th, .table>tbody>tr>td { font-size: 13px }</style>
 {/block}
 {block name='content'}
@@ -34,10 +35,13 @@
 						<th>Perguruan Tinggi</th>
 						<th>R1</th>
 						<th>R2</th>
+						<th>R3</th>
 						<th>Rekom R1</th>
 						<th>Rekom R2</th>
+						<th>Rekom R3</th>
 						<th>Nilai R1</th>
 						<th>Nilai R2</th>
+						<th>Nilai R3</th>
 						<th>Selisih</th>
 						<th>Rata</th>
 						<th>Total</th>
@@ -51,13 +55,16 @@
 							<td>{$data->nama_pt}</td>
 							<td>{$data->reviewer_1}</td>
 							<td>{$data->reviewer_2}</td>
+							<td>{$data->reviewer_3}</td>
 							<td class="text-right">{$data->biaya_rekomendasi_1|number_format:0:",":"."}</td>
 							<td class="text-right">{$data->biaya_rekomendasi_2|number_format:0:",":"."}</td>
-							<td class="text-center">{$data->nilai_reviewer_1}</td>
-							<td class="text-center">{$data->nilai_reviewer_2}</td>
+							<td class="text-right">{$data->biaya_rekomendasi_3|number_format:0:",":"."}</td>
+							<td class="text-center" style="color:black">{$data->nilai_reviewer_1}</td>
+							<td class="text-center" style="color:black">{$data->nilai_reviewer_2}</td>
+							<td class="text-center" style="color:black">{$data->nilai_reviewer_3}</td>
 							<td class="text-center">{$data->nilai_selisih}</td>
-							<td class="text-center">{$data->nilai_rata}</td>
-							<td class="text-center">{$data->nilai_total}</td>
+							<td class="text-center" style="color:black">{$data->nilai_rata}</td>
+							<td class="text-center" style="color:black">{$data->nilai_total}</td>
 						</tr>
 					{/foreach}
 				</tbody>
@@ -65,4 +72,15 @@
 			
 		</div>
 	</div>
+{/block}
+{block name='footer-script'}
+	<script src="{base_url('../assets/js/jquery.dataTables.min.js')}"></script>
+	<script src="{base_url('../assets/js/dataTables.bootstrap.min.js')}"></script>
+	<script type="text/javascript">
+		/*
+		$('#table').DataTable({
+			stateSave: true,
+			paging: false
+		}); */
+	</script>
 {/block}
