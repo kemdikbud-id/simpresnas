@@ -13,6 +13,7 @@
 			background-color: #d9edf7;
 			font-weight: bold;
 		}
+		.table>tbody>tr.afirmasi>td { background-color: yellow; }
 	</style>
 	
 {/block}
@@ -71,7 +72,7 @@
 				</thead>
 				<tbody>
 					{foreach $data_set as $data}
-						<tr>
+						<tr {if $data->is_afirmasi == 1}class="afirmasi"{/if}>
 							<td>{$data@index + 1}</td>
 							<td>{$data->judul|substr:0:50}{if strlen($data->judul) > 50}...{/if}</td>
 							<td>{$data->nama_kategori}</td>

@@ -68,6 +68,7 @@ class Penilaian extends Admin_Controller
 			->select('pr1.nilai_reviewer as nilai_reviewer_1, pr2.nilai_reviewer as nilai_reviewer_2, pr3.nilai_reviewer as nilai_reviewer_3, ABS(pr1.nilai_reviewer - pr2.nilai_reviewer) as nilai_selisih') // 4 col
 			->select('pr1.komentar as komentar_1, pr2.komentar as komentar_2, pr3.komentar as komentar_3') // 3 col
 			->select($rumus_nilai_total . ' as nilai_total', FALSE) // col 17
+			->select('p.is_afirmasi')
 			->from('tahapan_proposal tp')
 			->join('proposal p', 'p.id = tp.proposal_id')
 			->join('kategori k', 'k.id = p.kategori_id')
