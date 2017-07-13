@@ -53,6 +53,7 @@ class Penilaian extends Admin_Controller
 	{
 		$kegiatan_id	= $this->input->get('kegiatan_id');
 		$tahapan_id		= $this->input->get('tahapan_id');
+		$tampilan		= $this->input->get('tampilan');
 		
 		$rumus_nilai_total = 
 			"CASE "
@@ -62,11 +63,11 @@ class Penilaian extends Admin_Controller
 			. "END";
 		
 		$data_set = $this->db
-			->select('p.judul, k.nama_kategori, pt.nama_pt, r1.nama as reviewer_1, r2.nama as reviewer_2, r3.nama as reviewer_3')
-			->select('pr1.biaya_rekomendasi as biaya_rekomendasi_1, pr2.biaya_rekomendasi as biaya_rekomendasi_2, pr3.biaya_rekomendasi as biaya_rekomendasi_3')
-			->select('pr1.nilai_reviewer as nilai_reviewer_1, pr2.nilai_reviewer as nilai_reviewer_2, pr3.nilai_reviewer as nilai_reviewer_3, ABS(pr1.nilai_reviewer - pr2.nilai_reviewer) as nilai_selisih')
-			->select('0 as nilai_rata') // col 14
-			->select($rumus_nilai_total . ' as nilai_total', FALSE) // col 15
+			->select('p.judul, k.nama_kategori, pt.nama_pt, r1.nama as reviewer_1, r2.nama as reviewer_2, r3.nama as reviewer_3') // 6 col
+			->select('pr1.biaya_rekomendasi as biaya_rekomendasi_1, pr2.biaya_rekomendasi as biaya_rekomendasi_2, pr3.biaya_rekomendasi as biaya_rekomendasi_3') // 3 col
+			->select('pr1.nilai_reviewer as nilai_reviewer_1, pr2.nilai_reviewer as nilai_reviewer_2, pr3.nilai_reviewer as nilai_reviewer_3, ABS(pr1.nilai_reviewer - pr2.nilai_reviewer) as nilai_selisih') // 4 col
+			->select('pr1.komentar as komentar_1, pr2.komentar as komentar_2, pr3.komentar as komentar_3') // 3 col
+			->select($rumus_nilai_total . ' as nilai_total', FALSE) // col 17
 			->from('tahapan_proposal tp')
 			->join('proposal p', 'p.id = tp.proposal_id')
 			->join('kategori k', 'k.id = p.kategori_id')
@@ -78,12 +79,16 @@ class Penilaian extends Admin_Controller
 			->join('plot_reviewer pr3', 'pr3.tahapan_proposal_id = tp.id AND pr3.no_urut = 3', 'LEFT')
 			->join('reviewer r3', 'r3.id = pr3.reviewer_id', 'LEFT')
 			->where(['tp.kegiatan_id' => $kegiatan_id, 'tp.tahapan_id' => $tahapan_id])
-			->order_by('15 DESC', NULL, FALSE) // SUM
+			->order_by('17 DESC', NULL, FALSE) // nilai total
 			->get()->result();
 		$this->smarty->assign('data_set', $data_set);
 		
 		$this->smarty->assign('kegiatan_option_set', $this->kegiatan_model->list_aktif_for_option());
 		$this->smarty->assign('tahapan_option_set', $this->tahapan_model->list_all_for_option());
-		$this->smarty->display();
+		
+		if ($tampilan == 'komentar')
+			$this->smarty->display('penilaian/komentar2.tpl');
+		else
+			$this->smarty->display();
 	}
 }

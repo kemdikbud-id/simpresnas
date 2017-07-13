@@ -3,22 +3,16 @@
 	<link rel="stylesheet" href="{base_url('../assets/css/dataTables.bootstrap.min.css')}" />
 	<style>
 		.table>thead>tr>th, .table>tbody>tr>td { font-size: 13px }
-		.table>tbody>tr>td:nth-child(11),
-		.table>tbody>tr>td:nth-child(12),
-		.table>tbody>tr>td:nth-child(13)
-		{
-			font-weight: bold;
-		}
-		.table>tbody>tr>td:nth-child(16) {
-			background-color: #d9edf7;
-			font-weight: bold;
+		.table>tbody>tr>td:nth-child(5),
+		.table>tbody>tr>td:nth-child(6),
+		.table>tbody>tr>td:nth-child(7){
+			vertical-align: top;
 		}
 	</style>
-	
 {/block}
 {block name='container'}container-fluid{/block}
 {block name='content'}
-	<h2 class="page-header">Hasil Penilaian Proposal</h2>
+	<h2 class="page-header">Hasil Penilaian Proposal (Daftar Komentar)</h2>
 	
 	<div class="row">
 		<div class="col-lg-12">
@@ -58,36 +52,18 @@
 						<th>R1</th>
 						<th>R2</th>
 						<th>R3</th>
-						<th>Rekom R1</th>
-						<th>Rekom R2</th>
-						<th>Rekom R3</th>
-						<th>Nilai R1</th>
-						<th>Nilai R2</th>
-						<th>Nilai R3</th>
-						<th>Selisih</th>
-						<th style="display: none">Rata</th>
-						<th>Total</th>
 					</tr>
 				</thead>
 				<tbody>
 					{foreach $data_set as $data}
 						<tr>
 							<td>{$data@index + 1}</td>
-							<td>{$data->judul|substr:0:50}{if strlen($data->judul) > 50}...{/if}</td>
+							<td>{$data->judul}</td>
 							<td>{$data->nama_kategori}</td>
 							<td>{$data->nama_pt}</td>
-							<td>{$data->reviewer_1}</td>
-							<td>{$data->reviewer_2}</td>
-							<td>{$data->reviewer_3}</td>
-							<td class="text-right">{$data->biaya_rekomendasi_1|number_format:0:",":"."}</td>
-							<td class="text-right">{$data->biaya_rekomendasi_2|number_format:0:",":"."}</td>
-							<td class="text-right">{$data->biaya_rekomendasi_3|number_format:0:",":"."}</td>
-							<td class="text-center" style="color:black">{$data->nilai_reviewer_1}</td>
-							<td class="text-center" style="color:black">{$data->nilai_reviewer_2}</td>
-							<td class="text-center" style="color:black">{$data->nilai_reviewer_3}</td>
-							<td class="text-center">{$data->nilai_selisih}</td>
-							<td class="text-center" style="color:black; display: none">{$data->nilai_rata|round:2}</td>
-							<td class="text-center" style="color:black;">{$data->nilai_total}</td>
+							<td><strong>{$data->reviewer_1}</strong>:<br/>{$data->komentar_1|nl2br}</td>
+							<td><strong>{$data->reviewer_2}</strong>:<br/>{$data->komentar_2|nl2br}</td>
+							<td><strong>{$data->reviewer_3}</strong>:<br/>{$data->komentar_3|nl2br}</td>
 						</tr>
 					{/foreach}
 				</tbody>
@@ -100,8 +76,8 @@
 	<script src="{base_url('../assets/js/jquery.dataTables.min.js')}"></script>
 	<script src="{base_url('../assets/js/dataTables.bootstrap.min.js')}"></script>
 	<script type="text/javascript">
-		$('#table').DataTable({
-			paging: false
-		});
+		//$('#table').DataTable({
+		//	paging: false
+		//});
 	</script>
 {/block}
