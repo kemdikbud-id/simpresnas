@@ -20,7 +20,7 @@
 	<body>
 		<!-- Fixed navbar -->
 		<nav class="navbar navbar-default navbar-fixed-top">
-			<div class="container">
+			<div class="{block name='container'}container{/block}">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
 						<span class="sr-only">Toggle navigation</span>
@@ -67,6 +67,7 @@
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Penilaian <span class="caret"></span></a>
 								<ul class="dropdown-menu">
 									<li><a href="{site_url('penilaian')}">Hasil Penilaian Proposal</a></li>
+									<li><a href="{site_url('penilaian/tahap2')}">Hasil Penilaian Proposal Tahap II</a></li>
 								</ul>
 							</li>
 						</ul>
@@ -84,7 +85,7 @@
 		</nav>
 
 		<!-- Begin page content -->
-		<div class="container">
+		<div class="{block name='container'}container{/block}">
 			{block name='content'}
 			{/block}
 		</div>

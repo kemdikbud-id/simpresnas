@@ -22,14 +22,14 @@ body {
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
 
-body > .container {
+body > .container, body > .container-fluid {
 	padding: 60px 15px 0;
 }
 .container .text-center {
 	margin: 10px 0;
 }
 
-.container .page-header {
+.container .page-header, .container-fluid .page-header {
 	margin-top: 15px;
 }
 
