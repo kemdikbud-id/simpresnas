@@ -43,6 +43,15 @@
 					</select>
 				</div>
 				<div class="form-group">
+					<label for="pt_id">PT</label>
+					<select name="pt_id" class="form-control input-sm">
+						<option value="all">Semua</option>
+						{foreach $pt_set as $pt}
+							<option value="{$pt->id}" {if !empty($smarty.get.pt_id)}{if $smarty.get.pt_id == $pt->id}selected{/if}{/if}>{$pt->nama_pt}</option>
+						{/foreach}
+					</select>
+				</div>
+				<div class="form-group">
 					<label for="tampilan">Tampilan</label>
 					<select name="tampilan" class="form-control input-sm">
 						<option value="">Nilai</option>

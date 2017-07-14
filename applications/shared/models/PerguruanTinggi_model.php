@@ -50,4 +50,25 @@ class PerguruanTinggi_model extends CI_Model
 			->get()
 			->result();
 	}
+	
+	public function list_by_tahapan_kegiatan($kegiatan_id, $tahapan_id)
+	{
+		/*
+		 select distinct pt.id, pt.nama_pt
+		from tahapan_proposal tp
+		join proposal p on p.id = tp.proposal_id
+		join perguruan_tinggi pt on pt.id = p.perguruan_tinggi_id
+		where tp.kegiatan_id = '2' and tp.tahapan_id = '1'
+		order by 2
+		 */
+		
+		return $this->db
+			->select('DISTINCT pt.id, pt.nama_pt', FALSE)
+			->from('tahapan_proposal tp')
+			->join('proposal p', 'p.id = tp.proposal_id')
+			->join('perguruan_tinggi pt', 'pt.id = p.perguruan_tinggi_id')
+			->where(['tp.kegiatan_id' => $kegiatan_id, 'tp.tahapan_id' => $tahapan_id])
+			->order_by('pt.nama_pt')
+			->get()->result();
+	}
 }
