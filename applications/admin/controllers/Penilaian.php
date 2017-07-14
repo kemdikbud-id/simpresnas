@@ -59,7 +59,24 @@ class Penilaian extends Admin_Controller
 			"CASE "
 			. "WHEN pr3.id IS NULL THEN (pr1.nilai_reviewer + pr2.nilai_reviewer) "
 			. "ELSE "
-			. " IF( ABS(pr1.nilai_reviewer - pr3.nilai_reviewer) < ABS(pr2.nilai_reviewer - pr3.nilai_reviewer), pr1.nilai_reviewer + pr3.nilai_reviewer, pr2.nilai_reviewer + pr3.nilai_reviewer ) "
+			. "  IF( ABS(pr1.nilai_reviewer - pr3.nilai_reviewer) < ABS(pr2.nilai_reviewer - pr3.nilai_reviewer), pr1.nilai_reviewer + pr3.nilai_reviewer, pr2.nilai_reviewer + pr3.nilai_reviewer ) "
+			. "END";
+		
+		$rumus_rata_rekom =
+			"CASE "
+			. "WHEN pr3.id IS NULL THEN (pr1.biaya_rekomendasi + pr2.biaya_rekomendasi) / 2 "
+			. "ELSE "
+			. "  IF( ABS(pr1.nilai_reviewer - pr3.nilai_reviewer) < ABS(pr2.nilai_reviewer - pr3.nilai_reviewer), ((pr1.biaya_rekomendasi + pr3.biaya_rekomendasi) / 2), ((pr2.biaya_rekomendasi + pr3.biaya_rekomendasi) / 2) ) "
+			. "END";
+		
+		$rumus_min_rekom =
+			"CASE "
+			. "WHEN pr3.id IS NULL THEN IF(pr1.biaya_rekomendasi < pr2.biaya_rekomendasi, pr1.biaya_rekomendasi, pr2.biaya_rekomendasi) "
+			. "ELSE "
+			. "  IF( ABS(pr1.nilai_reviewer - pr3.nilai_reviewer) < ABS(pr2.nilai_reviewer - pr3.nilai_reviewer), "
+			. "    IF(pr1.biaya_rekomendasi < pr3.biaya_rekomendasi, pr1.biaya_rekomendasi, pr3.biaya_rekomendasi), "
+			. "    IF(pr2.biaya_rekomendasi < pr3.biaya_rekomendasi, pr2.biaya_rekomendasi, pr3.biaya_rekomendasi) "
+			. "  ) "
 			. "END";
 		
 		$data_set = $this->db
@@ -68,6 +85,8 @@ class Penilaian extends Admin_Controller
 			->select('pr1.nilai_reviewer as nilai_reviewer_1, pr2.nilai_reviewer as nilai_reviewer_2, pr3.nilai_reviewer as nilai_reviewer_3, ABS(pr1.nilai_reviewer - pr2.nilai_reviewer) as nilai_selisih') // 4 col
 			->select('pr1.komentar as komentar_1, pr2.komentar as komentar_2, pr3.komentar as komentar_3') // 3 col
 			->select($rumus_nilai_total . ' as nilai_total', FALSE) // col 17
+			->select($rumus_rata_rekom . ' as rata_rekomendasi', FALSE)
+			->select($rumus_min_rekom . ' as min_rekomendasi', FALSE)
 			->select('p.is_afirmasi')
 			->from('tahapan_proposal tp')
 			->join('proposal p', 'p.id = tp.proposal_id')

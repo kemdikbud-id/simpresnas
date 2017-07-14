@@ -1,15 +1,18 @@
 {extends file='site_layout.tpl'}
 {block name='head'}
 	<link rel="stylesheet" href="{base_url('../assets/css/dataTables.bootstrap.min.css')}" />
+	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.dataTables.min.css" />
 	<style>
 		.table>thead>tr>th, .table>tbody>tr>td { font-size: 13px }
-		.table>tbody>tr>td:nth-child(11),
-		.table>tbody>tr>td:nth-child(12),
-		.table>tbody>tr>td:nth-child(13)
-		{
+		.table.table-condensed>tbody>tr>td { padding: 2px 2px; }
+		.table>tbody>tr>td:nth-child(1) { text-align: center; }
+		.table>tbody>tr>td:nth-child(8), .table>tbody>tr>td:nth-child(9), .table>tbody>tr>td:nth-child(10), .table>tbody>tr>td:nth-child(11) { 
+			text-align: right; 
+		}
+		.table>tbody>tr>td:nth-child(13), .table>tbody>tr>td:nth-child(14), .table>tbody>tr>td:nth-child(15) {
 			font-weight: bold;
 		}
-		.table>tbody>tr>td:nth-child(16) {
+		.table>tbody>tr>td:nth-child(17) {
 			background-color: #d9edf7;
 			font-weight: bold;
 		}
@@ -62,12 +65,13 @@
 						<th>Rekom R1</th>
 						<th>Rekom R2</th>
 						<th>Rekom R3</th>
-						<th>Nilai R1</th>
-						<th>Nilai R2</th>
-						<th>Nilai R3</th>
-						<th>Selisih</th>
-						<th style="display: none">Rata</th>
-						<th>Total</th>
+						<th>Rata</th>
+						<th>Min</th>
+						<th>N1</th>
+						<th>N2</th>
+						<th>N3</th>
+						<th title="Selisih">Slsh</th>
+						<th>TTL</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -80,14 +84,15 @@
 							<td>{$data->reviewer_1}</td>
 							<td>{$data->reviewer_2}</td>
 							<td>{$data->reviewer_3}</td>
-							<td class="text-right">{$data->biaya_rekomendasi_1|number_format:0:",":"."}</td>
-							<td class="text-right">{$data->biaya_rekomendasi_2|number_format:0:",":"."}</td>
-							<td class="text-right">{$data->biaya_rekomendasi_3|number_format:0:",":"."}</td>
+							<td>{$data->biaya_rekomendasi_1|number_format:0:",":"."}</td>
+							<td>{$data->biaya_rekomendasi_2|number_format:0:",":"."}</td>
+							<td>{$data->biaya_rekomendasi_3|number_format:0:",":"."}</td>
+							<td>{$data->rata_rekomendasi|number_format:0:",":"."}</td>
+							<td>{$data->min_rekomendasi|number_format:0:",":"."}</td>
 							<td class="text-center" style="color:black">{$data->nilai_reviewer_1}</td>
 							<td class="text-center" style="color:black">{$data->nilai_reviewer_2}</td>
 							<td class="text-center" style="color:black">{$data->nilai_reviewer_3}</td>
 							<td class="text-center">{$data->nilai_selisih}</td>
-							<td class="text-center" style="color:black; display: none">{$data->nilai_rata|round:2}</td>
 							<td class="text-center" style="color:black;">{$data->nilai_total}</td>
 						</tr>
 					{/foreach}
@@ -100,9 +105,18 @@
 {block name='footer-script'}
 	<script src="{base_url('../assets/js/jquery.dataTables.min.js')}"></script>
 	<script src="{base_url('../assets/js/dataTables.bootstrap.min.js')}"></script>
+	<script src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
+	<script src="//cdn.datatables.net/buttons/1.3.1/js/buttons.flash.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+	<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js"></script>
+	<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js"></script>
+	<script src="//cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
 	<script type="text/javascript">
 		$('#table').DataTable({
-			paging: false
+			paging: false,
+			ordering: false,
+			dom: 'Bfrtip',
+			buttons: [ 'excel' ]
 		});
 	</script>
 {/block}
