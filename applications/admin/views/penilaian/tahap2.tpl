@@ -87,7 +87,7 @@
 					{foreach $data_set as $data}
 						<tr {if $data->is_afirmasi == 1}class="afirmasi"{/if}>
 							<td>{$data@index + 1}</td>
-							<td>{$data->judul|substr:0:100}{if strlen($data->judul) > 100}...{/if}</td>
+							<td>{$data->judul}</td>
 							<td>{$data->nama_kategori}</td>
 							<td>{$data->nama_pt}</td>
 							<td>{$data->reviewer_1}</td>
