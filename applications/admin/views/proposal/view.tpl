@@ -6,7 +6,7 @@
 	<h2 class="page-header">Detail Proposal</h2>
 	<div class="row">
 		<div class="col-lg-12">
-			<form class="form-horizontal">
+			<form class="form-horizontal" action="{current_url()}?{$smarty.server.QUERY_STRING}" method="post">
 				<h4>Info Proposal</h4>
 				<div class="form-group">
 					<label class="col-md-2 control-label">Judul Proposal</label>
@@ -18,7 +18,7 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label">Kategori</label>
 						<div class="col-md-10">
-							<p class="form-control-static">{$data->nama_kategori}</p>
+							<p class="form-control-static">{$data->kategori->nama_kategori}</p>
 						</div>
 					</div>
 				{/if}
@@ -67,9 +67,20 @@
 						</div>
 					</div>
 				{/foreach}
+				<h4>Didanai</h4>
+				<div class="form-group">
+					<label class="col-md-2 control-label">Didanai</label>
+					<div class="col-md-4">
+						<select name="is_didanai" class="form-control">
+							<option value="0" {if $data->is_didanai == 0}selected{/if}>TIDAK</option>
+							<option value="1" {if $data->is_didanai == 1}selected{/if}>YA</option>
+						</select>
+					</div>
+				</div>
 				<div class="form-group">
 					<label class="col-md-2 control-label"></label>
-					<div class="col-md-10">
+					<div class="col-md-4">
+						<input type="submit" class="btn btn-primary" value="SIMPAN" />
 						{if $data->kegiatan->program_id == 1}
 							<a href="{site_url('proposal/index-pbbt')}" class="btn btn-default">Kembali</a>
 						{else if $data->kegiatan->program_id == 2}

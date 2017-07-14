@@ -114,7 +114,7 @@ class Penilaian extends Admin_Controller
 				->join('plot_reviewer pr3', 'pr3.tahapan_proposal_id = tp.id AND pr3.no_urut = 3', 'LEFT')
 				->join('reviewer r3', 'r3.id = pr3.reviewer_id', 'LEFT')
 				->where(['tp.kegiatan_id' => $kegiatan_id, 'tp.tahapan_id' => $tahapan_id])
-				->order_by('17 DESC', NULL, FALSE) // nilai total
+				->order_by('p.is_didanai DESC, 17 DESC', NULL, FALSE) // didanai, nilai total
 				->get()->result();
 		
 			$this->smarty->assign('data_set', $data_set);
@@ -131,13 +131,35 @@ class Penilaian extends Admin_Controller
 			$this->smarty->display();
 	}
 	
-	public function get_pt()
+	public function didanai_pt()
 	{
-		$kegiatan_id	= $this->input->get('kegiatan_id');
-		$tahapan_id		= $this->input->get('tahapan_id');
+		$data_set = $this->db->query(
+			"SELECT pt.id, pt.nama_pt, count(p.id) as jumlah_usul, sum(p.is_didanai) as jumlah_didanai
+			from tahapan_proposal tp
+			join proposal p on p.id = tp.proposal_id
+			join perguruan_tinggi pt on pt.id = p.perguruan_tinggi_id
+			where p.kegiatan_id = '2' and tp.tahapan_id = '1'
+			group by pt.id, pt.nama_pt
+			order by 4 desc, 3 desc")->result();
 		
-		$pt_set = $this->pt_model->list_by_tahapan_kegiatan($kegiatan_id, $tahapan_id);
+		$this->smarty->assign('data_set', $data_set);
 		
-		echo json_encode($pt_set);
+		$this->smarty->display();
+	}
+	
+	public function didanai_kategori()
+	{
+		$data_set = $this->db->query(
+			"SELECT k.id, k.nama_kategori, count(p.id) as jumlah_usul, sum(p.is_didanai) as jumlah_didanai
+			from tahapan_proposal tp
+			join proposal p on p.id = tp.proposal_id
+			join kategori k on k.id = p.kategori_id
+			where p.kegiatan_id = '2' and tp.tahapan_id = '1'
+			group by k.id, k.nama_kategori
+			order by 4 desc, 3 desc")->result();
+		
+		$this->smarty->assign('data_set', $data_set);
+		
+		$this->smarty->display();
 	}
 }

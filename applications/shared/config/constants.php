@@ -16,6 +16,7 @@ define('MODEL_REVIEWER', 'Reviewer_model');
 define('MODEL_PLOT_REVIEWER', 'PlotReviewer_model');
 define('MODEL_TAHAPAN', 'Tahapan_model');
 define('MODEL_TAHAPAN_PROPOSAL', 'TahapanProposal_model');
+define('MODEL_KATEGORI', 'Kategori_model');
 
 // Jenis Program
 defined('PROGRAM_PBBT')	or define('PROGRAM_PBBT', 1);

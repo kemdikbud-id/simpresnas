@@ -68,6 +68,9 @@
 								<ul class="dropdown-menu">
 									<li><a href="{site_url('penilaian')}">Hasil Penilaian Proposal</a></li>
 									<li><a href="{site_url('penilaian/tahap2')}">Hasil Penilaian Proposal Tahap II</a></li>
+									<li role="separator" class="divider"></li>
+									<li><a href="{site_url('penilaian/didanai-pt')}">Didanai per PT</a></li>
+									<li><a href="{site_url('penilaian/didanai-kategori')}">Didanai per Kategori</a></li>
 								</ul>
 							</li>
 						</ul>

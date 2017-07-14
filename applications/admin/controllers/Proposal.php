@@ -6,6 +6,7 @@
  * @property FileProposal_model $fileproposal_model
  * @property PerguruanTinggi_model $pt_model
  * @property Kegiatan_model $kegiatan_model
+ * @property Kategori_model $kategori_model
  */
 class Proposal extends Admin_Controller
 {
@@ -21,6 +22,7 @@ class Proposal extends Admin_Controller
 		$this->load->model(MODEL_FILE_PROPOSAL, 'fileproposal_model');
 		$this->load->model(MODEL_PERGURUAN_TINGGI, 'pt_model');
 		$this->load->model(MODEL_KEGIATAN, 'kegiatan_model');
+		$this->load->model(MODEL_KATEGORI, 'kategori_model');
 		
 		$this->load->helper('time_elapsed_helper');
 	}
@@ -62,9 +64,22 @@ class Proposal extends Admin_Controller
 		// id proposal
 		$id = (int)$this->input->get('id');
 		
+		if ($_SERVER['REQUEST_METHOD'] == 'POST')
+		{
+			$is_didanai = $this->input->post('is_didanai');
+			
+			$this->db->update('proposal', ['is_didanai' => $is_didanai], ['id' => $id]);
+			
+			$this->session->set_flashdata('updated', TRUE);
+			
+			redirect(site_url('proposal/view') . '?' . $_SERVER['QUERY_STRING']);
+			exit();
+		}
+		
 		$data = $this->proposal_model->get_single($id);
 		$data->kegiatan = $this->kegiatan_model->get_single($data->kegiatan_id);
 		$data->file_proposal_set = $this->fileproposal_model->list_by_proposal($id);
+		$data->kategori = $this->kategori_model->get_single($data->kategori_id);
 		$this->smarty->assign('data', $data);
 		
 		$pt = $this->pt_model->get_single($data->perguruan_tinggi_id);
