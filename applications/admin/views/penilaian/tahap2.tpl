@@ -93,11 +93,11 @@
 							<td>{$data->reviewer_1}</td>
 							<td>{$data->reviewer_2}</td>
 							<td>{$data->reviewer_3}</td>
-							<td>{$data->biaya_rekomendasi_1|number_format:0:",":"."}</td>
-							<td>{$data->biaya_rekomendasi_2|number_format:0:",":"."}</td>
-							<td>{$data->biaya_rekomendasi_3|number_format:0:",":"."}</td>
-							<td>{$data->rata_rekomendasi|number_format:0:",":"."}</td>
-							<td>{$data->min_rekomendasi|number_format:0:",":"."}</td>
+							<td>{$data->biaya_rekomendasi_1|number_format:0}</td>
+							<td>{$data->biaya_rekomendasi_2|number_format:0}</td>
+							<td>{$data->biaya_rekomendasi_3|number_format:0}</td>
+							<td>{$data->rata_rekomendasi|number_format:0}</td>
+							<td>{$data->min_rekomendasi|number_format:0}</td>
 							<td class="text-center" style="color:black">{$data->nilai_reviewer_1}</td>
 							<td class="text-center" style="color:black">{$data->nilai_reviewer_2}</td>
 							<td class="text-center" style="color:black">{$data->nilai_reviewer_3}</td>
