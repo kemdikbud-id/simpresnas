@@ -78,6 +78,21 @@ class User extends Admin_Controller
 		$this->smarty->display();
 	}
 	
+	public function request_approved()
+	{
+		$data_set = $this->request_user_model->list_request_approved();
+		
+		foreach ($data_set as &$data)
+		{
+			// get elapsed time
+			$data->waktu = time_elapsed_string($data->created_at);
+		}
+		
+		$this->smarty->assign('data_set', $data_set);
+		
+		$this->smarty->display();
+	}
+	
 	public function request_unreject()
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST')

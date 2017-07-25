@@ -47,7 +47,8 @@
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Master Data <span class="caret"></span></a>
 								<ul class="dropdown-menu">
 									<li><a href="{site_url('user/request')}">User Request</a></li>
-									<li><a href="{site_url('user/request_rejected')}">User Request Ditolak</a></li>
+									<li><a href="{site_url('user/request-rejected')}">User Request Ditolak</a></li>
+									<li><a href="{site_url('user/request-approved')}">User Request Disetujui</a></li>
 									<li role="separator" class="divider"></li>
 									<li><a href="{site_url('user')}">User</a></li>
 									<li><a href="{site_url('pt')}">Perguruan Tinggi</a></li>
