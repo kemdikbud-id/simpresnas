@@ -125,10 +125,8 @@ class User extends Admin_Controller
 			$user->email				= $data->email;
 			
 			// create user from perguruan tinggi
-			if ($data->program_id == PROGRAM_PBBT)
-				$user->username = trim($pt->npsn) . '01';
-			if ($data->program_id == PROGRAM_KBMI)
-				$user->username = trim($pt->npsn) . '02';
+			$user->username = trim($pt->npsn) . str_pad($data->program_id, 2, '0', STR_PAD_LEFT);
+			
 			
 			// Cek Exist User
 			if ($this->user_model->is_exist($user->username, $user->program_id, $user->tipe_user))
@@ -138,7 +136,7 @@ class User extends Admin_Controller
 			else
 			{
 				// generate password
-				$user->password = random_string();
+				$user->password = random_string('numeric');
 				// hash password
 				$user->password_hash = sha1($user->password);
 

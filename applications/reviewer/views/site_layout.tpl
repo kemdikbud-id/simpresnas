@@ -38,7 +38,7 @@
 					{if $ci->session->user}
 						<ul class="nav navbar-nav">
 							<li>
-								<a href="{site_url('review')}">Review Proposal</a>
+								<a href="{site_url('review')}">Penilaian</a>
 							</li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">

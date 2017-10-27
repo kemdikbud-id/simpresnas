@@ -1,6 +1,6 @@
 {extends file='site_layout.tpl'}
 {block name='content'}
-	<h1 class="page-header">Login SIM-PKMI</h1>
+	<h2 class="page-header">Login SIM-PKMI</h2>
 
 	<div class="row">
         <div class="col-lg-5">

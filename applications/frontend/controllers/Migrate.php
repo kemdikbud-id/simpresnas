@@ -39,10 +39,12 @@ class Migrate extends Frontend_Controller
 		}
 	}
 	
-	public function up()
+	public function up($target_version = null)
 	{
-		// try migrate to latest version
-		$result = $this->migration->latest();
+		if ($target_version == null)
+			$result = $this->migration->latest();
+		else
+			$result = $this->migration->version($target_version);
 		
 		if ($result === FALSE)
 		{
@@ -67,6 +69,9 @@ class Migrate extends Frontend_Controller
 			$target_version = $latest_version - 1;
 		
 		// do rollback
-		$this->migration->version($target_version);
+		$result = $this->migration->version($target_version);
+		
+		if ($result == TRUE)
+			echo "Berhasil di migrate down ke versi " . $target_version . "\n";
 	}
 }

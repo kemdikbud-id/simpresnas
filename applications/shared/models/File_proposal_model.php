@@ -4,7 +4,7 @@
  * @author Fathoni <m.fathoni@mail.com>
  * @property CI_DB_query_builder $db
  */
-class FileProposal_model extends CI_Model
+class File_proposal_model extends CI_Model
 {
 	public $id;
 	public $proposal_id;
@@ -16,7 +16,7 @@ class FileProposal_model extends CI_Model
 	
 	/**
 	 * @param int $proposal_id
-	 * @return FileProposal_model[]
+	 * @return File_proposal_model[]
 	 */
 	public function list_by_proposal($proposal_id)
 	{
@@ -30,9 +30,9 @@ class FileProposal_model extends CI_Model
 		return $this->db->get_where('file_proposal', ['id' => $id], 1)->row();
 	}
 	
-	public function insert()
+	public function insert(stdClass $model)
 	{
-		
+		return $this->db->insert('file_proposal', $model);
 	}
 	
 	public function delete_by_proposal($proposal_id)

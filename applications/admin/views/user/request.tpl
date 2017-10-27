@@ -27,7 +27,7 @@
 							<td>{$data->kontak_pengusul}</td>
 							<td><code>{$data->email}</code></td>
 							<td class="text-center"><a href="{base_url("../upload/request-user/{$data->nama_file}")}" target="_blank"><span class="glyphicon glyphicon-file" aria-hidden="true"></span></a></td>
-							<td>{if $data->program_id == 1}PBBT{else}KBMI{/if}</td>
+							<td>{$data->nama_program_singkat}</td>
 							<td>{$data->waktu}</td>
 							<td>
 								<a href="{site_url("user/request-reject?id={$data->id}")}" class="btn btn-xs btn-warning reject">Tolak</a>

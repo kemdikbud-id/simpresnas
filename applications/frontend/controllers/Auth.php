@@ -36,11 +36,10 @@ class Auth extends Frontend_Controller
 			$this->load->library('upload', array(
 				'allowed_types' => 'pdf',
 				'max_size' => 5 * 1024, // 5 MB,
-				'encrypt_name' => TRUE
+				'encrypt_name' => TRUE,
+				'upload_path' => FCPATH.'upload/request-user/'
 			));
 					
-			$this->upload->upload_path = './upload/request-user/';
-			
 			// Coba upload dahulu, kemudian proses datanya
 			if ($this->upload->do_upload('file1'))
 			{

@@ -7,7 +7,7 @@
 	</style>
 {/block}
 {block name='content'}
-	<h2 class="page-header">Review Proposal</h2>
+	<h2 class="page-header">Penilaian {if $tahapan}{$tahapan->tahapan}{/if}</h2>
 
 	<div class="row">
 		<div class="col-lg-12">
@@ -69,7 +69,12 @@
 				{
 					data: 'id', 
 					render: function(data, type, row, meta) {
-						return '<a class="btn btn-sm btn-info" href="{site_url('review/penilaian/')}'+data+'">Nilai</a>';
+						if (thp_id === '1')
+							return '<a class="btn btn-sm btn-info" href="{site_url('review/penilaian/')}'+data+'">Nilai</a>';
+						else if (thp_id === '2')
+							return '<a class="btn btn-sm btn-info" href="{site_url('review/monev/')}'+data+'">Nilai</a>';
+						else 
+							return '';
 					},
 					orderable: false
 				}

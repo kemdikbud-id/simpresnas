@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @property FileProposal_model $fileproposal_model
+ * @property File_proposal_model $file_proposal_model
  * @property Proposal_model $proposal_model
  * @property Kegiatan_model $kegiatan_model
  * @property PerguruanTinggi_model $pt_model
@@ -10,7 +10,7 @@ class Download extends Frontend_Controller
 {
 	public function index()
 	{
-		$this->load->model(MODEL_FILE_PROPOSAL, 'fileproposal_model');
+		$this->load->model(MODEL_FILE_PROPOSAL, 'file_proposal_model');
 		$this->load->model(MODEL_PROPOSAL, 'proposal_model');
 		$this->load->model(MODEL_KEGIATAN, 'kegiatan_model');
 		$this->load->model(MODEL_PERGURUAN_TINGGI, 'pt_model');
@@ -24,7 +24,7 @@ class Download extends Frontend_Controller
 		else
 			$disposition = 'inline';
 		
-		$file_proposal = $this->fileproposal_model->get_single($id);
+		$file_proposal = $this->file_proposal_model->get_single($id);
 		$proposal = $this->proposal_model->get_single($file_proposal->proposal_id);
 		$kegiatan = $this->kegiatan_model->get_single($proposal->kegiatan_id);
 		$pt = $this->pt_model->get_single($proposal->perguruan_tinggi_id);

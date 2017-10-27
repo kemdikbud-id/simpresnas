@@ -38,6 +38,11 @@ class Site extends Frontend_Controller
 		$this->smarty->display();
 	}
 	
+	public function download()
+	{
+		$this->smarty->display();
+	}
+	
 	public function test_send_mail()
 	{
 		$this->load->library('email');  // configuration file : applications/user/config/email.php

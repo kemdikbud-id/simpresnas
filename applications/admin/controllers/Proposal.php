@@ -3,7 +3,7 @@
 /**
  * @author Fathoni
  * @property Proposal_model $proposal_model
- * @property FileProposal_model $fileproposal_model
+ * @property File_proposal_model $file_proposal_model
  * @property PerguruanTinggi_model $pt_model
  * @property Kegiatan_model $kegiatan_model
  * @property Kategori_model $kategori_model
@@ -19,7 +19,7 @@ class Proposal extends Admin_Controller
 		$this->check_credentials();
 		
 		$this->load->model(MODEL_PROPOSAL, 'proposal_model');
-		$this->load->model(MODEL_FILE_PROPOSAL, 'fileproposal_model');
+		$this->load->model(MODEL_FILE_PROPOSAL, 'file_proposal_model');
 		$this->load->model(MODEL_PERGURUAN_TINGGI, 'pt_model');
 		$this->load->model(MODEL_KEGIATAN, 'kegiatan_model');
 		$this->load->model(MODEL_KATEGORI, 'kategori_model');
@@ -78,7 +78,7 @@ class Proposal extends Admin_Controller
 		
 		$data = $this->proposal_model->get_single($id);
 		$data->kegiatan = $this->kegiatan_model->get_single($data->kegiatan_id);
-		$data->file_proposal_set = $this->fileproposal_model->list_by_proposal($id);
+		$data->file_proposal_set = $this->file_proposal_model->list_by_proposal($id);
 		$data->kategori = $this->kategori_model->get_single($data->kategori_id);
 		$this->smarty->assign('data', $data);
 		

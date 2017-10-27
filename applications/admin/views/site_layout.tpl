@@ -74,6 +74,13 @@
 									<li><a href="{site_url('penilaian/didanai-kategori')}">Didanai per Kategori</a></li>
 								</ul>
 							</li>
+							<li>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Expo KMI <span class="caret"></span></a>
+								<ul class="dropdown-menu">
+									<li><a href="{site_url('expo')}">Usulan Expo KMI</a></li>
+									<li><a href="{site_url('expo/request')}">Menunggu Persetujuan</a></li>
+								</ul>
+							</li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
 							{if $ci->session->user}

@@ -26,6 +26,8 @@ class RequestUser_model extends CI_Model
 	public function list_request()
 	{
 		return $this->db
+			->select('request_user.*, program.nama_program_singkat')
+			->join('program', 'program.id = program_id')
 			->where('approved_at IS NULL', NULL, FALSE)
 			->where('rejected_at IS NULL', NULL, FALSE)
 			->order_by('created_at ASC')
@@ -64,7 +66,7 @@ class RequestUser_model extends CI_Model
 		$this->kontak_pengusul		= $this->input->post('kontak_pengusul');
 		$this->email				= $this->input->post('email');
 		
-		$this->created_at		= date('Y-m-d H:i:s');
+		$this->created_at			= date('Y-m-d H:i:s');
 		
 		return $this->db->insert('request_user', $this);
 	}

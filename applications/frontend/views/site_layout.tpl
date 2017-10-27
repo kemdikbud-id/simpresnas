@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>Program Kewirausahaan Mahasiswa Indonesia</title>
+		<title>SIM-PKMI Program Kewirausahaan Mahasiswa Indonesia</title>
 		{if ENVIRONMENT == 'development'}
 			<link href="{base_url('assets/css/bootstrap.min.css')}" rel="stylesheet"/>
 		{/if}
@@ -37,6 +37,7 @@
 				<div id="navbar" class="collapse navbar-collapse">
 					{if $ci->session->user}
 						<ul class="nav navbar-nav">
+							{if $ci->session->program_id == PROGRAM_PBBT or $ci->session->program_id == PROGRAM_KBMI}
 							<li>
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Proposal {if $ci->session->program_id == 1}PBBT{else}KBMI{/if}<span class="caret"></span></a>
 								<ul class="dropdown-menu">
@@ -44,6 +45,16 @@
 									<li><a href="{site_url('proposal/create')}">Usulan Baru</a></li>
 								</ul>
 							</li>
+							{/if}
+							{if $ci->session->program_id == PROGRAM_EXPO}
+							<li>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Expo KMI<span class="caret"></span></a>
+								<ul class="dropdown-menu">
+									<li><a href="{site_url('expo')}">Daftar Expo KMI</a></li>
+								</ul>
+							</li>
+							{/if}
+							<li><a href="{site_url('site/download')}">Download</a></li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
 							{if $ci->session->user}
@@ -55,10 +66,10 @@
 					{else}
 						<ul class="nav navbar-nav">
 							<li><a href="{site_url()}">Halaman depan</a></li>
+							<li><a href="{site_url('site/download')}">Download</a></li>
 							<li><a href="{site_url('auth/reg')}">Registrasi</a></li>
 							<li><a href="{site_url('auth/login')}">Login</a></li>
 							{*
-							<li><a href="#">Download</a></li>
 							<li><a href="#">Tanya Jawab</a></li>
 							*}
 						</ul>

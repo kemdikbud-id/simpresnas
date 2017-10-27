@@ -23,6 +23,9 @@
 						<label class="checkbox-inline">
 							<input name="program_id" id="program_id-1" value="2" type="radio" {set_radio('program_id', '2')}> KBMI
 						</label>
+						<label class="checkbox-inline">
+							<input name="program_id" id="program_id-3" value="3" type="radio" {set_radio('program_id', '3')}> Expo KMI
+						</label>
 					</div>
 				</div>
 

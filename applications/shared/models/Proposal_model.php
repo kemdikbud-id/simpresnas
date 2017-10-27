@@ -3,6 +3,11 @@
 /**
  * @author Fathoni <m.fathoni@mail.com>
  * @property CI_DB_query_builder $db
+ * @property int $id
+ * @property int $perguruan_tinggi_id
+ * @property string $judul
+ * @property File_proposal_model[] $file_proposal_set
+ * @property Anggota_proposal_model[] $anggota_proposal_set
  */
 class Proposal_model extends CI_Model
 {
@@ -27,13 +32,18 @@ class Proposal_model extends CI_Model
 	 * Mengambil satu data Proposal
 	 * @param int $id
 	 * @param int $perguruan_tinggi_id Harus ada untuk tampilan frontend sebagai pengaman
+	 * @return Proposal_model 
 	 */
 	public function get_single($id, $perguruan_tinggi_id = NULL)
 	{
 		$this->db->where(['id' => $id]);
-		if ($perguruan_tinggi_id != NULL)
-			$this->db->where(['perguruan_tinggi_id' => $perguruan_tinggi_id]);
+		if ($perguruan_tinggi_id != NULL) $this->db->where(['perguruan_tinggi_id' => $perguruan_tinggi_id]);
 		return $this->db->get('proposal', 1)->row();
+	}
+	
+	public function update($id, stdClass $model)
+	{
+		return $this->db->update('proposal', $model, ['id' => $id]);
 	}
 	
 	public function delete($id, $perguruan_tinggi_id = NULL)
@@ -77,5 +87,26 @@ class Proposal_model extends CI_Model
 		return $this->db->query($sql, array(
 			$kegiatan_id, $tahapan_id, $reviewer_id
 		))->result();
+	}
+	
+	public function list_proposal_expo($perguruan_tinggi_id)
+	{
+		// Kegiatan Expo Aktif
+		$kegiatan_id = $this->db->get_where('kegiatan', ['program_id' => PROGRAM_EXPO, 'is_aktif' => 1], 1)->row()->id;
+		
+		return $this->db
+			->select('proposal.id, judul, nama_kategori, is_submited, is_didanai, 0 as jumlah_anggota, 0 as is_lolos_expo')
+			->from('proposal')
+			->join('kategori', 'kategori.id = kategori_id')
+			->where(['perguruan_tinggi_id' => $perguruan_tinggi_id, 'kegiatan_id' => $kegiatan_id])
+			->get()->result();
+	}
+	
+	public function submit($id)
+	{
+		return $this->db->update('proposal', [
+			'is_submited' => 1,
+			'updated_at' => date('Y-m-d H:i:s')
+		], ['id' => $id]);
 	}
 }

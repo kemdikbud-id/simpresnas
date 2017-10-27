@@ -2,14 +2,42 @@
 {block name='head'}
 	<style>
 		.jumbotron { background-color: transparent; padding: 20px; }
-		.jumbotron h1 { font-size: 60px; }
+		.jumbotron h1 { font-size: 40px; }
+		.btn-daftar { padding: 10px 15px; }
 	</style>
 {/block}
 {block name='content'}
-	<div class="jumbotron">
-        <h1 class="text-center">Program Kewirausahaan Mahasiswa Indonesia</h1>
+	<div class="jumbotron text-center">
+        <h1>Program Kewirausahaan Mahasiswa Indonesia</h1>
+		<p class="lead">Pendaftaran <strong>Expo KMI Ke-VIII Tahun 2017</strong> telah dibuka !<br/>Segera login untuk melakukan pendaftaran Expo KMI</p>
+		<p></p>
+		<!--
+		<p class="lead">
+			<a href="#" class="btn btn-primary btn-daftar">DAFTAR PESERTA KBMI</a>
+			<a href="#" class="btn btn-success btn-daftar">DAFTAR NON-PESERTA KBMI</a>
+		</p>
+		-->
     </div>
+	
+	<hr/>
+	
+	<div class="row">
+		<div class="col-md-4 text-center">
+			<h3>Program Belajar Bekerja Terpadu (PBBT)</h3>
+			<p>Program memperkenalkan dunia usaha atau dunia kerja lebih dini kepada mahasiswa dengan mengintegrasikan berbagai 
+						latar belakang ilmu yang didapatnya di bangku kuliah dengan pengalaman nyata dunia usaha</p>
+		</div>
+		<div class="col-md-4 text-center">
+			<h3>Kompetisi Bisnis Mahasiswa Indonesia (KBMI)</h3>
+			<p>Wadah untuk mempraktekan ilmu dan keterampilan berwirausaha yang sudah didapat oleh mahasiswa melalui pemberian modal</p>
+		</div>
+		<div class="col-md-4 text-center">
+			<h3 class="text-primary">Expo KMI</h3>
+			<p>Expo Kewirausahaan Mahasiswa Indonesia (Expo KMI) adalah kegiatan tahunan berupa pameran usaha yang telah dijalankan dan ajang temu bisnis bagi mahasiswa pelaksana kewirausahaan</p>
+		</div>
+	</div>
 
+	<!--
 	<div class="row">
 		<div class="col-lg-6">
 			<div class="panel panel-default">
@@ -74,4 +102,5 @@
 			</div>
 		</div>
 	</div>
+	-->
 {/block}

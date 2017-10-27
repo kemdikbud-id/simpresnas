@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * @author Fathoni <m.fathoni@mail.com>
  * @property Proposal_model $proposal_model
- * @property FileProposal_model $fileproposal_model
+ * @property File_proposal_model $file_proposal_model
  * @property Kegiatan_model $kegiatan_model
  * @property Program_model $program_model
  */
@@ -20,7 +20,7 @@ class Proposal extends Frontend_Controller
 		$this->check_credentials();
 		
 		$this->load->model(MODEL_PROPOSAL, 'proposal_model');
-		$this->load->model(MODEL_FILE_PROPOSAL, 'fileproposal_model');
+		$this->load->model(MODEL_FILE_PROPOSAL, 'file_proposal_model');
 		$this->load->model(MODEL_KEGIATAN, 'kegiatan_model');
 		$this->load->model(MODEL_PROGRAM, 'program_model');
 	}
@@ -332,14 +332,14 @@ class Proposal extends Frontend_Controller
 			$this->db->trans_start();
 			
 			// Ambil list file proposal
-			$file_proposal_set = $this->fileproposal_model->list_by_proposal($id);
+			$file_proposal_set = $this->file_proposal_model->list_by_proposal($id);
 			
 			// delete tiap file
 			foreach ($file_proposal_set as $file)
 				unlink('./upload/file-proposal/'.$program_path.'/'.$this->session->user->username.'/'.$id.'/'.$file->nama_file);
 			
 			// delete row file proposal
-			$this->fileproposal_model->delete_by_proposal($id);
+			$this->file_proposal_model->delete_by_proposal($id);
 			
 			// delete proposal
 			$this->proposal_model->delete($id, $this->session->perguruan_tinggi->id);
