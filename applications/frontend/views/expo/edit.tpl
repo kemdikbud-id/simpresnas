@@ -30,6 +30,16 @@
 					<legend>Detail Usaha</legend>
 					
 					<div class="form-group">
+						<label for="is_kmi_award" class="col-lg-2 control-label">Usulkan KMI Award</label>
+						<div class="col-lg-4">
+							<select name="is_kmi_award" class="form-control" {if $has_kmi_award == TRUE and $proposal->is_kmi_award == 0}disabled{/if}>
+								<option value="0" {set_select('is_kmi_award', '0', ($proposal->is_kmi_award == 0))}>Tidak</option>
+								<option value="1" {set_select('is_kmi_award', '1', ($proposal->is_kmi_award == 1))}>Ya</option>
+							</select>
+						</div>
+					</div>
+					
+					<div class="form-group">
 						<label for="judul" class="col-lg-2 control-label">Nama Usaha</label>
 						<div class="col-lg-10">
 							<input type="text" class="form-control" name="judul" value="{set_value('judul', $proposal->judul)}">
@@ -86,22 +96,7 @@
 							<input type="text" class="form-control" name="nama_anggota_3" placeholder="Nama Mahasiswa" value="{set_value('nama_anggota_3', $proposal->anggota_proposal_set[2]->nama)}">
 						</div>
 					</div>
-						
-					<!-- Text input-->
-					<div class="form-group">
-						<label class="col-lg-2 control-label" for="file1">Profil Usaha</label>
-						<div class="col-lg-5">
-							<p class="form-control-static" id="fileProfil">
-								<a href="{base_url()}upload/usulan-expo/{$proposal->file_proposal_set[0]->nama_file}" target="_blank">{$proposal->file_proposal_set[0]->nama_asli}</a>
-								<a class="btn btn-xs btn-warning" id="btnFileProfil">Ubah</a>
-							</p>
-							<input id="file1" name="file1" class="form-control input-md" type="file" style="display: none">
-						</div>
-						<div class="col-lg-4" style="padding-top: 9px">
-							<span class="text-info">File yang di ijinkan: PDF. Format bisa dilihat di <a href="{site_url('site/download')}" target="_blank">{site_url('site/download')}</a></span>
-						</div>
-					</div>
-					
+
 					<div class="form-group">
 						<div class="col-lg-2"></div>
 						<div class="col-lg-10">
@@ -123,15 +118,4 @@
 
 		</div>
 	</div>
-{/block}
-{block name='footer-script'}
-	<script src="{base_url('assets/js/bootstrap-filestyle.min.js')}" type='text/javascript'></script>
-	<script>
-		$(document).ready(function () {
-			$('#btnFileProfil').on('click', function() {
-				$('#fileProfil').remove();
-				$(':file').filestyle();
-			});
-		});
-	</script>
 {/block}

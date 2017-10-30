@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 // Model name
 define('MODEL_FILE_PROPOSAL', 'File_proposal_model');
+define('MODEL_FILE_EXPO', 'File_expo_model');
 define('MODEL_KEGIATAN', 'Kegiatan_model');
 define('MODEL_LEMBAGA_PENGUSUL', 'LembagaPengusul_model');
 define('MODEL_PERGURUAN_TINGGI', 'PerguruanTinggi_model');

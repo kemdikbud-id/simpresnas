@@ -7,13 +7,40 @@
 	<div class="row">
 		<div class="col-lg-12">
 
+			<form action="{current_url()}" method="post" enctype="multipart/form-data" class="form-horizontal">
+				<fieldset>
+					<!-- Text input-->
+					<div class="form-group" id="fileUpload" {if $file_expo != NULL}style="display: none"{/if}>
+						<label class="col-lg-2 control-label" for="file1">File Proposal Expo</label>  
+						<div class="col-lg-5">
+							<input id="file1" name="file1" class="form-control input-md" type="file">
+							<span class="help-block text-info">File PDF. Format proposal bisa dilihat di <a href="{site_url('site/download')}" target="_blank">{site_url('site/download')}</a></span>
+						</div>
+						<div class="col-lg-2">
+							<input type="submit" class="btn btn-primary" value="Upload" />
+							{if $file_expo != NULL}
+								<a class="btn btn-default" id="btnCancelChange">Batal</a>
+							{/if}
+						</div>
+					</div>
+					<div class="form-group" id="fileUploadDisplay" {if $file_expo == NULL}style="display: none"{/if}>
+						<label class="col-lg-2 control-label" for="file1">File Proposal Expo</label>
+						<div class="col-lg-5">
+							<p class="form-control-static">
+								<a href="{base_url()}upload/usulan-expo/{$file_expo->nama_file}">{$file_expo->nama_asli}</a>
+								<a class="btn btn-xs btn-warning" id="btnChangeFile">Ubah</a>
+							</p>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+
 			{if count($data_set) < $kegiatan->proposal_per_pt}
-			<p>
-				<!-- <a href="{site_url('expo/pilih-proposal')}" class="btn btn-info">Daftarkan Usaha dari Program KBMI</a> -->
-				<a href="{site_url('expo/add')}" class="btn btn-primary">Tambah Usaha</a>
-			</p>
+				<p>
+					<a href="{site_url('expo/add')}" class="btn btn-primary">Tambah Usaha</a>
+				</p>
 			{/if}
-			
+
 			<table class="table table-bordered table-hover table-condensed">
 				<thead>
 					<tr>
@@ -25,38 +52,69 @@
 					</tr>
 				</thead>
 				<tbody>
-				{foreach $data_set as $data}
-					<tr>
-						<td class="text-center">{$data@index + 1}</td>
-						<td>{$data->judul}</td>
-						<td>{$data->nama_kategori}</td>
-						<td class="text-center">
-							{if $data->is_submited == 1}
-								{if $data->is_didanai == 0}
-									<span class="label label-warning">Seleksi Kelayakan</span>
-								{else if $data->is_didanai == 1}
-									<span class="label label-success">Ikut EXPO</span>
+					{foreach $data_set as $data}
+						<tr>
+							<td class="text-center">{$data@index + 1}</td>
+							<td>{$data->judul} {if $data->is_kmi_award}<span class="label label-primary">KMI Award</span>{/if}</td>
+							<td>{$data->nama_kategori}</td>
+							<td class="text-center">
+								{if $data->is_submited == 1}
+									{if $data->is_didanai == 1}
+										<span class="label label-success">Ikut EXPO</span>
+									{else if $data->is_ditolak == 1}
+										<span class="label label-danger">Ditolak</span>
+									{else}
+										<span class="label label-info">Seleksi Kelayakan</span>
+									{/if}
 								{/if}
-							{/if}
-						</td>
-						<td>
-							{* Boleh di edit/hapus jika belum disubmit *}
-							{if $data->is_submited == 0}
-								<a href="{site_url('expo/edit')}/{$data->id}" class="btn btn-xs btn-success">Edit</a>
-								<a href="{site_url('expo/hapus')}/{$data->id}" class="btn btn-xs btn-danger">Hapus</a>
-								<a href="{site_url('expo/submit')}/{$data->id}" class="btn btn-xs btn-primary">Ajukan Untuk Seleksi</a>
-							{/if}
-						</td>
-					</tr>
-				{foreachelse}
-					<tr>
-						<td colspan="6">Belum ada data</td>
-					</tr>
-				{/foreach}
+							</td>
+							<td>
+								{* Boleh di edit/hapus jika belum disubmit *}
+								{if $data->is_submited == 0}
+									<a href="{site_url('expo/edit')}/{$data->id}" class="btn btn-xs btn-success">Edit</a>
+									<a href="{site_url('expo/hapus')}/{$data->id}" class="btn btn-xs btn-danger">Hapus</a>
+									<a href="{site_url('expo/submit')}/{$data->id}" class="btn btn-xs btn-primary">Ajukan Untuk Seleksi</a>
+								{/if}
+							</td>
+						</tr>
+					{foreachelse}
+						<tr>
+							<td colspan="6">Belum ada data</td>
+						</tr>
+					{/foreach}
 				</tbody>
 			</table>
-			<p class="text-success">Batas Upload : {$kegiatan->proposal_per_pt} Usulan</p>
-			<p class="text-danger">Setiap delegasi terdiri dari maksimum 3 (tiga) jenis / kategori usaha. Masing-masing jenis usaha diwakili oleh 1 (satu) orang mahasiswa sebagai tim. Delegasi dapat didampingi oleh dosen Pembimbing Kewirausahaannya.</p>
+			<ul>
+				<li>Batas Usulan : 3 Judul Usaha</li>
+				<li class="text-danger">Setiap delegasi terdiri dari maksimum 3 (tiga) jenis / kategori usaha. Masing-masing jenis usaha diwakili oleh 1 (satu) orang mahasiswa sebagai tim.
+					Delegasi dapat didampingi oleh dosen Pembimbing Kewirausahaannya.</li>
+				<li>Hanya 1 judul usaha yang bisa diikutkan lomba KMI Award</li>
+				<li>Informasi Status : <br/>
+					<span class="label label-info">Seleksi Kelayakan</span> : Dalam proses seleksi oleh tim penilai.<br/>
+					<span class="label label-success">Ikut EXPO</span> : Usulan disetujui dan berhak mengikut Expo KMI<br/>
+					<span class="label label-danger">Ditolak</span> : Usulan tidak disetujui<br/>
+					<span class="label label-primary">KMI Award</span> : Usulan yang diikutkan lomba KMI Award
+				</li>
+			</ul>
 		</div>
 	</div>
+{/block}
+{block name='footer-script'}
+	<script src="{base_url('assets/js/bootstrap-filestyle.min.js')}" type='text/javascript'></script>
+	<script>
+		$(document).ready(function () {
+			/* File Style */
+			$(':file').filestyle();
+
+			$('#btnChangeFile').on('click', function () {
+				$('#fileUploadDisplay').hide();
+				$('#fileUpload').show();
+			});
+
+			$('#btnCancelChange').on('click', function () {
+				$('#fileUploadDisplay').show();
+				$('#fileUpload').hide();
+			});
+		});
+	</script>
 {/block}

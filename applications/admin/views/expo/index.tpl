@@ -13,33 +13,19 @@
 			<table class="table table-bordered table-striped table-condensed" id="table">
 				<thead>
 					<tr>
-						<th>Judul Usaha</th>
-						<th>Kategori</th>
 						<th>Perguruan Tinggi</th>
-						<th>Anggota</th>
-						<th>Program KBMI</th>
-						<th></th>
+						<th>Kategori</th>
+						<th>Judul Usaha</th>
+						<th>Status</th>
 					</tr>
 				</thead>
 				<tbody>
 					{foreach $data_set as $data}
 						<tr>
-							<td>{$data->nama_usaha}</td>
-							<td>{$data->nama_kategori}</td>
 							<td>{$data->nama_pt}</td>
-							<td class="text-center">{$data->jumlah_anggota}</td>
-							<td class="text-center">
-								{if $data->proposal_id != null}
-									<span class="label label-primary">Program KBMI</span>
-								{else}
-									<span class="label label-default">Non-Program KBMI</span>
-								{/if}
-							</td>
-							<td>
-								{if $data->proposal_id == null}
-									<a href="">Approval</a>
-								{/if}
-							</td>
+							<td>{$data->nama_kategori}</td>
+							<td>{$data->nama_usaha}</td>
+							<td></td>
 						</tr>
 					{/foreach}
 				</tbody>

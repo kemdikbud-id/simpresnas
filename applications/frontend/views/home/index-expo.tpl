@@ -9,7 +9,7 @@
 				</div>
 			</div>
 			<p>
-				<a href="{site_url('expo')}" class="btn btn-primary">Pendaftaran Delegasi</a>
+				<a href="{site_url('expo')}" class="btn btn-primary">Pendaftaran Expo KMI</a>
 			</p>
 		</div>
 	</div>

@@ -95,7 +95,7 @@ class Proposal_model extends CI_Model
 		$kegiatan_id = $this->db->get_where('kegiatan', ['program_id' => PROGRAM_EXPO, 'is_aktif' => 1], 1)->row()->id;
 		
 		return $this->db
-			->select('proposal.id, judul, nama_kategori, is_submited, is_didanai, 0 as jumlah_anggota, 0 as is_lolos_expo')
+			->select('proposal.id, judul, nama_kategori, is_submited, is_didanai, is_ditolak, is_kmi_award')
 			->from('proposal')
 			->join('kategori', 'kategori.id = kategori_id')
 			->where(['perguruan_tinggi_id' => $perguruan_tinggi_id, 'kegiatan_id' => $kegiatan_id])
@@ -108,5 +108,18 @@ class Proposal_model extends CI_Model
 			'is_submited' => 1,
 			'updated_at' => date('Y-m-d H:i:s')
 		], ['id' => $id]);
+	}
+	
+	public function has_kmi_award($kegiatan_id, $perguruan_tinggi_id)
+	{
+		$this->db->where(array(
+			'kegiatan_id' => $kegiatan_id, 
+			'perguruan_tinggi_id' => $perguruan_tinggi_id,
+			'is_kmi_award' => 1
+		));
+		
+		$count = $this->db->count_all_results('proposal');
+		
+		return ($count > 0);
 	}
 }

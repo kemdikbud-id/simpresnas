@@ -4,6 +4,7 @@
  * @author Fathoni <m.fathoni@mail.com>
  * @property Proposal_model $proposal_model
  * @property File_proposal_model $file_proposal_model
+ * @property File_expo_model $file_expo_model
  * @property Kegiatan_model $kegiatan_model
  * @property Program_model $program_model
  * @property Syarat_model $syarat_model
@@ -21,6 +22,7 @@ class Expo extends Frontend_Controller
 		
 		$this->load->model(MODEL_PROPOSAL, 'proposal_model');
 		$this->load->model(MODEL_FILE_PROPOSAL, 'file_proposal_model');
+		$this->load->model(MODEL_FILE_EXPO, 'file_expo_model');
 		$this->load->model(MODEL_KEGIATAN, 'kegiatan_model');
 		$this->load->model(MODEL_PROGRAM, 'program_model');
 		$this->load->model(MODEL_SYARAT, 'syarat_model');
@@ -36,6 +38,72 @@ class Expo extends Frontend_Controller
 		$kegiatan->program = $this->program_model->get_single($kegiatan->program_id);
 		$this->smarty->assign('kegiatan', $kegiatan);
 		
+		$file_expo = $this->file_expo_model->get_single($kegiatan->id, $this->session->perguruan_tinggi->id);
+		$this->smarty->assign('file_expo', $file_expo);
+		
+		if ($this->input->method() == 'post')
+		{
+			// Inisialisasi file upload
+			$this->load->library('upload', array(
+				'allowed_types' => 'pdf',
+				'max_size' => 5 * 1024, // 5 MB,
+				'encrypt_name' => TRUE,
+				'upload_path' => FCPATH.'upload/usulan-expo/'
+			));
+			
+			// Coba upload dahulu, kemudian proses datanya
+			if ($this->upload->do_upload('file1'))
+			{
+				$data_file = $this->upload->data();
+				
+				if ($file_expo == NULL)
+				{
+					$file_expo = new File_expo_model();
+					$file_expo->created_at = date('Y-m-d H:i:s');
+				}
+				else
+				{
+					$file_expo->updated_at = date('Y-m-d H:i:s');
+				}
+				
+				$file_expo->kegiatan_id = $kegiatan->id;
+				$file_expo->perguruan_tinggi_id = $this->session->perguruan_tinggi->id;
+				$file_expo->nama_file = $data_file['file_name'];
+				$file_expo->nama_asli = $data_file['orig_name'];
+				
+				if ($file_expo == NULL)
+				{
+					$this->file_expo_model->insert($file_expo);
+				}
+				else
+				{
+					$this->file_expo_model->update($file_expo->id, $file_expo);
+				}
+				
+				// set message
+				$this->session->set_flashdata('result', array(
+					'page_title' => 'Daftar Delegasi Expo KMI',
+					'message' => 'Upload file berhasil',
+					'link_1' => '<a href="'.site_url('expo').'" class="alert-link">Kembali</a>'
+				));
+
+				redirect(site_url('alert/success'));
+			}
+			else
+			{
+				// set message
+				$this->session->set_flashdata('result', array(
+					'page_title' => 'Daftar Delegasi Expo KMI',
+					'message' => 'Gagal upload file : ' . $this->upload->display_errors('' ,''),
+					'link_1' => '<a href="'.site_url('expo').'" class="alert-link">Kembali</a>'
+				));
+
+				redirect(site_url('alert/error'));
+			}
+			
+			exit();
+		}
+		
 		$data_set = $this->proposal_model->list_proposal_expo($this->session->perguruan_tinggi->id);
 		$this->smarty->assign('data_set', $data_set);
 		
@@ -50,6 +118,17 @@ class Expo extends Frontend_Controller
 		if ($proposal != NULL)
 		{
 			$this->proposal_model->submit($proposal->id);
+			
+			// set message
+			$this->session->set_flashdata('result', array(
+				'page_title' => 'Daftar Delegasi Expo KMI',
+				'message' => 'Submit usulan berhasil',
+				'link_1' => '<a href="'.site_url('expo').'" class="alert-link">Kembali</a>'
+			));
+
+			redirect(site_url('alert/success'));
+			
+			exit();
 		}
 	}
 	
@@ -80,91 +159,63 @@ class Expo extends Frontend_Controller
 	{	
 		if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
-			// Inisialisasi file upload
-			$this->load->library('upload', array(
-				'allowed_types' => 'pdf',
-				'max_size' => 5 * 1024, // 5 MB,
-				'encrypt_name' => TRUE,
-				'upload_path' => FCPATH.'upload/usulan-expo/'
-			));
-			
-			// Coba upload dahulu, kemudian proses datanya
-			if ($this->upload->do_upload('file1'))
+			$now = date('Y-m-d H:i:s');
+
+			// Mendapatkan kegiatan expo yg aktif
+			$kegiatan = $this->kegiatan_model->get_aktif(PROGRAM_EXPO);
+
+			$proposal = new stdClass();
+			$proposal->perguruan_tinggi_id	= $this->session->perguruan_tinggi->id;
+			$proposal->is_kmi_award			= $this->input->post('is_kmi_award');
+			$proposal->judul				= $this->input->post('judul');
+			$proposal->kegiatan_id			= $kegiatan->id;
+			$proposal->kategori_id			= $this->input->post('kategori_id');
+			$proposal->nim_ketua			= $this->input->post('nim_ketua');
+			$proposal->nama_ketua			= $this->input->post('nama_ketua');
+			$proposal->created_at			= $now;
+
+			$this->db->insert('proposal', $proposal);
+
+			// get last insert id
+			$proposal->id = $this->db->insert_id();
+
+			// Proses anggota
+			for ($i = 1; $i <= 5; $i++)
 			{
-				$now = date('Y-m-d H:i:s');
-			
-				// Mendapatkan kegiatan expo yg aktif
-				$kegiatan = $this->kegiatan_model->get_aktif(PROGRAM_EXPO);
-				
-				
-
-				$proposal = new stdClass();
-				$proposal->perguruan_tinggi_id	= $this->session->perguruan_tinggi->id;
-				$proposal->judul				= $this->input->post('judul');
-				$proposal->kegiatan_id			= $kegiatan->id;
-				$proposal->kategori_id			= $this->input->post('kategori_id');
-				$proposal->nim_ketua			= $this->input->post('nim_ketua');
-				$proposal->nama_ketua			= $this->input->post('nama_ketua');
-				$proposal->created_at			= $now;
-
-				$this->db->insert('proposal', $proposal);
-
-				// get last insert id
-				$proposal->id = $this->db->insert_id();
-
-				// Proses anggota
-				for ($i = 1; $i <= 5; $i++)
+				if (trim($this->input->post('nim_anggota_'.$i)) != '' && trim($this->input->post('nama_anggota_'.$i)) != '')
 				{
-					if (trim($this->input->post('nim_anggota_'.$i)) != '' && trim($this->input->post('nama_anggota_'.$i)) != '')
-					{
-						$anggota				= new stdClass();
-						$anggota->proposal_id	= $proposal->id;
-						$anggota->no_urut		= $i;
-						$anggota->nim			= $this->input->post('nim_anggota_'.$i);
-						$anggota->nama			= $this->input->post('nama_anggota_'.$i);
-						$anggota->created_at	= $now;
+					$anggota				= new stdClass();
+					$anggota->proposal_id	= $proposal->id;
+					$anggota->no_urut		= $i;
+					$anggota->nim			= $this->input->post('nim_anggota_'.$i);
+					$anggota->nama			= $this->input->post('nama_anggota_'.$i);
+					$anggota->created_at	= $now;
 
-						$this->db->insert('anggota_proposal', $anggota);
-					}
+					$this->db->insert('anggota_proposal', $anggota);
 				}
-				
-				// Ambil 1 syarat (Expo KMI menggunakan 1 file syarat)
-				$syarat = $this->syarat_model->list_by_kegiatan($kegiatan->id)[0];
-				
-				// data file
-				$file1 = $this->upload->data();
-				
-				// Proses file
-				$file_proposal = new stdClass();
-				$file_proposal->proposal_id = $proposal->id;
-				$file_proposal->syarat_id = $syarat->id;
-				$file_proposal->nama_file = $file1['file_name'];
-				$file_proposal->nama_asli = $file1['client_name'];
-				$file_proposal->created_at = $now;
-				
-				$this->file_proposal_model->insert($file_proposal);
-
-				// set message
-				$this->session->set_flashdata('result', array(
-					'page_title' => 'Tambah usulan untuk ikut Expo KMI',
-					'message' => 'Penambahan sudah berhasil !',
-					'link_1' => '<a href="'.site_url('expo').'" class="alert-link">Kembali ke daftar Expo</a>'
-				));
-
-				redirect(site_url('alert/success'));
-
-				exit();
 			}
-			else
-			{
-				$this->smarty->assign('error', array(
-					'message' => 'Gagal upload file. ' . $this->upload->display_errors('' ,'')
-				));
-			}
+
+			// set message
+			$this->session->set_flashdata('result', array(
+				'page_title' => 'Tambah usulan untuk ikut Expo KMI',
+				'message' => 'Penambahan sudah berhasil !',
+				'link_1' => '<a href="'.site_url('expo').'" class="alert-link">Kembali ke daftar Expo</a>'
+			));
+
+			redirect(site_url('alert/success'));
+
+			exit();
 		}
 		
 		$kategori_set = $this->db->get_where('kategori', ['program_id' => $this->session->program_id])->result();
 		$this->smarty->assignForCombo('kategori_set', $kategori_set, 'id', 'nama_kategori');
+		
+		// get kegiatan aktif
+		$kegiatan = $this->kegiatan_model->get_aktif(PROGRAM_EXPO);
+		
+		// cek apa sudah terdapat usulan kmi award
+		$has_kmi_award = $this->proposal_model->has_kmi_award($kegiatan->id, $this->session->perguruan_tinggi->id);
+		$this->smarty->assign('has_kmi_award', $has_kmi_award);
 		
 		$this->smarty->display();
 	}
@@ -182,6 +233,7 @@ class Expo extends Frontend_Controller
 			
 			$now = date('Y-m-d H:i:s');
 			
+			$proposal->is_kmi_award	= $this->input->post('is_kmi_award');
 			$proposal->judul		= $this->input->post('judul');
 			$proposal->kategori_id	= $this->input->post('kategori_id');
 			$proposal->nim_ketua	= $this->input->post('nim_ketua');
@@ -222,41 +274,33 @@ class Expo extends Frontend_Controller
 				}
 			}
 			
-			// proses file jika ada
-			if ( ! empty($_FILES['file1']))
-			{
-				// Inisialisasi file upload
-				$this->load->library('upload', array(
-					'allowed_types' => 'pdf',
-					'max_size' => 5 * 1024, // 5 MB,
-					'encrypt_name' => TRUE,
-					'upload_path' => FCPATH.'upload/usulan-expo/'
-				));
-				
-				$file_proposal = $proposal->file_proposal_set[0];
-				
-				if ($this->upload->do_upload('file1'))
-				{
-					$upload_data = $this->upload->data();
-					
-					// remove old file
-					@unlink(FCPATH.'upload/usulan-expo/'.$file_proposal->nama_file);
-					
-					// replace with new file
-					$file_proposal->nama_file = $upload_data['file_name'];
-					$file_proposal->nama_asli = $upload_data['orig_name'];
-					$file_proposal->updated_at = $now;
-					
-					$this->db->update('file_proposal', $file_proposal, ['id' => $file_proposal->id]);
-				}
-				
-			}
-			
 			$result = $this->db->trans_commit();
 			
 			if ($result)
 			{
-				$this->smarty->assign('success', ['message' => "Data berhasil disimpan"]);
+				// set message
+				$this->session->set_flashdata('result', array(
+					'page_title' => 'Edit usulan untuk ikut Expo KMI',
+					'message' => 'Edit berhasil !',
+					'link_1' => '<a href="'.site_url('expo').'" class="alert-link">Kembali ke daftar Expo</a>'
+				));
+
+				redirect(site_url('alert/success'));
+
+				exit();
+			}
+			else
+			{
+				// set message
+				$this->session->set_flashdata('result', array(
+					'page_title' => 'Edit usulan untuk ikut Expo KMI',
+					'message' => 'Edit gagal !',
+					'link_1' => '<a href="'.site_url('expo').'" class="alert-link">Kembali ke daftar Expo</a>'
+				));
+
+				redirect(site_url('alert/error'));
+
+				exit();
 			}
 		}
 		
@@ -276,6 +320,13 @@ class Expo extends Frontend_Controller
 		
 		$kategori_set = $this->db->get_where('kategori', ['program_id' => $this->session->program_id])->result();
 		$this->smarty->assignForCombo('kategori_set', $kategori_set, 'id', 'nama_kategori');
+		
+		// get kegiatan aktif
+		$kegiatan = $this->kegiatan_model->get_aktif(PROGRAM_EXPO);
+		
+		// cek apa sudah terdapat usulan kmi award
+		$has_kmi_award = $this->proposal_model->has_kmi_award($kegiatan->id, $this->session->perguruan_tinggi->id);
+		$this->smarty->assign('has_kmi_award', $has_kmi_award);
 		
 		$this->smarty->display();
 	}
