@@ -3,12 +3,22 @@
 /**
  * @author Fathoni <m.fathoni@mail.com>
  * @property PerguruanTinggi_model $pt_model
+ * @property Proposal_model $proposal_model
  */
 class Expo extends Admin_Controller
 {	
+	public function __construct()
+	{
+		parent::__construct();
+		
+		$this->load->model('proposal_model');
+	}
+	
 	public function index()
 	{	
-		$this->smarty->assign('data_set', null);
+		$data_set = $this->proposal_model->list_all_proposal_expo();
+		
+		$this->smarty->assign('data_set', $data_set);
 		
 		$this->smarty->display();
 	}

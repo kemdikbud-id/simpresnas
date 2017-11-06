@@ -24,7 +24,7 @@
 						<tr>
 							<td>{$data->nama_pt}</td>
 							<td>{$data->nama_kategori}</td>
-							<td>{$data->nama_usaha}</td>
+							<td>{$data->judul}</td>
 							<td></td>
 						</tr>
 					{/foreach}
