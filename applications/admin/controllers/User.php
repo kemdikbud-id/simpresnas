@@ -231,7 +231,7 @@ class User extends Admin_Controller
 		{
 			$id = (int)$this->input->get('id');
 			$user = $this->user_model->get_single($id);
-			$new_password = random_string();
+			$new_password = random_string('numeric');
 			
 			$change_result = $this->user_model->change_password($id, $new_password);
 			
