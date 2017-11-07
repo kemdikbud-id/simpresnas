@@ -166,7 +166,7 @@ class Expo extends Frontend_Controller
 
 			$proposal = new stdClass();
 			$proposal->perguruan_tinggi_id	= $this->session->perguruan_tinggi->id;
-			$proposal->is_kmi_award			= $this->input->post('is_kmi_award');
+			$proposal->is_kmi_award			= ($this->input->post('is_kmi_award') == '1') ? 1 : 0 ;
 			$proposal->judul				= $this->input->post('judul');
 			$proposal->kegiatan_id			= $kegiatan->id;
 			$proposal->kategori_id			= $this->input->post('kategori_id');
