@@ -71,7 +71,7 @@ class Expo extends Frontend_Controller
 				$file_expo->nama_file = $data_file['file_name'];
 				$file_expo->nama_asli = $data_file['orig_name'];
 				
-				if ($file_expo == NULL)
+				if ( ! isset($file_expo->id))
 				{
 					$this->file_expo_model->insert($file_expo);
 				}
