@@ -58,7 +58,7 @@ class Expo extends Frontend_Controller
 				
 				if ($file_expo == NULL)
 				{
-					$file_expo = new File_expo_model();
+					$file_expo = new stdClass();
 					$file_expo->created_at = date('Y-m-d H:i:s');
 				}
 				else
