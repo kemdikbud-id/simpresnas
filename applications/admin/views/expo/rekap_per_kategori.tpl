@@ -20,6 +20,7 @@
 						<th>#</th>
 						<th>Kategori</th>
 						<th>Jumlah Lolos</th>
+						<th>Jumlah PT</th>
 						<th>Jumlah Tidak Lolos</th>
 					</tr>
 				</thead>
@@ -30,6 +31,7 @@
 							<td>{$data@index + 1}</td>
 							<td>{$data->nama_kategori}</td>
 							<td>{$data->jumlah_lolos}</td>
+							<td>{$data->jumlah_pt}</td>
 							<td>{$data->jumlah_ditolak}</td>
 						</tr>
 						{$jumlah_lolos = $jumlah_lolos + $data->jumlah_lolos}
@@ -40,6 +42,7 @@
 					<tr>
 						<td colspan="2"></td>
 						<td class="text-center">{$jumlah_lolos}</td>
+						<td></td>
 						<td class="text-center">{$jumlah_ditolak}</td>
 					</tr>
 				</tfoot>

@@ -160,7 +160,7 @@ class Proposal_model extends CI_Model
 		$kegiatan_id = $this->db->get_where('kegiatan', ['program_id' => PROGRAM_EXPO, 'is_aktif' => 1], 1)->row()->id;
 		
 		return $this->db
-			->select('nama_kategori, sum(is_didanai) as jumlah_lolos, sum(is_ditolak) as jumlah_ditolak')
+			->select('nama_kategori, count(distinct if(is_didanai = 1, perguruan_tinggi_id, null)) as jumlah_pt, sum(is_didanai) as jumlah_lolos, sum(is_ditolak) as jumlah_ditolak')
 			->from('proposal')
 			->join('kategori', 'kategori.id = kategori_id')
 			->where(['proposal.kegiatan_id' => $kegiatan_id, 'is_submited' => 1])
