@@ -22,4 +22,13 @@ class Expo extends Admin_Controller
 		
 		$this->smarty->display();
 	}
+	
+	public function index_per_pt()
+	{
+		$data_set = $this->proposal_model->list_all_proposal_expo_per_pt();
+		
+		$this->smarty->assign('data_set', $data_set);
+		
+		$this->smarty->display();
+	}
 }

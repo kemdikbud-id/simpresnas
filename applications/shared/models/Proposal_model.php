@@ -108,13 +108,38 @@ class Proposal_model extends CI_Model
 		$kegiatan_id = $this->db->get_where('kegiatan', ['program_id' => PROGRAM_EXPO, 'is_aktif' => 1], 1)->row()->id;
 		
 		return $this->db
-			->select('proposal.id, nama_pt, nama_kategori, judul, is_submited, is_didanai, is_ditolak, is_kmi_award')
+			->select('proposal.id, nama_pt, nama_kategori, judul, is_submited, is_didanai, is_ditolak, is_kmi_award, fe.nama_file')
 			->from('proposal')
 			->join('kategori', 'kategori.id = kategori_id')
 			->join('perguruan_tinggi', 'perguruan_tinggi.id = perguruan_tinggi_id')
-			->where(['kegiatan_id' => $kegiatan_id, 'is_submited' => 1])
+			->join('file_expo fe', 'fe.kegiatan_id = proposal.kegiatan_id and fe.perguruan_tinggi_id = proposal.perguruan_tinggi_id', 'LEFT')
+			->where(['proposal.kegiatan_id' => $kegiatan_id, 'is_submited' => 1])
 			->order_by('nama_pt', 'asc')
 			->get()->result();
+	}
+	
+	public function list_all_proposal_expo_per_pt()
+	{
+		$kegiatan_id = $this->db->get_where('kegiatan', ['program_id' => PROGRAM_EXPO, 'is_aktif' => 1], 1)->row()->id;
+		
+		$pt_set = $this->db
+			->select('proposal.id, perguruan_tinggi_id, nama_pt')
+			->from('proposal')
+			->join('perguruan_tinggi', 'perguruan_tinggi.id = perguruan_tinggi_id')
+			->where(['kegiatan_id' => $kegiatan_id, 'is_submited' => 1])
+			->group_by('proposal.id, nama_pt');
+		
+		foreach ($pt_set as &$pt)
+		{
+			$pt->proposal_set = $this->db
+				->select('nama_kategori, judul')
+				->from('proposal')
+				->join('kategori', 'kategori.id = kategori_id')
+				->where(['kegiatan_id' => $kegiatan_id, 'is_submited' => 1, 'perguruan_tinggi_id' => $pt->perguruan_tinggi_id])
+				->get()->result();
+		}
+		
+		return $pt_set;
 	}
 	
 	public function submit($id)

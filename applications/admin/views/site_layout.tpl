@@ -78,6 +78,7 @@
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Expo KMI <span class="caret"></span></a>
 								<ul class="dropdown-menu">
 									<li><a href="{site_url('expo')}">Usulan Expo KMI</a></li>
+									<li><a href="{site_url('expo/index-per-pt')}">Usulan Expo KMI per PT</a></li>
 									<li><a href="{site_url('expo/request')}">Menunggu Persetujuan</a></li>
 								</ul>
 							</li>

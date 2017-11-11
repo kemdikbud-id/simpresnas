@@ -14,8 +14,6 @@
 				<thead>
 					<tr>
 						<th>Perguruan Tinggi</th>
-						<th>File</th>
-						<th>Kategori</th>
 						<th>Judul Usaha</th>
 						<th>Status</th>
 					</tr>
@@ -24,8 +22,6 @@
 					{foreach $data_set as $data}
 						<tr>
 							<td>{$data->nama_pt}</td>
-							<td class="text-center"><a href="{base_url()}../upload/usulan-expo/{$data->nama_file}"><i class="glyphicon glyphicon-file" aria-hidden="true"></i></a></td>
-							<td>{$data->nama_kategori}</td>
 							<td>{$data->judul}</td>
 							<td></td>
 						</tr>
