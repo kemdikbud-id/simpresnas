@@ -23,6 +23,16 @@ class Expo extends Admin_Controller
 		$this->smarty->display();
 	}
 	
+	public function set_didanai()
+	{
+		if ($this->input->method() == 'post')
+		{
+			$proposal_id = $this->input->post('proposal_id');
+			$is_didanai = $this->input->post('is_didanai');
+			$this->db->update('proposal', ['is_didanai' => $is_didanai], ['id' => $proposal_id]);
+		}
+	}
+	
 	public function index_per_pt()
 	{
 		$data_set = $this->proposal_model->list_all_proposal_expo_per_pt();

@@ -17,17 +17,24 @@
 						<th>File</th>
 						<th>Kategori</th>
 						<th>Judul Usaha</th>
+						<th>KMI Award</th>
 						<th>Status</th>
+						<th style="width: 100px">Aksi</th>
 					</tr>
 				</thead>
 				<tbody>
 					{foreach $data_set as $data}
 						<tr>
 							<td>{$data->nama_pt}</td>
-							<td class="text-center"><a href="{base_url()}../upload/usulan-expo/{$data->nama_file}"><i class="glyphicon glyphicon-file" aria-hidden="true"></i></a></td>
+							<td class="text-center">{if $data->nama_file != ''}<a href="{base_url()}../upload/usulan-expo/{$data->nama_file}"><i class="glyphicon glyphicon-file" aria-hidden="true"></i></a>{else}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>{/if}</td>
 							<td>{$data->nama_kategori}</td>
 							<td>{$data->judul}</td>
-							<td></td>
+							<td class="text-center">{if $data->is_kmi_award == 1}<span class="label label-primary">KMI Award</span>{/if}</td>
+							<td class="text-center" id="statusLolos{$data->id}">{if $data->is_didanai == 1}<span class="label label-success">Lolos</span>{/if}</td>
+							<td>
+								<a href="#" data-id="{$data->id}" class="btn btn-xs btn-success set-lolos">Lolos</a>
+								<a href="#" data-id="{$data->id}" class="btn btn-xs btn-danger set-tidak-lolos">Tidak Lolos</a>
+							</td>
 						</tr>
 					{/foreach}
 				</tbody>
@@ -43,6 +50,26 @@
 		$('#table').DataTable({
 			ordering: false,
 			stateSave: true
+		});
+		$('.set-lolos').on('click', function() {
+			var id = $(this).data('id');
+			$.ajax({ url: '{site_url('expo/set-didanai')}', data: { proposal_id: id, is_didanai: 1 }, method: 'POST' })
+				.done(function() {
+					$('#statusLolos' + id).html('<span class="label label-success">Lolos</span>');
+				})
+				.fail(function() {
+					alert('Terjadi kesalahan');
+				});
+		});
+		$('.set-tidak-lolos').on('click', function() {
+			var id = $(this).data('id');
+			$.ajax({ url: '{site_url('expo/set-didanai')}', data: { proposal_id: id, is_didanai: 0 }, method: 'POST' })
+				.done(function() {
+					$('#statusLolos' + id).html('');
+				})
+				.fail(function() {
+					alert('Terjadi kesalahan');
+				});
 		});
 	</script>
 {/block}
