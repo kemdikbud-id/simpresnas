@@ -118,30 +118,6 @@ class Proposal_model extends CI_Model
 			->get()->result();
 	}
 	
-	public function list_all_proposal_expo_per_pt()
-	{
-		$kegiatan_id = $this->db->get_where('kegiatan', ['program_id' => PROGRAM_EXPO, 'is_aktif' => 1], 1)->row()->id;
-		
-		$pt_set = $this->db
-			->select('proposal.id, perguruan_tinggi_id, nama_pt')
-			->from('proposal')
-			->join('perguruan_tinggi', 'perguruan_tinggi.id = perguruan_tinggi_id')
-			->where(['kegiatan_id' => $kegiatan_id, 'is_submited' => 1])
-			->group_by('proposal.id, nama_pt');
-		
-		foreach ($pt_set as &$pt)
-		{
-			$pt->proposal_set = $this->db
-				->select('nama_kategori, judul')
-				->from('proposal')
-				->join('kategori', 'kategori.id = kategori_id')
-				->where(['kegiatan_id' => $kegiatan_id, 'is_submited' => 1, 'perguruan_tinggi_id' => $pt->perguruan_tinggi_id])
-				->get()->result();
-		}
-		
-		return $pt_set;
-	}
-	
 	public function submit($id)
 	{
 		return $this->db->update('proposal', [
@@ -161,5 +137,34 @@ class Proposal_model extends CI_Model
 		$count = $this->db->count_all_results('proposal');
 		
 		return ($count > 0);
+	}
+	
+	public function list_rekap_expo_pt()
+	{
+		// Kegiatan Expo Aktif
+		$kegiatan_id = $this->db->get_where('kegiatan', ['program_id' => PROGRAM_EXPO, 'is_aktif' => 1], 1)->row()->id;
+		
+		return $this->db
+			->select('npsn, nama_pt, sum(is_didanai) as jumlah_lolos, sum(is_ditolak) as jumlah_ditolak')
+			->from('proposal')
+			->join('perguruan_tinggi', 'perguruan_tinggi.id = perguruan_tinggi_id')
+			->where(['proposal.kegiatan_id' => $kegiatan_id, 'is_submited' => 1])
+			->group_by('npsn, nama_pt')
+			->order_by('3 desc, npsn asc', null, FALSE)
+			->get()->result();
+	}
+	
+	public function list_rekap_expo_kategori()
+	{
+		// Kegiatan Expo Aktif
+		$kegiatan_id = $this->db->get_where('kegiatan', ['program_id' => PROGRAM_EXPO, 'is_aktif' => 1], 1)->row()->id;
+		
+		return $this->db
+			->select('nama_kategori, sum(is_didanai) as jumlah_lolos, sum(is_ditolak) as jumlah_ditolak')
+			->from('proposal')
+			->join('kategori', 'kategori.id = kategori_id')
+			->where(['proposal.kegiatan_id' => $kegiatan_id, 'is_submited' => 1])
+			->group_by('nama_kategori')
+			->get()->result();
 	}
 }

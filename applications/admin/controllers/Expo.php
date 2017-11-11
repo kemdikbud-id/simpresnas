@@ -42,10 +42,19 @@ class Expo extends Admin_Controller
 		}
 	}
 	
-	public function index_per_pt()
+	public function rekap_per_pt()
 	{
-		$data_set = $this->proposal_model->list_all_proposal_expo_per_pt();
+		$data_set = $this->proposal_model->list_rekap_expo_pt();
+
+		$this->smarty->assign('data_set', $data_set);
 		
+		$this->smarty->display();
+	}
+	
+	public function rekap_per_kategori()
+	{
+		$data_set = $this->proposal_model->list_rekap_expo_kategori();
+
 		$this->smarty->assign('data_set', $data_set);
 		
 		$this->smarty->display();
