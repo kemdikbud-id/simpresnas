@@ -49,7 +49,4 @@ php1nf0.php
 db-dump/
 
 # Upload File
-upload/file-proposal/*
-!upload/file-proposal/index.html
-upload/request-user/*
-!upload/request-user/index.html
+upload/
