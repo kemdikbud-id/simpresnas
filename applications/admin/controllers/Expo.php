@@ -17,7 +17,7 @@ class Expo extends Admin_Controller
 	public function index()
 	{	
 		$data_set = $this->proposal_model->list_all_proposal_expo();
-		
+
 		$this->smarty->assign('data_set', $data_set);
 		
 		$this->smarty->display();
@@ -28,8 +28,17 @@ class Expo extends Admin_Controller
 		if ($this->input->method() == 'post')
 		{
 			$proposal_id = $this->input->post('proposal_id');
-			$is_didanai = $this->input->post('is_didanai');
-			$this->db->update('proposal', ['is_didanai' => $is_didanai], ['id' => $proposal_id]);
+			$this->db->update('proposal', ['is_didanai' => 1, 'is_ditolak' => 0, 'keterangan_ditolak' => null], ['id' => $proposal_id]);
+		}
+	}
+	
+	public function set_ditolak()
+	{
+		if ($this->input->method() == 'post')
+		{
+			$proposal_id = $this->input->post('proposal_id');
+			$keterangan = $this->input->post('keterangan');
+			$this->db->update('proposal', ['is_didanai' => 0, 'is_ditolak' => 1, 'keterangan_ditolak' => $keterangan], ['id' => $proposal_id]);
 		}
 	}
 	

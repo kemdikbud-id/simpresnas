@@ -108,7 +108,7 @@ class Proposal_model extends CI_Model
 		$kegiatan_id = $this->db->get_where('kegiatan', ['program_id' => PROGRAM_EXPO, 'is_aktif' => 1], 1)->row()->id;
 		
 		return $this->db
-			->select('proposal.id, nama_pt, nama_kategori, judul, is_submited, is_didanai, is_ditolak, is_kmi_award, fe.nama_file')
+			->select('proposal.id, nama_pt, nama_kategori, judul, is_submited, is_didanai, is_ditolak, keterangan_ditolak, is_kmi_award, fe.nama_file')
 			->from('proposal')
 			->join('kategori', 'kategori.id = kategori_id')
 			->join('perguruan_tinggi', 'perguruan_tinggi.id = perguruan_tinggi_id')
