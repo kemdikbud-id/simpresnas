@@ -60,12 +60,13 @@
 							<td class="text-center">
 								{if $data->is_submited == 1}
 									{if $data->is_didanai == 1}
-										<span class="label label-success">Ikut EXPO</span>
+										{* <span class="label label-success">Ikut EXPO</span> *}
 									{else if $data->is_ditolak == 1}
-										<span class="label label-danger">Ditolak</span>
+										{* <span class="label label-danger">Ditolak</span> *}
 									{else}
-										<span class="label label-info">Seleksi Kelayakan</span>
+										
 									{/if}
+									<span class="label label-info">Seleksi Kelayakan</span>
 								{/if}
 							</td>
 							<td>
