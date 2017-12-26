@@ -207,16 +207,22 @@ class Auth extends Frontend_Controller
 		
 		$captcha = create_captcha($captcha_params);
 		
-		$data = array(
-			'captcha_time'  => $captcha['time'],
-			'ip_address'    => $this->input->ip_address(),
-			'word'          => $captcha['word'],
-			'filename'		=> $captcha['filename']
-		);
-		
-		$this->db->insert('captcha', $data);
-		
-		return $captcha['image'];
-		
+		if ($captcha)
+		{
+			$data = array(
+				'captcha_time'  => $captcha['time'],
+				'ip_address'    => $this->input->ip_address(),
+				'word'          => $captcha['word'],
+				'filename'		=> $captcha['filename']
+			);
+
+			$this->db->insert('captcha', $data);
+
+			return $captcha['image'];
+		}
+		else
+		{
+			return 'Captcha Error: GD Extension / Image Path Not Writeable';
+		}
 	}
 }
