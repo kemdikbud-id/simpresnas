@@ -68,8 +68,11 @@
 	if (ENVIRONMENT == 'production')
 		define('GLOBAL_BASE_URL', 'http://sim-pkmi.ristekdikti.go.id');
 	if (ENVIRONMENT == 'development')
-		define('GLOBAL_BASE_URL', 'http://103.66.199.201/sim-pkmi');
-	
+		if (php_sapi_name() !== 'cli')
+			define('GLOBAL_BASE_URL', 'http://' . $_SERVER['HTTP_HOST']);
+		else
+			define('GLOBAL_BASE_URL', 'http://localhost/');  // asumsi pakai localhost jika cli agar tak error
+
 	// Assign to config
 	$assign_to_config['global_base_url'] = GLOBAL_BASE_URL;
 	
