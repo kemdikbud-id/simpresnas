@@ -16,7 +16,7 @@
 				<!-- Multiple Radios -->
 				<div class="form-group">
 					<label class="col-md-3 control-label" for="program_id">Program</label>
-					<div class="col-md-5">
+					<div class="col-md-6">
 						<label class="checkbox-inline">
 							<input name="program_id" id="program_id-0" value="1" type="radio" {set_radio('program_id', '1')}> PBBT
 						</label>
@@ -25,6 +25,9 @@
 						</label>
 						<label class="checkbox-inline">
 							<input name="program_id" id="program_id-3" value="3" type="radio" {set_radio('program_id', '3')}> Expo KMI
+						</label>
+						<label class="checkbox-inline">
+							<input name="program_id" id="program_id-4" value="4" type="radio" {set_radio('program_id', '4')}> Workshop Kewirausahaan
 						</label>
 					</div>
 				</div>
@@ -89,8 +92,8 @@
 						<input id="email" name="email" class="form-control input-md" type="email" value="{set_value('email')}">
 					</div>
 					<div class="col-md-4">
-						<span class="text-warning">Email resmi unit/lembaga yg akan digunakan untuk menerima login akun.
-							<strong>Tidak Boleh</strong> menggunakan email pribadi / email dosen. Misal : lpm@universitas.ac.id
+						<span class="text-warning">Email resmi unit/lembaga yg akan digunakan untuk menerima login akun (Misal : lpm@universitas.ac.id).
+							<strong>Tidak Boleh</strong> menggunakan email pribadi / email dosen.
 						</span>
 					</div>
 				</div>

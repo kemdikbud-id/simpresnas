@@ -9,7 +9,7 @@
 {block name='content'}
 	<div class="jumbotron text-center">
         <h1>Selamat datang di Portal SIM-PKMI</h1>
-		<p class="lead">Pendaftaran <strong>Workshop Kewirausahaan 2018</strong> telah dibuka dan dilaksanakan di 9 lokasi !<br/>Segera login untuk melakukan pendaftaran</p>
+		<!-- <p class="lead">Pendaftaran <strong>Workshop Kewirausahaan 2018</strong> telah dibuka dan dilaksanakan di 9 lokasi !<br/>Segera login untuk melakukan pendaftaran</p> -->
     </div>
 	
 	<hr/>
@@ -18,7 +18,7 @@
 		<div class="col-md-4 text-center">
 			<h3>Workshop Kewirausahaan</h3>
 			<p>Kegiatan yang bertujuan agar mahasiswa mampu membuat proposal pengembangan bisnis yang baik dan mampu menganalisis serta mengimplementasikan elemen-elemen penting dalam pengembangan bisnis.</p>
-			<p><a target="_blank" href="{base_url()}download/panduan-workshop-kewirausahaan-2018.pdf">Download Panduan Workshop Kewirausahaan</a></p>
+			<!-- <p><a target="_blank" href="{base_url()}download/panduan-workshop-kewirausahaan-2018.pdf">Download Panduan Workshop Kewirausahaan</a></p> -->
 		</div>
 		<div class="col-md-4 text-center">
 			<h3>Program Belajar Bekerja Terpadu (PBBT)</h3>
