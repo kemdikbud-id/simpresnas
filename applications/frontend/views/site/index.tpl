@@ -8,20 +8,18 @@
 {/block}
 {block name='content'}
 	<div class="jumbotron text-center">
-        <h1>Program Kewirausahaan Mahasiswa Indonesia</h1>
-		<p class="lead">Pendaftaran <strong>Expo KMI Ke-VIII Tahun 2017</strong> telah dibuka !<br/>Segera login untuk melakukan pendaftaran Expo KMI</p>
-		<p></p>
-		<!--
-		<p class="lead">
-			<a href="#" class="btn btn-primary btn-daftar">DAFTAR PESERTA KBMI</a>
-			<a href="#" class="btn btn-success btn-daftar">DAFTAR NON-PESERTA KBMI</a>
-		</p>
-		-->
+        <h1>Selamat datang di Portal SIM-PKMI</h1>
+		<p class="lead">Pendaftaran <strong>Workshop Kewirausahaan 2018</strong> telah dibuka dan dilaksanakan di 9 lokasi !<br/>Segera login untuk melakukan pendaftaran</p>
     </div>
 	
 	<hr/>
 	
 	<div class="row">
+		<div class="col-md-4 text-center">
+			<h3>Workshop Kewirausahaan</h3>
+			<p>Kegiatan yang bertujuan agar mahasiswa mampu membuat proposal pengembangan bisnis yang baik dan mampu menganalisis serta mengimplementasikan elemen-elemen penting dalam pengembangan bisnis.</p>
+			<p><a target="_blank" href="{base_url()}download/panduan-workshop-kewirausahaan-2018.pdf">Download Panduan Workshop Kewirausahaan</a></p>
+		</div>
 		<div class="col-md-4 text-center">
 			<h3>Program Belajar Bekerja Terpadu (PBBT)</h3>
 			<p>Program memperkenalkan dunia usaha atau dunia kerja lebih dini kepada mahasiswa dengan mengintegrasikan berbagai 
@@ -31,8 +29,11 @@
 			<h3>Kompetisi Bisnis Mahasiswa Indonesia (KBMI)</h3>
 			<p>Wadah untuk mempraktekan ilmu dan keterampilan berwirausaha yang sudah didapat oleh mahasiswa melalui pemberian modal</p>
 		</div>
+	</div>
+	
+	<div class="row">
 		<div class="col-md-4 text-center">
-			<h3 class="text-primary">Expo KMI</h3>
+			<h3>Expo KMI</h3>
 			<p>Expo Kewirausahaan Mahasiswa Indonesia (Expo KMI) adalah kegiatan tahunan berupa pameran usaha yang telah dijalankan dan ajang temu bisnis bagi mahasiswa pelaksana kewirausahaan</p>
 		</div>
 	</div>
