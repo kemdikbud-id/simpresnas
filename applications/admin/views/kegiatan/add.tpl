@@ -2,27 +2,54 @@
 {block name='head'}
 {/block}
 {block name='content'}
-	<h1 class="page-header">Update Kegiatan</h1>
+	<h1 class="page-header">Tambah Kegiatan</h1>
 
 	<div class="row">
 		<div class="col-lg-12">
 
-			<form class="form-horizontal">
+			<form class="form-horizontal" method="post" action="{current_url()}" id="addKegiatanForm">
 				<fieldset>
-
-					<!-- Label-->
+					
+					<!-- Text input-->
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="proposal_per_pt">Program</label>  
+						<label class="col-md-2 control-label" for="tahun">Tahun Kegiatan</label>  
+						<div class="col-md-1">
+							<input id="tahun" name="tahun" placeholder="{date('Y')}" class="form-control input-md" type="text" value="">
+						</div>
+					</div>
+
+					<!-- Select input -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="nama_program">Program</label>  
 						<div class="col-md-5">
-							<label class="form-control-static">{$data->nama_program} Tahun {$data->tahun}</label>
+							<select name="program_id" class="form-control">
+								<option value="">-- Pilih Program --</option>
+								{foreach $program_set as $program}
+									<option value="{$program->id}">{$program->nama_program}</option>
+								{/foreach}
+							</select>
 						</div>
 					</div>
 
 					<!-- Text input-->
-					<div class="form-group">
+					<div class="form-group proposal_per_pt">
 						<label class="col-md-2 control-label" for="proposal_per_pt">Jumlah Proposal</label>  
 						<div class="col-md-1">
-							<input id="proposal_per_pt" name="proposal_per_pt" placeholder="" class="form-control input-md" type="text" value="{set_value('proposal_per_pt', $data->proposal_per_pt)}">
+							<input id="proposal_per_pt" name="proposal_per_pt" placeholder="0" class="form-control input-md" type="text" value="">
+						</div>
+						<div class="col-md-3">
+							<p>Di isi hanya untuk program PBBT, KBMI, &amp; Expo KMI. </p>
+						</div>
+					</div>
+					
+					<!-- Text input-->
+					<div class="form-group peserta_per_pt">
+						<label class="col-md-2 control-label" for="peserta_per_pt">Jumlah Peserta</label>  
+						<div class="col-md-1">
+							<input id="peserta_per_pt" name="peserta_per_pt" placeholder="0" class="form-control input-md" type="text" value="">
+						</div>
+						<div class="col-md-3">
+							<p>Di isi hanya untuk program Workshop Kewirausahaan</p>
 						</div>
 					</div>
 
@@ -30,8 +57,8 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="tgl_awal_upload">Tanggal Awal Upload</label>
 						<div class="col-md-5">
-							{html_select_date field_order="DMY" prefix="awal_upload_" time=$data->tgl_awal_upload all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
-							<input type="text" name="awal_upload_time" value="{$data->tgl_awal_upload|date_format:"%H:%M"}" placeholder="00:00" class="form-control input-md" style="display: inline-block; width: 75px" />
+							{html_select_date field_order="DMY" prefix="awal_upload_" all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
+							<input type="text" name="awal_upload_time" value="" placeholder="00:00:00" class="form-control input-md" style="display: inline-block; width: 85px" />
 						</div>
 					</div>
 
@@ -39,8 +66,8 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="tgl_akhir_upload">Tanggal Akhir Upload</label>
 						<div class="col-md-5">
-							{html_select_date field_order="DMY" prefix="akhir_upload_" time=$data->tgl_akhir_upload all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
-							<input type="text" name="akhir_upload_time" value="{$data->tgl_akhir_upload|date_format:"%H:%M"}" placeholder="00:00" class="form-control input-md" style="display: inline-block; width: 75px" />
+							{html_select_date field_order="DMY" prefix="akhir_upload_" all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
+							<input type="text" name="akhir_upload_time" value="" placeholder="00:00:00" class="form-control input-md" style="display: inline-block; width: 85px" />
 						</div>
 					</div>
 
@@ -48,8 +75,8 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="tgl_awal_review">Tanggal Awal Review</label>
 						<div class="col-md-5">
-							{html_select_date field_order="DMY" prefix="awal_review_" time=$data->tgl_awal_review all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
-							<input type="text" name="awal_review_time" value="{$data->tgl_awal_review|date_format:"%H:%M"}" placeholder="00:00" class="form-control input-md" style="display: inline-block; width: 75px" />
+							{html_select_date field_order="DMY" prefix="awal_review_" all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
+							<input type="text" name="awal_review_time" value="" placeholder="00:00:00" class="form-control input-md" style="display: inline-block; width: 85px" />
 						</div>
 					</div>
 
@@ -57,8 +84,8 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="tgl_akhir_review">Tanggal Akhir Review</label>
 						<div class="col-md-5">
-							{html_select_date field_order="DMY" prefix="akhir_review_" time=$data->tgl_akhir_review all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
-							<input type="text" name="akhir_review_time" value="{$data->tgl_akhir_review|date_format:"%H:%M"}" placeholder="00:00" class="form-control input-md" style="display: inline-block; width: 75px" />
+							{html_select_date field_order="DMY" prefix="akhir_review_" all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
+							<input type="text" name="akhir_review_time" value="" placeholder="00:00:00" class="form-control input-md" style="display: inline-block; width: 85px" />
 						</div>
 					</div>
 
@@ -66,8 +93,8 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="tgl_pengumuman">Tanggal Pengumuman</label>
 						<div class="col-md-5">
-							{html_select_date field_order="DMY" prefix="pengumuman_" time=$data->tgl_pengumuman all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
-							<input type="text" name="pengumuman_time" value="{$data->tgl_pengumuman|date_format:"%H:%M"}" placeholder="00:00" class="form-control input-md" style="display: inline-block; width: 75px" />
+							{html_select_date field_order="DMY" prefix="pengumuman_" all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
+							<input type="text" name="pengumuman_time" value="" placeholder="00:00:00" class="form-control input-md" style="display: inline-block; width: 85px" />
 						</div>
 					</div>
 
@@ -79,6 +106,15 @@
 							<input type="submit" value="Simpan" class="btn btn-primary"/>
 						</div>
 					</div>
+							
+					<!-- Button -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="singlebutton"></label>
+						<div class="col-md-6">
+							<p>* Tanggal jadwal untuk program Workshop Kewirausahaan di tentukan ketika
+							melakukan setting lokasi di menu Lokasi Workshop Kewirausahaan</p>
+						</div>
+					</div>
 
 				</fieldset>
 			</form>
@@ -87,5 +123,44 @@
 	</div>
 {/block}
 {block name='footer-script'}
-
+	<script src="{base_url('../assets/js/jquery.validate.min.js')}" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#addKegiatanForm').validate({
+				rules: {
+					tahun: 'required',
+					program_id: 'required',
+					proposal_per_pt: 'required',
+					peserta_per_pt: 'required',
+					awal_upload_time: 'required',
+					akhir_upload_time: 'required',
+					awal_review_time: 'required',
+					akhir_review_time: 'required',
+					pengumuman_time: 'required'
+				},
+				messages: {
+					tahun: 'Required',
+					program_id: 'Required',
+					proposal_per_pt: 'Required. Min: 0',
+					peserta_per_pt: 'Required. Min: 0',
+					awal_upload_time: 'Required',
+					akhir_upload_time: 'Required',
+					awal_review_time: 'Required',
+					akhir_review_time: 'Required',
+					pengumuman_time: 'Required'
+				},
+				errorElement: "em",
+				errorPlacement: function (error, element) {
+					error.addClass("help-block");
+					error.insertAfter(element);
+				},
+				highlight: function (element, errorClass, validClass) {
+					$(element).parent().addClass("has-error").removeClass("has-success");
+				},
+				unhighlight: function (element, errorClass, validClass) {
+					$(element).parent().addClass("has-success").removeClass("has-error");
+				}
+			});
+		});
+	</script>
 {/block}

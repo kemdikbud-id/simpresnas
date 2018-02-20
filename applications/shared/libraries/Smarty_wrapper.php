@@ -73,8 +73,10 @@ class Smarty_wrapper extends Smarty
 		$value = array();
 		
 		foreach ($rows_object as $row)
+		{
 			$value[$row->{$value_column}] = $row->{$display_column};
-			
+		}
+		
 		parent::assign($tpl_var, $value);
 	}
 }

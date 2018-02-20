@@ -20,6 +20,7 @@ class Home extends Frontend_Controller
 		if ($this->session->program_id == PROGRAM_PBBT) $template = 'home/index-pbbt.tpl';
 		if ($this->session->program_id == PROGRAM_KBMI) $template = 'home/index-kbmi.tpl';
 		if ($this->session->program_id == PROGRAM_EXPO) $template = 'home/index-expo.tpl';
+		if ($this->session->program_id == PROGRAM_WORKSHOP) $template = 'home/index-workshop.tpl';
 		
 		$this->smarty->display($template);
 	}

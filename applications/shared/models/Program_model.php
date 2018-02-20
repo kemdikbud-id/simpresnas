@@ -24,4 +24,12 @@ class Program_model extends CI_Model
 	{
 		return $this->db->get_where('program', ['id' => $id], 1)->row();
 	}
+	
+	/**
+	 * @return mixed
+	 */
+	public function list_all()
+	{
+		return $this->db->get_where('program')->result();
+	}
 }

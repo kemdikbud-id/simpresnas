@@ -124,9 +124,10 @@ class User extends Admin_Controller
 			$user->perguruan_tinggi_id	= $pt->id;
 			$user->email				= $data->email;
 			
-			// create user from perguruan tinggi
+			// Buat username dengan format : [Kode PT][Kode Program]
+			// Contoh : 07108601
+			// 01 - PBBT, 02 - KBMI, 03 - Expo, 04 - Workshop
 			$user->username = trim($pt->npsn) . str_pad($data->program_id, 2, '0', STR_PAD_LEFT);
-			
 			
 			// Cek Exist User
 			if ($this->user_model->is_exist($user->username, $user->program_id, $user->tipe_user))
@@ -142,10 +143,10 @@ class User extends Admin_Controller
 
 				$user->created_at = date('Y-m-d H:i:s');
 
-				$result = $this->user_model->create_user($user);
+				$create_result = $this->user_model->create_user($user);
 
 				// approve
-				if ($result) $this->request_user_model->approve($id);
+				if ($create_result) $this->request_user_model->approve($id);
 
 				// commit if success
 				$this->db->trans_commit();
@@ -165,7 +166,7 @@ class User extends Admin_Controller
 				$this->email->subject('Informasi Akun SIM-PKMI');
 				$this->email->message($body);
 				$this->email->set_mailtype("html");
-				$result = $this->email->send();
+				$send_result = $this->email->send();
 
 				$this->session->set_flashdata('result', array(
 					'page_title' => 'Daftar User Request',

@@ -29,9 +29,9 @@
 						<span class="icon-bar"></span>
 					</button>
 					{if $ci->session->user}
-						<a class="navbar-brand" href="{site_url('home')}">SIM-PKMI Admin</a>
+						<a class="navbar-brand" href="{site_url('home')}">SIM-PKMI</a>
 					{else}
-						<a class="navbar-brand" href="{base_url()}">SIM-PKMI Admin</a>
+						<a class="navbar-brand" href="{base_url()}">SIM-PKMI</a>
 					{/if}
 				</div>
 				<div id="navbar" class="collapse navbar-collapse">
@@ -41,6 +41,7 @@
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Setting <span class="caret"></span></a>
 								<ul class="dropdown-menu">
 									<li><a href="{site_url('kegiatan')}">Jadwal Kegiatan</a></li>
+									<li><a href="{site_url('kegiatan/lokasi')}">Lokasi Workshop</a></li>
 								</ul>
 							</li>
 							<li>
@@ -55,6 +56,12 @@
 									<li role="separator" class="divider"></li>
 									<li><a href="{site_url('user-reviewer')}">Reviewer</a></li>
 									<li><a href="{site_url('user-reviewer/plotting')}">Plotting Reviewer</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Workshop Kewirausahaan <span class="caret"></span></a>
+								<ul class="dropdown-menu">
+									<li><a href="{site_url('workshop/peserta')}">Daftar Peserta</a></li>
 								</ul>
 							</li>
 							<li>

@@ -13,13 +13,37 @@
  */
 class Kegiatan_model extends CI_Model
 {	
+	public function add()
+	{
+		$post = $this->input->post();
+		
+		$this->db->trans_start();
+		
+		// Create object kegiatan
+		$kegiatan = new stdClass();
+		$kegiatan->program_id		= $this->input->post('program_id');
+		$kegiatan->tahun			= $this->input->post('tahun');
+		$kegiatan->proposal_per_pt	= $this->input->post('proposal_per_pt');
+		$kegiatan->peserta_per_pt	= $this->input->post('peserta_per_pt');
+		$kegiatan->tgl_awal_upload	= "{$post['awal_upload_Year']}-{$post['awal_upload_Month']}-{$post['awal_upload_Day']} {$post['awal_upload_time']}";
+		$kegiatan->tgl_akhir_upload	= "{$post['akhir_upload_Year']}-{$post['akhir_upload_Month']}-{$post['akhir_upload_Day']} {$post['akhir_upload_time']}";
+		$kegiatan->tgl_awal_review	= "{$post['awal_review_Year']}-{$post['awal_review_Month']}-{$post['awal_review_Day']} {$post['awal_review_time']}";
+		$kegiatan->tgl_akhir_review	= "{$post['akhir_review_Year']}-{$post['akhir_review_Month']}-{$post['akhir_review_Day']} {$post['akhir_review_time']}";
+		$kegiatan->tgl_pengumuman	= "{$post['pengumuman_Year']}-{$post['pengumuman_Month']}-{$post['pengumuman_Day']} {$post['pengumuman_time']}";
+		
+		// insert ke database
+		$this->db->insert('kegiatan', $kegiatan);
+		
+		return $this->db->trans_complete();
+	}
+	
 	public function update($id)
 	{
 		$post = $this->input->post();
 		
 		$this->db->trans_start();
 		
-		// Building item to be update
+		// Create object kegiatan untuk update
 		$kegiatan = new stdClass();
 		$kegiatan->proposal_per_pt	= $this->input->post('proposal_per_pt');
 		$kegiatan->tgl_awal_upload	= "{$post['awal_upload_Year']}-{$post['awal_upload_Month']}-{$post['awal_upload_Day']} {$post['awal_upload_HMS']}";
@@ -50,8 +74,29 @@ class Kegiatan_model extends CI_Model
 			->select('kegiatan.*, program.nama_program')
 			->from('kegiatan')
 			->join('program', 'program.id = kegiatan.program_id')
+			->order_by('tahun DESC, tgl_awal_upload DESC')
 			->get()
 			->result();
+	}
+	
+	public function list_workshop()
+	{
+		return $this->db
+			->select('kegiatan.id, program.nama_program, kegiatan.tahun')
+			->from('kegiatan')
+			->join('program', 'program.id = kegiatan.program_id')
+			->where(['program_id' => PROGRAM_WORKSHOP])
+			->get()->result();
+	}
+	
+	public function list_workshop_aktif()
+	{
+		return $this->db
+			->select('kegiatan.id, program.nama_program, kegiatan.tahun')
+			->from('kegiatan')
+			->join('program', 'program.id = kegiatan.program_id')
+			->where(['program_id' => PROGRAM_WORKSHOP, 'is_aktif' => 1])
+			->get()->result();
 	}
 	
 	public function list_aktif_for_option()
@@ -63,6 +108,10 @@ class Kegiatan_model extends CI_Model
 		return array_column($kegiatan_set, 'nama_program', 'id');
 	}
 	
+	/**
+	 * @param int $id
+	 * @return Kegiatan_model
+	 */
 	public function get_single($id)
 	{
 		return $this->db

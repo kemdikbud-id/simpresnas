@@ -72,6 +72,6 @@ class Migrate extends Frontend_Controller
 		$result = $this->migration->version($target_version);
 		
 		if ($result == TRUE)
-			echo "Berhasil di migrate down ke versi " . $target_version . "\n";
+			echo "  > Berhasil di migrate down ke versi " . $target_version . "\n";
 	}
 }

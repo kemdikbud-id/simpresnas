@@ -25,6 +25,7 @@ define('MODEL_KATEGORI', 'Kategori_model');
 defined('PROGRAM_PBBT')	or define('PROGRAM_PBBT', 1);
 defined('PROGRAM_KBMI')	or define('PROGRAM_KBMI', 2);
 defined('PROGRAM_EXPO')	or define('PROGRAM_EXPO', 3);
+defined('PROGRAM_WORKSHOP')	or define('PROGRAM_WORKSHOP', 4);
 
 // Jenis User
 defined('TIPE_USER_NORMAL')			or define('TIPE_USER_NORMAL', 1);
