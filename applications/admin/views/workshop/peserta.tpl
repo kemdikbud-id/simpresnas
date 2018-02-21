@@ -31,7 +31,7 @@
 			</form>
 			
 			{if !empty($smarty.get.kegiatan_id)}
-				<table class="table table-bordered table-condensed table-striped" id="table" style="display: none">
+				<table class="table table-bordered table-condensed table-striped" id="pesertaTable" style="display: none">
 					<thead>
 						<tr>
 							<th style="width:50px">No</th>
@@ -62,8 +62,8 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			
-			$('#table').DataTable();
-			$('#table').show();
+			$('#pesertaTable').DataTable();
+			$('#pesertaTable').show();
 			
 			$('[name="kegiatan_id"]').on('change', function() {
 				$('[name="lokasi_workshop_id"]').html('<option value="">-- Pilih Lokasi --</option>');
