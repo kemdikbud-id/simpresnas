@@ -30,6 +30,19 @@ class PesertaWorkshop_model extends CI_Model
 		return $this->db->insert_batch('peserta_workshop', $peserta_set);
 	}
 	
+	public function list_all_by_lokasi($lokasi_workshop_id)
+	{
+		return $this->db
+			->select('peserta_workshop.*, pt.nama_pt')
+			->from('peserta_workshop')
+			->join('lokasi_workshop', 'lokasi_workshop.id = peserta_workshop.lokasi_workshop_id')
+			->join('perguruan_tinggi pt', 'peserta_workshop.perguruan_tinggi_id = pt.id')
+			->where([
+				'peserta_workshop.lokasi_workshop_id' => $lokasi_workshop_id
+			])
+			->get()->result();
+	}
+	
 	public function list_all($perguruan_tinggi_id)
 	{
 		return $this->db
