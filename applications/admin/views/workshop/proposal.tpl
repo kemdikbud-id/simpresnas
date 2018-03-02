@@ -4,7 +4,7 @@
 	<style>.table>thead>tr>th, .table>tbody>tr>td { font-size: 13px }</style>
 {/block}
 {block name='content'}
-	<h2 class="page-header">Daftar Peserta Workshop</h2>
+	<h2 class="page-header">Daftar Proposal Workshop</h2>
 
 	<div class="row">
 		<div class="col-lg-12">
@@ -31,20 +31,21 @@
 			</form>
 			
 			{if !empty($smarty.get.kegiatan_id)}
-				<table class="table table-bordered table-condensed table-striped" id="pesertaTable" style="display: none;">
+				<table class="table table-bordered table-condensed table-striped" id="proposalTable"
+					   data-state-save="true" data-column-defs='[{ "orderable": false, "targets": -1 }]'>
 					<thead>
 						<tr>
 							<th>Perguruan Tinggi</th>
-							<th>Nama</th>
-							<th>NIM</th>
+							<th>Judul Proposal</th>
+							<th style="width: 15px">File</th>
 						</tr>
 					</thead>
 					<tbody>
 						{foreach $data_set as $data}
 							<tr>
 								<td>{$data->nama_pt}</td>
-								<td>{$data->nama}</td>
-								<td>{$data->nim}</td>
+								<td>{$data->judul}</td>
+								<td class="text-center"><a href="{base_url()}../upload/file-proposal/workshop/{$data->username}/{$data->nama_file}" target="_blank"><span class="glyphicon glyphicon-file" aria-hidden="true"></span></a></td>
 							</tr>
 						{/foreach}
 					</tbody>
@@ -60,9 +61,7 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			
-			$('#pesertaTable').DataTable({ stateSave: true });
-			
-			$('#pesertaTable').show();
+			$('#proposalTable').DataTable();
 			
 			$('[name="kegiatan_id"]').on('change', function() {
 				$('[name="lokasi_workshop_id"]').html('<option value="">-- Pilih Lokasi --</option>');

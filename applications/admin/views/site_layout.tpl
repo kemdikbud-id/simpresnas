@@ -62,6 +62,7 @@
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Workshop Kewirausahaan <span class="caret"></span></a>
 								<ul class="dropdown-menu">
 									<li><a href="{site_url('workshop/peserta')}">Daftar Peserta</a></li>
+									<li><a href="{site_url('workshop/proposal')}">Daftar Proposal</a></li>
 								</ul>
 							</li>
 							<li>

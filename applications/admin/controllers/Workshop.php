@@ -5,6 +5,7 @@
  * @property Kegiatan_model $kegiatan_model
  * @property LokasiWorkshop_model $lokasi_model
  * @property PesertaWorkshop_model $peserta_model
+ * @property ProposalWorkshop_model $proposal_model
  */
 class Workshop extends Admin_Controller
 {
@@ -17,6 +18,7 @@ class Workshop extends Admin_Controller
 		$this->load->model('Kegiatan_model', 'kegiatan_model');
 		$this->load->model('LokasiWorkshop_model', 'lokasi_model');
 		$this->load->model('PesertaWorkshop_model', 'peserta_model');
+		$this->load->model('ProposalWorkshop_model', 'proposal_model');
 	}
 	
 	public function peserta()
@@ -46,5 +48,18 @@ class Workshop extends Admin_Controller
 		}
 		
 		echo json_encode($lokasi_set);
+	}
+	
+	public function proposal()
+	{
+		$this->smarty->assign('kegiatan_set', $this->kegiatan_model->list_workshop());
+		
+		if ($this->input->get('kegiatan_id'))
+		{
+			$this->smarty->assign('lokasi_set', $this->lokasi_model->list_all($this->input->get('kegiatan_id')));
+			$this->smarty->assign('data_set', $this->proposal_model->list_all($this->input->get('lokasi_workshop_id')));
+		}
+		
+		$this->smarty->display();
 	}
 }
