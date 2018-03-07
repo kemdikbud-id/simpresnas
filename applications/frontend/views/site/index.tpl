@@ -28,6 +28,7 @@
 		<div class="col-md-4 text-center">
 			<h3>Kompetisi Bisnis Mahasiswa Indonesia (KBMI)</h3>
 			<p>Wadah untuk mempraktekan ilmu dan keterampilan berwirausaha yang sudah didapat oleh mahasiswa melalui pemberian modal</p>
+			<p><a target="_blank" href="{base_url()}download/PANDUAN_KBMI_2018.pdf">Download Panduan KBMI 2018</a></p>
 		</div>
 	</div>
 	
