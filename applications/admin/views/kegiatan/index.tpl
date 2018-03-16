@@ -1,6 +1,6 @@
 {extends file='site_layout.tpl'}
 {block name='content'}
-	<h1 class="page-header">Master Kegiatan</h1>
+	<h1 class="page-header">Master Jadwal Kegiatan</h1>
 	
 	<div class="row">
 		<div class="col-lg-12">
