@@ -21,9 +21,23 @@
 
 					<!-- Text input-->
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="proposal_per_pt">Jumlah Proposal</label>  
+						<label class="col-md-2 control-label" for="proposal_per_pt">Jumlah Proposal per PT</label>  
 						<div class="col-md-1">
 							<input id="proposal_per_pt" name="proposal_per_pt" placeholder="" class="form-control input-md" type="text" value="{set_value('proposal_per_pt', $data->proposal_per_pt)}">
+						</div>
+						<div class="col-md-3">
+							<p>Di isi hanya untuk program PBBT, KBMI, &amp; Expo KMI. </p>
+						</div>
+					</div>
+						
+					<!-- Text input-->
+					<div class="form-group peserta_per_pt">
+						<label class="col-md-2 control-label" for="peserta_per_pt">Jumlah Peserta per PT</label>  
+						<div class="col-md-1">
+							<input id="peserta_per_pt" name="peserta_per_pt" placeholder="0" class="form-control input-md" type="text" value="{set_value('peserta_per_pt', $data->peserta_per_pt)}">
+						</div>
+						<div class="col-md-3">
+							<p>Di isi hanya untuk program Workshop Kewirausahaan</p>
 						</div>
 					</div>
 

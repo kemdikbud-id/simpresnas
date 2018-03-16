@@ -33,7 +33,7 @@
 
 					<!-- Text input-->
 					<div class="form-group proposal_per_pt">
-						<label class="col-md-2 control-label" for="proposal_per_pt">Jumlah Proposal</label>  
+						<label class="col-md-2 control-label" for="proposal_per_pt">Jumlah Proposal per PT</label>  
 						<div class="col-md-1">
 							<input id="proposal_per_pt" name="proposal_per_pt" placeholder="0" class="form-control input-md" type="text" value="">
 						</div>
@@ -44,7 +44,7 @@
 					
 					<!-- Text input-->
 					<div class="form-group peserta_per_pt">
-						<label class="col-md-2 control-label" for="peserta_per_pt">Jumlah Peserta</label>  
+						<label class="col-md-2 control-label" for="peserta_per_pt">Jumlah Peserta per PT</label>  
 						<div class="col-md-1">
 							<input id="peserta_per_pt" name="peserta_per_pt" placeholder="0" class="form-control input-md" type="text" value="">
 						</div>
