@@ -5,6 +5,7 @@
  * @property Kegiatan_model $kegiatan_model 
  * @property Program_model $program_model
  * @property LokasiWorkshop_model $lokasi_model
+ * @property Syarat_model $syarat_model
  */
 class Kegiatan extends Admin_Controller
 {
@@ -17,6 +18,7 @@ class Kegiatan extends Admin_Controller
 		$this->load->model('Kegiatan_model', 'kegiatan_model');
 		$this->load->model('Program_model', 'program_model');
 		$this->load->model('LokasiWorkshop_model', 'lokasi_model');
+		$this->load->model('Syarat_model', 'syarat_model');
 	}
 	
 	public function index()
@@ -184,6 +186,107 @@ class Kegiatan extends Admin_Controller
 		
 		$this->smarty->assign('data', $lokasi);
 		$this->smarty->assign('kegiatan', $kegiatan);
+		$this->smarty->display();
+	}
+	
+	public function syarat()
+	{
+		$kegiatan_id = $this->input->get('kegiatan_id');
+		
+		$kegiatan = $this->kegiatan_model->get_single($kegiatan_id);
+		
+		$data_set = $this->syarat_model->list_by_kegiatan($kegiatan_id);
+		
+		foreach ($data_set as &$data)
+		{
+			$data->is_deletable = $this->syarat_model->is_deletable($data->id);
+		}
+		
+		$this->smarty->assign('data_set', $data_set);
+		$this->smarty->assign('kegiatan', $kegiatan);
+		$this->smarty->display();
+	}
+	
+	public function add_syarat()
+	{
+		$kegiatan_id = $this->input->get('kegiatan_id');
+		
+		if ($this->input->method() == 'post')
+		{
+			$add_result = $this->syarat_model->add();
+			
+			if ($add_result)
+			{
+				$this->session->set_flashdata('result', array(
+					'page_title' => 'Tambah Syarat Upload',
+					'message' => 'Berhasil menambah data',
+					'link_1' => '<a href="' . site_url('kegiatan/syarat?kegiatan_id=' . $kegiatan_id) . '">Kembali ke syarat</a>',
+				));
+				
+				redirect(site_url('alert/success'));
+			}
+			else
+			{
+				$this->session->set_flashdata('result', array(
+					'page_title' => 'Tambah Syarat Upload',
+					'message' => 'Gagal menambah data',
+					'link_1' => '<a href="' . site_url('kegiatan/syarat?kegiatan_id=' . $kegiatan_id) . '">Kembali ke syarat</a>',
+				));
+				
+				redirect(site_url('alert/error'));
+			}
+		}
+		
+		$kegiatan = $this->kegiatan_model->get_single($kegiatan_id);
+		
+		$this->smarty->assign('kegiatan', $kegiatan);
+		
+		$wajib_set = [1 => 'Wajib', 0 => 'Tidak Wajib'];
+		$this->smarty->assign('wajib_set', $wajib_set);
+		
+		$this->smarty->display();
+	}
+	
+	public function edit_syarat($id)
+	{
+		$syarat = $this->syarat_model->get_single($id);
+		
+		if ($this->input->method() == 'post')
+		{
+			$update_result = $this->syarat_model->update($id);
+			
+			if ($update_result)
+			{
+				$this->session->set_flashdata('result', array(
+					'page_title' => 'Edit Syarat Upload',
+					'message' => 'Berhasil mengupdate data',
+					'link_1' => '<a href="' . site_url('kegiatan/syarat?kegiatan_id=' . $syarat->kegiatan_id) . '">Kembali ke syarat</a>',
+				));
+				
+				redirect(site_url('alert/success'));
+			}
+			else
+			{
+				$this->session->set_flashdata('result', array(
+					'page_title' => 'Edit Syarat Upload',
+					'message' => 'Gagal mengupdate data',
+					'link_1' => '<a href="' . site_url('kegiatan/syarat?kegiatan_id=' . $syarat->kegiatan_id) . '">Kembali ke syarat</a>',
+				));
+				
+				redirect(site_url('alert/error'));
+			}
+			
+			exit();
+		}
+
+		$kegiatan = $this->kegiatan_model->get_single($syarat->kegiatan_id);
+		
+		$this->smarty->assign('data', $syarat);
+		$this->smarty->assign('kegiatan', $kegiatan);
+		
+		$wajib_set = [1 => 'Wajib', 0 => 'Tidak Wajib'];
+		$this->smarty->assign('wajib_set', $wajib_set);
+		
 		$this->smarty->display();
 	}
 }
