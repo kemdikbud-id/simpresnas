@@ -29,33 +29,27 @@ class Proposal extends Admin_Controller
 	
 	public function index_pbbt()
 	{
-		// PBBT 2017 --> 1
-		$data_set = $this->proposal_model->list_all_per_kegiatan(1);
-		
-		foreach ($data_set as &$data)
+		if ( ! empty($this->input->get('kegiatan_id')))
 		{
-			// get elapsed time
-			//$data->waktu = time_elapsed_string($data->created_at);
+			$data_set = $this->proposal_model->list_all_per_kegiatan($this->input->get('kegiatan_id'));
+			
+			$this->smarty->assign('data_set', $data_set);
 		}
 		
-		$this->smarty->assign('data_set', $data_set);
-		
+		$this->smarty->assign('kegiatan_set', $this->kegiatan_model->list_all(PROGRAM_PBBT));
 		$this->smarty->display();
 	}
 	
 	public function index_kbmi()
 	{
-		// KBMI 2017 --> 2
-		$data_set = $this->proposal_model->list_all_per_kegiatan(2);
-		
-		foreach ($data_set as &$data)
+		if ( ! empty($this->input->get('kegiatan_id')))
 		{
-			// get elapsed time
-			//$data->waktu = time_elapsed_string($data->created_at);
-		}
+			$data_set = $this->proposal_model->list_all_per_kegiatan($this->input->get('kegiatan_id'));
 			
-		$this->smarty->assign('data_set', $data_set);
+			$this->smarty->assign('data_set', $data_set);
+		}
 		
+		$this->smarty->assign('kegiatan_set', $this->kegiatan_model->list_all(PROGRAM_KBMI));
 		$this->smarty->display();
 	}
 	

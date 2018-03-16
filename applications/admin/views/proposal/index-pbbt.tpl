@@ -9,6 +9,20 @@
 	<div class="row">
 		<div class="col-lg-12">
 			
+			<form class="form-inline" action="{current_url()}" method="get" style="margin-bottom: 20px">
+				<div class="form-group">
+					<select name="kegiatan_id" class="form-control input-sm">
+						<option value="">-- Pilih Kegiatan --</option>
+						{foreach $kegiatan_set as $kegiatan}
+							<option value="{$kegiatan->id}" {if !empty($smarty.get.kegiatan_id)}{if $smarty.get.kegiatan_id == $kegiatan->id}selected{/if}{/if}>{$kegiatan->nama_program} {$kegiatan->tahun}</option>
+						{/foreach}
+					</select>
+				</div>
+				<button type="submit" class="btn btn-sm btn-default">
+					Lihat
+				</button>
+			</form>
+			
 			<table class="table table-bordered table-condensed table-striped table-hover" id="table">
 				<thead>
 					<tr>
@@ -20,29 +34,31 @@
 					</tr>
 				</thead>
 				<tbody>
-					{foreach $data_set as $data}
-						<tr>
-							<td>{$data->judul}</td>
-							<td>{$data->nama_pt}</td>
-							<td>
-								{if $data->jumlah_syarat == $data->syarat_terupload}
-									<span class="label label-success">LENGKAP</span>
-								{else if $data->syarat_wajib == $data->syarat_wajib_terupload}
-									<span class="label label-info">CUKUP MINIMAL</span>
-								{else}
-									<span class="label label-warning">BELUM LENGKAP</span>
-								{/if}
-							</td>
-							<td>{$data->created_at}</td>
-							<td>
-								<a href="{site_url("proposal/view?id={$data->id}")}" class="btn btn-xs btn-default">Lihat</a>
-							</td>
-						</tr>
-					{foreachelse}
-						<tr>
-							<td colspan="5">Tidak ada data ditemukan</td>
-						</tr>
-					{/foreach}
+					{if isset($data_set)}
+						{foreach $data_set as $data}
+							<tr>
+								<td>{$data->judul}</td>
+								<td>{$data->nama_pt}</td>
+								<td>
+									{if $data->jumlah_syarat == $data->syarat_terupload}
+										<span class="label label-success">LENGKAP</span>
+									{else if $data->syarat_wajib == $data->syarat_wajib_terupload}
+										<span class="label label-info">CUKUP MINIMAL</span>
+									{else}
+										<span class="label label-warning">BELUM LENGKAP</span>
+									{/if}
+								</td>
+								<td>{$data->created_at}</td>
+								<td>
+									<a href="{site_url("proposal/view?id={$data->id}")}" class="btn btn-xs btn-default">Lihat</a>
+								</td>
+							</tr>
+						{foreachelse}
+							<tr>
+								<td colspan="5">Tidak ada data ditemukan</td>
+							</tr>
+						{/foreach}
+					{/if}
 				</tbody>
 			</table>
 

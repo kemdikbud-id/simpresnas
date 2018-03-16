@@ -69,15 +69,20 @@ class Kegiatan_model extends CI_Model
 		return $this->db->trans_complete();
 	}
 	
-	public function list_all()
+	public function list_all($program_id = 'all')
 	{
-		return $this->db
+		$this->db
 			->select('kegiatan.*, program.nama_program')
 			->from('kegiatan')
 			->join('program', 'program.id = kegiatan.program_id')
-			->order_by('tahun DESC, tgl_awal_upload DESC')
-			->get()
-			->result();
+			->order_by('tahun DESC, tgl_awal_upload DESC');
+		
+		if ($program_id !== 'all')
+		{
+			$this->db->where(['program.id' => $program_id]);
+		}
+		
+		return $this->db->get()->result();
 	}
 	
 	public function list_workshop()
