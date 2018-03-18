@@ -33,56 +33,30 @@
 							<input type="text" class="form-control" name="nama_ketua" placeholder="Nama Ketua" value="{$proposal->nama_ketua}">
 						</div>
 					</div>
-
-					<div class="form-group">
-						<label class="col-lg-2 control-label">Anggota 1</label>
-						<div class="col-lg-2">
-							<input type="text" class="form-control" name="nim_anggota_1" placeholder="NIM / NPM" value="{$proposal->nim_anggota_1}">
+						
+					{for $i_anggota=1 to 5}
+						
+						{if not isset($anggota_set[{$i_anggota}])}
+							{$anggota_id = ''}
+							{$nim = ''}
+							{$nama = ''}
+						{else}
+							{$anggota_id = $anggota_set[{$i_anggota}]->id}
+							{$nim = $anggota_set[{$i_anggota}]->nim}
+							{$nama = $anggota_set[{$i_anggota}]->nama}
+						{/if}
+						
+						<div class="form-group">
+							<label class="col-lg-2 control-label">Anggota {$i_anggota}</label>
+							<div class="col-lg-2">
+								<input type="text" class="form-control" name="nim_anggota[{$i_anggota}]" placeholder="NIM / NPM" value="{set_value('nim_anggota[{$i_anggota}]', $nim)}">
+							</div>
+							<div class="col-lg-8">
+								<input type="text" class="form-control" name="nama_anggota[{$i_anggota}]" placeholder="Nama Anggota {$i_anggota}" value="{set_value('nama_anggota[{$i_anggota}]', $nama)}">
+							</div>
 						</div>
-						<div class="col-lg-8">
-							<input type="text" class="form-control" name="nama_anggota_1" placeholder="Nama Anggota 1" value="{$proposal->nama_anggota_1}">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="col-lg-2 control-label">Anggota 2</label>
-						<div class="col-lg-2">
-							<input type="text" class="form-control" name="nim_anggota_2" placeholder="NIM / NPM" value="{$proposal->nim_anggota_2}">
-						</div>
-						<div class="col-lg-8">
-							<input type="text" class="form-control" name="nama_anggota_2" placeholder="Nama Anggota 2" value="{$proposal->nama_anggota_2}">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="col-lg-2 control-label">Anggota 3</label>
-						<div class="col-lg-2">
-							<input type="text" class="form-control" name="nim_anggota_3" placeholder="NIM / NPM" value="{$proposal->nim_anggota_3}">
-						</div>
-						<div class="col-lg-8">
-							<input type="text" class="form-control" name="nama_anggota_3" placeholder="Nama Anggota 3" value="{$proposal->nama_anggota_3}">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="col-lg-2 control-label">Anggota 4</label>
-						<div class="col-lg-2">
-							<input type="text" class="form-control" name="nim_anggota_4" placeholder="NIM / NPM" value="{$proposal->nim_anggota_4}">
-						</div>
-						<div class="col-lg-8">
-							<input type="text" class="form-control" name="nama_anggota_4" placeholder="Nama Anggota 4" value="{$proposal->nama_anggota_4}">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="col-lg-2 control-label">Anggota 5</label>
-						<div class="col-lg-2">
-							<input type="text" class="form-control" name="nim_anggota_5" placeholder="NIM / NPM" value="{$proposal->nim_anggota_5}">
-						</div>
-						<div class="col-lg-8">
-							<input type="text" class="form-control" name="nama_anggota_5" placeholder="Nama Anggota 5" value="{$proposal->nama_anggota_5}">
-						</div>
-					</div>
+						<input type="hidden" name="id_anggota[{$i_anggota}]" value="{$anggota_id}" />
+					{/for}
 
 				</fieldset>
 

@@ -37,50 +37,50 @@
 					<div class="form-group">
 						<label class="col-lg-2 control-label">Anggota 1</label>
 						<div class="col-lg-2">
-							<input type="text" class="form-control" name="nim_anggota_1" placeholder="NIM / NPM" >
+							<input type="text" class="form-control" name="nim_anggota[1]" placeholder="NIM / NPM" >
 						</div>
 						<div class="col-lg-8">
-							<input type="text" class="form-control" name="nama_anggota_1" placeholder="Nama Anggota 1" >
+							<input type="text" class="form-control" name="nama_anggota[1]" placeholder="Nama Anggota 1" >
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label class="col-lg-2 control-label">Anggota 2</label>
 						<div class="col-lg-2">
-							<input type="text" class="form-control" name="nim_anggota_2" placeholder="NIM / NPM" >
+							<input type="text" class="form-control" name="nim_anggota[2]" placeholder="NIM / NPM" >
 						</div>
 						<div class="col-lg-8">
-							<input type="text" class="form-control" name="nama_anggota_2" placeholder="Nama Anggota 2" >
+							<input type="text" class="form-control" name="nama_anggota[2]" placeholder="Nama Anggota 2" >
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label class="col-lg-2 control-label">Anggota 3</label>
 						<div class="col-lg-2">
-							<input type="text" class="form-control" name="nim_anggota_3" placeholder="NIM / NPM" >
+							<input type="text" class="form-control" name="nim_anggota[3]" placeholder="NIM / NPM" >
 						</div>
 						<div class="col-lg-8">
-							<input type="text" class="form-control" name="nama_anggota_3" placeholder="Nama Anggota 3" >
+							<input type="text" class="form-control" name="nama_anggota[3]" placeholder="Nama Anggota 3" >
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label class="col-lg-2 control-label">Anggota 4</label>
 						<div class="col-lg-2">
-							<input type="text" class="form-control" name="nim_anggota_4" placeholder="NIM / NPM" >
+							<input type="text" class="form-control" name="nim_anggota[4]" placeholder="NIM / NPM" >
 						</div>
 						<div class="col-lg-8">
-							<input type="text" class="form-control" name="nama_anggota_4" placeholder="Nama Anggota 4" >
+							<input type="text" class="form-control" name="nama_anggota[4]" placeholder="Nama Anggota 4" >
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label class="col-lg-2 control-label">Anggota 5</label>
 						<div class="col-lg-2">
-							<input type="text" class="form-control" name="nim_anggota_5" placeholder="NIM / NPM" >
+							<input type="text" class="form-control" name="nim_anggota[5]" placeholder="NIM / NPM" >
 						</div>
 						<div class="col-lg-8">
-							<input type="text" class="form-control" name="nama_anggota_5" placeholder="Nama Anggota 5" >
+							<input type="text" class="form-control" name="nama_anggota[5]" placeholder="Nama Anggota 5" >
 						</div>
 					</div>
 

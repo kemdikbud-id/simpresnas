@@ -68,7 +68,7 @@ class Proposal extends Frontend_Controller
 	
 	public function create()
 	{
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') { $this->_post_create(); }
+		if ($this->input->method() == 'post') { $this->_post_create(); }
 		
 		// Cek maksimal upload per proposal
 		$kegiatan = $this->kegiatan_model->get_aktif($this->session->program_id);
@@ -95,8 +95,8 @@ class Proposal extends Frontend_Controller
 			exit();
 		}
 		
-		$kategori_set = $this->db->get_where('kategori', array('program_id' => $this->session->program_id))->result();
-		$syarat_set = $this->db->get_where('syarat', array('program_id' => $this->session->program_id))->result();
+		$kategori_set = $this->db->get_where('kategori', ['program_id' => $this->session->program_id])->result();
+		$syarat_set = $this->db->get_where('syarat', ['kegiatan_id' => $kegiatan->id])->result();
 		
 		$this->smarty->assignForCombo('kategori_set', $kategori_set, 'id', 'nama_kategori');
 		$this->smarty->assign('syarat_set', $syarat_set);
@@ -118,34 +118,46 @@ class Proposal extends Frontend_Controller
 			'encrypt_name' => TRUE
 		));
 		
+		$created_at = date('Y-m-d H:i:s');
+		
 		// Start transaksi
-		$this->db->trans_start();
+		$this->db->trans_begin();
+		
+		// Create object proposal
+		$proposal = new stdClass();
+		$proposal->perguruan_tinggi_id	= $this->session->perguruan_tinggi->id;
+		$proposal->kegiatan_id			= $this->session->kegiatan->id;
+		$proposal->judul				= $this->input->post('judul');
+		$proposal->kategori_id			= $this->input->post('kategori_id');
+		$proposal->nim_ketua			= $this->input->post('nim_ketua');
+		$proposal->nama_ketua			= $this->input->post('nama_ketua');
+		$proposal->created_at			= $created_at;
 		
 		// Insert Proposal
-		$this->db->insert('proposal', array(
-			'perguruan_tinggi_id' => $this->session->perguruan_tinggi->id,
-			'program_id' => $this->session->program_id,
-			'judul' => $this->input->post('judul'),
-			'kategori_id' => $this->input->post('kategori_id'),
-			'nim_ketua' => $this->input->post('nim_ketua'),
-			'nama_ketua' => $this->input->post('nama_ketua'),
-			'nim_anggota_1' => $this->input->post('nim_anggota_1'),
-			'nama_anggota_1' => $this->input->post('nama_anggota_1'),
-			'nim_anggota_2' => $this->input->post('nim_anggota_2'),
-			'nama_anggota_2' => $this->input->post('nama_anggota_2'),
-			'nim_anggota_3' => $this->input->post('nim_anggota_3'),
-			'nama_anggota_3' => $this->input->post('nama_anggota_3'),
-			'nim_anggota_4' => $this->input->post('nim_anggota_4'),
-			'nama_anggota_4' => $this->input->post('nama_anggota_4'),
-			'nim_anggota_5' => $this->input->post('nim_anggota_5'),
-			'nama_anggota_5' => $this->input->post('nama_anggota_5'),
-		));
+		$this->db->insert('proposal', $proposal);
 		
 		// Mendapatkan PK yg baru terinsert
-		$proposal_id = $this->db->insert_id();
+		$proposal->id = $this->db->insert_id();
+				
+		for ($i_anggota = 1; $i_anggota <= 5; $i_anggota++)
+		{
+			// Jika isian tidak kosong 
+			if ($this->input->post('nim_anggota')[$i_anggota] != '' && $this->input->post('nama_anggota')[$i_anggota] != '')
+			{
+				// Create object anggota
+				$anggota = new stdClass();
+				$anggota->proposal_id	= $proposal->id;
+				$anggota->no_urut		= $i_anggota;
+				$anggota->nim			= $this->input->post('nim_anggota')[$i_anggota];
+				$anggota->nama			= $this->input->post('nama_anggota')[$i_anggota];
+				$anggota->created_at	= $created_at;
+				
+				$this->db->insert('anggota_proposal', $anggota);
+			}
+		}
 		
 		// Set lokasi simpan
-		$this->upload->upload_path = './upload/file-proposal/'.$program_path.'/'.$this->session->user->username.'/'.$proposal_id.'/';
+		$this->upload->upload_path = './upload/file-proposal/'.$program_path.'/'.$this->session->user->username.'/'.$proposal->id.'/';
 		
 		// Buat folder jika belum ada
 		if ( ! file_exists($this->upload->upload_path))
@@ -154,10 +166,13 @@ class Proposal extends Frontend_Controller
 			{
 				// jika create directory gagal, tampilkan error
 				show_error("Permission denied : ".$this->upload->upload_path);
+				
+				// Rollback transaction
+				$this->db->trans_rollback();
 			}
 		}
 		
-		$syarat_set = $this->db->get_where('syarat', array('program_id' => $this->session->program_id))->result();
+		$syarat_set = $this->db->get_where('syarat', ['kegiatan_id' => $this->session->kegiatan->id])->result();
 		
 		// Baca tiap-tiap syarat
 		foreach ($syarat_set as $syarat)
@@ -167,7 +182,7 @@ class Proposal extends Frontend_Controller
 				$data = $this->upload->data();
 				
 				$this->db->insert('file_proposal', array(
-					'proposal_id' => $proposal_id,
+					'proposal_id' => $proposal->id,
 					'nama_asli' => $data['orig_name'],
 					'nama_file' => $data['file_name'],
 					'syarat_id' => $syarat->id
@@ -175,8 +190,11 @@ class Proposal extends Frontend_Controller
 			}
 		}
 		
-		if ($this->db->trans_complete())
+		if ($this->db->trans_status() === TRUE)
 		{
+			// Commit transaction
+			$this->db->trans_commit();
+			
 			// set message
 			$this->session->set_flashdata('result', array(
 				'page_title' => 'Tambah Proposal',
@@ -186,17 +204,19 @@ class Proposal extends Frontend_Controller
 			));
 			
 			redirect(site_url('proposal/result_message'));
+			
+			exit();
 		}
 	}
 	
 	public function update($id)
 	{	
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') { $this->_post_update($id); }
+		if ($this->input->method() == 'post') { $this->_post_update($id); }
 		
 		$proposal_id = (int)$id;
 		
 		$kategori_set = $this->db->get_where('kategori', array('program_id' => $this->session->program_id))->result();
-		//$syarat_set = $this->db->get_where('syarat', array('program_id' => $this->session->program_id))->result();
+		
 		$syarat_set = $this->db
 			->select('syarat.id, syarat, keterangan, file.id as file_proposal_id, nama_asli, nama_file')
 			->from('syarat')
@@ -211,6 +231,12 @@ class Proposal extends Frontend_Controller
 			'id' => $proposal_id
 		))->row();
 		
+		// get anggota proposal set, no urut as key
+		foreach ($this->db->get_where('anggota_proposal', ['proposal_id' => $proposal->id])->result() as $anggota)
+		{
+			$anggota_set[$anggota->no_urut] = $anggota;
+		}
+		
 		// build upload path
 		$program_path = ($this->session->program_id == PROGRAM_PBBT) ? 'pbbt' : 'kbmi';
 		$upload_path = base_url("upload/file-proposal/{$program_path}/{$this->session->user->username}/{$proposal_id}/");
@@ -218,6 +244,7 @@ class Proposal extends Frontend_Controller
 		$this->smarty->assignForCombo('kategori_set', $kategori_set, 'id', 'nama_kategori');
 		$this->smarty->assign('syarat_set', $syarat_set);
 		$this->smarty->assign('proposal', $proposal);
+		$this->smarty->assign('anggota_set', $anggota_set);
 		$this->smarty->assign('upload_path', $upload_path);
 		
 		if ($this->session->program_id == PROGRAM_PBBT)
@@ -237,30 +264,70 @@ class Proposal extends Frontend_Controller
 			'encrypt_name' => TRUE
 		));
 		
+		$updated_at = date('Y-m-d H:i:s');
+		
 		// Start transaksi
-		$this->db->trans_start();
+		$this->db->trans_begin();
+		
+		// Get row proposal
+		$proposal = $this->db->get_where('proposal', ['id' => $id, 'perguruan_tinggi_id' => $this->session->perguruan_tinggi->id], 1)->row();
+		
+		// Update informasi proposal
+		$proposal->judul			= $this->input->post('judul');
+		$proposal->kategori_id		= $this->input->post('kategori_id');
+		$proposal->nim_ketua		= $this->input->post('nim_ketua');
+		$proposal->nama_ketua		= $this->input->post('nama_ketua');
+		$proposal->updated_at		= $updated_at;
 		
 		// update informasi proposal
-		$this->db->update('proposal', array(
-			'judul' => $this->input->post('judul'),
-			'kategori_id' => $this->input->post('kategori_id'),
-			'nim_ketua' => $this->input->post('nim_ketua'),
-			'nama_ketua' => $this->input->post('nama_ketua'),
-			'nim_anggota_1' => $this->input->post('nim_anggota_1'),
-			'nama_anggota_1' => $this->input->post('nama_anggota_1'),
-			'nim_anggota_2' => $this->input->post('nim_anggota_2'),
-			'nama_anggota_2' => $this->input->post('nama_anggota_2'),
-			'nim_anggota_3' => $this->input->post('nim_anggota_3'),
-			'nama_anggota_3' => $this->input->post('nama_anggota_3'),
-			'nim_anggota_4' => $this->input->post('nim_anggota_4'),
-			'nama_anggota_4' => $this->input->post('nama_anggota_4'),
-			'nim_anggota_5' => $this->input->post('nim_anggota_5'),
-			'nama_anggota_5' => $this->input->post('nama_anggota_5'),
-		), array('id' => $id));
+		$this->db->update('proposal', $proposal, ['id' => $proposal->id]);
 		
-		$proposal_id = $id;
-		
-		$this->upload->upload_path = './upload/file-proposal/'.$program_path.'/'.$this->session->user->username.'/'.$proposal_id.'/';
+		// Baca isian anggota
+		for ($i_anggota = 1; $i_anggota <= 5; $i_anggota++)
+		{
+			$id_anggota		= $this->input->post('id_anggota')[$i_anggota];
+			$nim_anggota	= $this->input->post('nim_anggota')[$i_anggota];
+			$nama_anggota	= $this->input->post('nama_anggota')[$i_anggota];
+			
+			// Jika isian tidak kosong / salah satu ada isi
+			if ($nim_anggota != '' || $nama_anggota != '')
+			{
+				// Jika sudah ada id, update data
+				if ($id_anggota != '')
+				{
+					// Create object anggota
+					$anggota = new stdClass();
+					$anggota->proposal_id	= $proposal->id;
+					$anggota->no_urut		= $i_anggota;
+					$anggota->nim			= $this->input->post('nim_anggota')[$i_anggota];
+					$anggota->nama			= $this->input->post('nama_anggota')[$i_anggota];
+					$anggota->created_at	= $updated_at;
+
+					$this->db->update('anggota_proposal', $anggota, ['id' => $this->input->post('id_anggota')[$i_anggota]], 1);
+				}
+				else // jika belum ada id, insert
+				{
+					// Create object anggota
+					$anggota = new stdClass();
+					$anggota->proposal_id	= $proposal->id;
+					$anggota->no_urut		= $i_anggota;
+					$anggota->nim			= $this->input->post('nim_anggota')[$i_anggota];
+					$anggota->nama			= $this->input->post('nama_anggota')[$i_anggota];
+					$anggota->updated_at	= $updated_at;
+					
+					$this->db->insert('anggota_proposal', $anggota);
+				}
+			}
+			
+			// Jika isian kosong semua, tetapi punya id
+			else if ($nim_anggota == '' && $nama_anggota == '' && $id_anggota != '')
+			{
+				// delete data
+				$this->db->delete('anggota_proposal', ['id' => $id_anggota], 1);
+			}
+		}
+				
+		$this->upload->upload_path = './upload/file-proposal/'.$program_path.'/'.$this->session->user->username.'/'.$proposal->id.'/';
 		
 		// Buat folder jika belum ada
 		if ( ! file_exists($this->upload->upload_path))
@@ -269,10 +336,13 @@ class Proposal extends Frontend_Controller
 			{
 				// jika create directory gagal, tampilkan error
 				show_error("Permission denied : ".$this->upload->upload_path);
+				
+				// Rollback transaction
+				$this->db->trans_rollback();
 			}
 		}
 		
-		$syarat_set = $this->db->get_where('syarat', array('program_id' => $this->session->program_id))->result();
+		$syarat_set = $this->db->get_where('syarat', array('kegiatan_id' => $proposal->kegiatan_id))->result();
 		
 		// Baca tiap-tiap syarat
 		foreach ($syarat_set as $syarat)
@@ -282,7 +352,7 @@ class Proposal extends Frontend_Controller
 				$data = $this->upload->data();
 				
 				$file_row_exist = $this->db->where(array(
-					'proposal_id' => $proposal_id,
+					'proposal_id' => $proposal->id,
 					'syarat_id' => $syarat->id
 				))->count_all_results('file_proposal') > 0;
 				
@@ -292,12 +362,12 @@ class Proposal extends Frontend_Controller
 					$this->db->update('file_proposal', array(
 						'nama_asli' => $data['orig_name'],
 						'nama_file' => $data['file_name']
-					), array('proposal_id' => $proposal_id, 'syarat_id' => $syarat->id));
+					), array('proposal_id' => $proposal->id, 'syarat_id' => $syarat->id));
 				}
 				else // update
 				{
 					$this->db->insert('file_proposal', array(
-						'proposal_id' => $proposal_id,
+						'proposal_id' => $proposal->id,
 						'nama_asli' => $data['orig_name'],
 						'nama_file' => $data['file_name'],
 						'syarat_id' => $syarat->id
@@ -306,8 +376,11 @@ class Proposal extends Frontend_Controller
 			}
 		}
 		
-		if ($this->db->trans_complete())
+		if ($this->db->trans_status() === TRUE)
 		{
+			// Commit transaction
+			$this->db->trans_commit();
+			
 			// set message
 			$this->session->set_flashdata('result', array(
 				'page_title' => 'Update Proposal',
@@ -327,7 +400,7 @@ class Proposal extends Frontend_Controller
 		// cleansing
 		$id = (int)$id;
 		
-		if ($_SERVER['REQUEST_METHOD'] == 'POST')
+		if ($this->input->method() == 'post')
 		{
 			$this->db->trans_start();
 			
