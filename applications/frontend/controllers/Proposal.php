@@ -301,7 +301,7 @@ class Proposal extends Frontend_Controller
 					$anggota->no_urut		= $i_anggota;
 					$anggota->nim			= $this->input->post('nim_anggota')[$i_anggota];
 					$anggota->nama			= $this->input->post('nama_anggota')[$i_anggota];
-					$anggota->created_at	= $updated_at;
+					$anggota->updated_at	= $updated_at;
 
 					$this->db->update('anggota_proposal', $anggota, ['id' => $this->input->post('id_anggota')[$i_anggota]], 1);
 				}
@@ -313,7 +313,7 @@ class Proposal extends Frontend_Controller
 					$anggota->no_urut		= $i_anggota;
 					$anggota->nim			= $this->input->post('nim_anggota')[$i_anggota];
 					$anggota->nama			= $this->input->post('nama_anggota')[$i_anggota];
-					$anggota->updated_at	= $updated_at;
+					$anggota->created_at	= $updated_at;
 					
 					$this->db->insert('anggota_proposal', $anggota);
 				}
