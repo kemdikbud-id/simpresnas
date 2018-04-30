@@ -27,16 +27,6 @@ class Proposal extends Frontend_Controller
 	
 	public function index()
 	{
-		/*
-		$data_set = $this->db
-			->select('proposal.*, kategori.nama_kategori')
-			->from('proposal')
-			->join('kategori', 'kategori.id = proposal.kategori_id')
-			->where(array(
-				'proposal.kegiatan_id' => $this->session->kegiatan->program_id,
-				'proposal.perguruan_tinggi_id' => $this->session->perguruan_tinggi->id
-			))->get()->result();
-		*/
 		
 		$data_set = $this->db->query(
 			"select 
