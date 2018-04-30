@@ -8,6 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property File_proposal_model $file_proposal_model
  * @property Kegiatan_model $kegiatan_model
  * @property Program_model $program_model
+ * @property Anggota_proposal_model $anggota_proposal_model 
  */
 class Proposal extends Frontend_Controller
 {
@@ -23,6 +24,7 @@ class Proposal extends Frontend_Controller
 		$this->load->model(MODEL_FILE_PROPOSAL, 'file_proposal_model');
 		$this->load->model(MODEL_KEGIATAN, 'kegiatan_model');
 		$this->load->model(MODEL_PROGRAM, 'program_model');
+		$this->load->model(MODEL_ANGGOTA_PROPOSAL, 'anggota_proposal_model');
 	}
 	
 	public function index()
@@ -399,10 +401,18 @@ class Proposal extends Frontend_Controller
 			
 			// delete tiap file
 			foreach ($file_proposal_set as $file)
-				unlink('./upload/file-proposal/'.$program_path.'/'.$this->session->user->username.'/'.$id.'/'.$file->nama_file);
+			{
+				if (file_exists('./upload/file-proposal/'.$program_path.'/'.$this->session->user->username.'/'.$id.'/'.$file->nama_file))
+				{
+					unlink('./upload/file-proposal/'.$program_path.'/'.$this->session->user->username.'/'.$id.'/'.$file->nama_file);
+				}
+			}
 			
 			// delete row file proposal
 			$this->file_proposal_model->delete_by_proposal($id);
+			
+			// delete row anggota proposal
+			$this->anggota_proposal_model->delete_by_proposal($id);
 			
 			// delete proposal
 			$this->proposal_model->delete($id, $this->session->perguruan_tinggi->id);
@@ -428,5 +438,10 @@ class Proposal extends Frontend_Controller
 	public function result_message()
 	{
 		$this->smarty->display();
+	}
+	
+	public function submit($tahapan_id = 0)
+	{
+		
 	}
 }
