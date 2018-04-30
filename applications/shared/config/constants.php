@@ -32,3 +32,6 @@ defined('TIPE_USER_NORMAL')			or define('TIPE_USER_NORMAL', 1);
 defined('TIPE_USER_REVIEWER')		or define('TIPE_USER_REVIEWER', 2);
 defined('TIPE_USER_VERIFIKATOR')	or define('TIPE_USER_VERIFIKATOR', 3);
 defined('TIPE_USER_ADMIN')			or define('TIPE_USER_ADMIN', 99);
+
+// Tahapan Proposal
+defined('TAHAPAN_EVALUASI')			or define('TAHAPAN_EVALUASI', 1);

@@ -10,4 +10,9 @@ class TahapanProposal_model extends CI_Model
 	{
 		return $this->db->get_where('tahapan_proposal', ['id' => $id])->row();
 	}
+	
+	public function insert(stdClass $model)
+	{
+		return $this->db->insert('tahapan_proposal', $model);
+	}
 }

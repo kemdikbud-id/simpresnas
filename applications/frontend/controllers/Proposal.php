@@ -9,6 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property Kegiatan_model $kegiatan_model
  * @property Program_model $program_model
  * @property Anggota_proposal_model $anggota_proposal_model 
+ * @property TahapanProposal_model $tahapan_proposal_model Description
  */
 class Proposal extends Frontend_Controller
 {
@@ -25,6 +26,7 @@ class Proposal extends Frontend_Controller
 		$this->load->model(MODEL_KEGIATAN, 'kegiatan_model');
 		$this->load->model(MODEL_PROGRAM, 'program_model');
 		$this->load->model(MODEL_ANGGOTA_PROPOSAL, 'anggota_proposal_model');
+		$this->load->model(MODEL_TAHAPAN_PROPOSAL, 'tahapan_proposal_model');
 	}
 	
 	public function index()
@@ -440,8 +442,48 @@ class Proposal extends Frontend_Controller
 		$this->smarty->display();
 	}
 	
-	public function submit($tahapan_id = 0)
+	public function submit($id = 0)
 	{
+		$proposal_id = (int)$id;
 		
+		$proposal = $this->proposal_model->get_single($proposal_id, $this->session->perguruan_tinggi->id);
+		
+		if ($this->input->method() == 'post')
+		{
+			$this->db->trans_begin();
+			
+			$tahapan_proposal = new stdClass();
+			$tahapan_proposal->kegiatan_id	= $proposal->kegiatan_id;
+			$tahapan_proposal->proposal_id	= $proposal->id;
+			$tahapan_proposal->tahapan_id	= TAHAPAN_EVALUASI;
+			$tahapan_proposal->nilai_akhir	= 0;
+			$tahapan_proposal->created_at	= date('Y-m-d H:i:s');
+			
+			// Insert Tahapan
+			$this->tahapan_proposal_model->insert($tahapan_proposal);
+
+			$proposal->is_submited = 1;
+			
+			// Update status proposal
+			$this->proposal_model->update($proposal_id, $proposal);			
+			
+			if ($this->db->trans_status() === TRUE)
+			{
+				$this->db->trans_commit();
+			
+				$this->session->set_flashdata('result', array(
+					'page_title' => 'Submit Proposal',
+					'message' => 'Proposal berhasil di submit',
+					'link_1' => '<a href="'.site_url('proposal/index').'">Kembali ke Daftar Proposal</a>'
+				));
+
+				redirect(site_url('alert/success'));
+			}
+			
+			exit();
+		}
+		
+		$this->smarty->assign('data', $proposal);
+		$this->smarty->display();
 	}
 }
