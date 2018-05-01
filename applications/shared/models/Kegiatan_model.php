@@ -140,8 +140,8 @@ class Kegiatan_model extends CI_Model
 		return $this->db->get_where('kegiatan', [
 			'program_id' => $program_id, 
 			'is_aktif' => 1,
-			'tgl_awal_upload >=' => $current_time,
-			'tgl_akhir_upload <=' => $current_time
+			'tgl_awal_upload <=' => $current_time,
+			'tgl_akhir_upload >=' => $current_time
 		], 1)->row();
 	}
 }
