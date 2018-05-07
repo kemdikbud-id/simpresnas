@@ -20,6 +20,8 @@ define('MODEL_PLOT_REVIEWER', 'PlotReviewer_model');
 define('MODEL_TAHAPAN', 'Tahapan_model');
 define('MODEL_TAHAPAN_PROPOSAL', 'TahapanProposal_model');
 define('MODEL_KATEGORI', 'Kategori_model');
+define('MODEL_UNIT_KEWIRAUSAHAAN', 'Unit_kewirausahaan_model');
+define('MODEL_PROFIL_KELOMPOK', 'Profil_kelompok_model');
 
 // Jenis Program
 defined('PROGRAM_PBBT')	or define('PROGRAM_PBBT', 1);

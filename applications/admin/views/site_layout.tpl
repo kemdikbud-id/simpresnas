@@ -59,17 +59,19 @@
 								</ul>
 							</li>
 							<li>
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Workshop Kewirausahaan <span class="caret"></span></a>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Proposal / Kegiatan <span class="caret"></span></a>
 								<ul class="dropdown-menu">
+									<li><a href="{site_url('proposal/index-pbbt')}">Proposal PBBT</a></li>
+									<li><a href="{site_url('proposal/index-kbmi')}">Proposal KBMI</a></li>
+									<li role="separator" class="divider"></li>
+									<li><h5 style="padding: 3px 20px; margin: 0"><i>Workshop</i></h5></li>
 									<li><a href="{site_url('workshop/peserta')}">Daftar Peserta</a></li>
 									<li><a href="{site_url('workshop/proposal')}">Daftar Proposal</a></li>
-								</ul>
-							</li>
-							<li>
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Daftar Proposal Masuk <span class="caret"></span></a>
-								<ul class="dropdown-menu">
-									<li><a href="{site_url('proposal/index-pbbt')}">Program PBBT</a></li>
-									<li><a href="{site_url('proposal/index-kbmi')}">Program KBMI</a></li>
+									<li role="separator" class="divider"></li>
+									<li><h5 style="padding: 3px 20px; margin: 0"><i>Expo KMI</i></h5></li>
+									<li><a href="{site_url('expo')}">Usulan Expo KMI</a></li>
+									<li><a href="{site_url('expo/rekap-per-pt')}">Rekap per PT</a></li>
+									<li><a href="{site_url('expo/rekap-per-kategori')}">Rekap per Kategori</a></li>
 								</ul>
 							</li>
 							<li>
@@ -83,12 +85,7 @@
 								</ul>
 							</li>
 							<li>
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Expo KMI <span class="caret"></span></a>
-								<ul class="dropdown-menu">
-									<li><a href="{site_url('expo')}">Usulan Expo KMI</a></li>
-									<li><a href="{site_url('expo/rekap-per-pt')}">Rekap per PT</a></li>
-									<li><a href="{site_url('expo/rekap-per-kategori')}">Rekap per Kategori</a></li>
-								</ul>
+								<a href="{site_url('buku-profil')}">Buku Profil</a>
 							</li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">

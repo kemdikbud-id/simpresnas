@@ -40,6 +40,11 @@ class PerguruanTinggi_model extends CI_Model
 		return $this->db->get_where('perguruan_tinggi', ['id' => $id])->row();
 	}
 	
+	public function update(stdClass $model, $id)
+	{
+		return $this->db->update('perguruan_tinggi', $model, ['id' => $id]);
+	}
+	
 	public function list_by_name($nama_pt)
 	{
 		$nama_pt = strtolower($nama_pt);
