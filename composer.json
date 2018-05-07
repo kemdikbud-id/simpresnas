@@ -14,14 +14,5 @@
             "name": "Fathoni",
             "email": "m.fathoni@mail.com"
         }
-    ],
-	"scripts": {
-		"post-install-cmd" : [
-			"cp applications/shared/config/database-example.php applications/shared/config/database.php",
-			"cp applications/shared/config/email-example.php applications/shared/config/email.php",
-			"chmod 0777 applications/frontend/{logs,sessions,views_compiled}",
-			"chmod 0777 applications/backend/{logs,sessions,views_compiled}",
-			"chmod 0777 upload/{file-proposal,request-user}"
-		]
-	}
+    ]
 }
