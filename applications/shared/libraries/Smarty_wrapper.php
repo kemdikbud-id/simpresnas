@@ -1,9 +1,10 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require_once APPPATH . '../../vendor/smarty/smarty/libs/Smarty.class.php';
+// Commented since using Composer Autoload
+// require_once APPPATH . '../../vendor/smarty/smarty/libs/Smarty.class.php';
 
-class Smarty_wrapper extends Smarty 
+class Smarty_wrapper extends Smarty
 { 
 	
 	function __construct()
