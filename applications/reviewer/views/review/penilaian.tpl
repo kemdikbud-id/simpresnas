@@ -113,7 +113,7 @@
 					
 				<div class="form-group">
 					<label class="col-md-2 col-sm-3 control-label">File Upload</label>
-					<div class="col-md-10 col-sm-9">
+					<div class="col-md-8 col-sm-7">
 						{foreach $file_proposal_set as $file_proposal}
 							<p class="form-control-static" style="min-height: 0; padding: 2px 0">
 								{$file_proposal->nama_asli} 
@@ -121,6 +121,9 @@
 								&bull; <a href="#" class="open-file" data-nama-file="{$file_proposal->nama_asli}" data-file="{$file_proposal->nama_file}">Buka</a>
 							</p>
 						{/foreach}
+					</div>
+					<div class="col-md-2 col-sm-2">
+						<a href="javascript: setTidakLolos();" class="btn btn-sm btn-danger">Tidak Lolos Administrasi</a>
 					</div>
 				</div>
 					
@@ -214,5 +217,10 @@
 		});
 		
 		$('input.number').number(true, 0, ',', '.');
+		
+		function setTidakLolos() {
+			$('select[name^="skor\\["]').val(1);
+			$('select[name^="skor\\["]').trigger('change');
+		}
 	</script>
 {/block}
