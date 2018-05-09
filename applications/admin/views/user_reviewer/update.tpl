@@ -65,17 +65,6 @@
 				<div class="row">
 					<div class="col-sm-8">
 						<div class="form-group">
-							<label for="perguruan_tinggi_id" class="control-label">Perguruan Tinggi</label>
-							<select class="form-control">
-								<option>1</option>
-								<option>2</option>
-							</select>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-8">
-						<div class="form-group">
 							<label for="asal_institusi" class="control-label">Asal Institusi (Jika tidak berasal dari PT)</label>
 							<input type="text" class="form-control" name="asal_institusi" value="{$data->reviewer->asal_institusi}">
 						</div>
