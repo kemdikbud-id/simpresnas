@@ -177,7 +177,7 @@
 					
 				<div class="form-group" style="margin: 0 0 5px 0">
 					<label for="komentar">Komentar</label>
-					<textarea class="form-control" rows="2" name="komentar">{set_value('komentar', $plot_reviewer->komentar)}</textarea>
+					<textarea class="form-control" rows="5" name="komentar">{set_value('komentar', $plot_reviewer->komentar)}</textarea>
 				</div>
 					
 				<button type="submit" class="btn btn-primary">Simpan</button>
