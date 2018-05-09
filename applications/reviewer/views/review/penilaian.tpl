@@ -11,6 +11,7 @@
 		p { margin-bottom: 5px; }
 		.angka { font-size: 18px; font-weight: bold; }
 		td.has-error { background-color: #f2dede; }
+		td>ol { margin-bottom: 0 }
 	</style>
 {/block}
 {block name='content'}
