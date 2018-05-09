@@ -135,13 +135,9 @@ class Kegiatan_model extends CI_Model
 	 */
 	public function get_aktif($program_id)
 	{
-		$current_time = date('Y-m-d H:i:s');
-		
 		return $this->db->get_where('kegiatan', [
 			'program_id' => $program_id, 
-			'is_aktif' => 1,
-			'tgl_awal_upload <=' => $current_time,
-			'tgl_akhir_upload >=' => $current_time
+			'is_aktif' => 1
 		], 1)->row();
 	}
 }

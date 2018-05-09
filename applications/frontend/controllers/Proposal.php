@@ -64,26 +64,42 @@ class Proposal extends Frontend_Controller
 	{
 		if ($this->input->method() == 'post') { $this->_post_create(); }
 		
-		// Cek maksimal upload per proposal
+		// Ambil informasi kegiatan yang aktif
 		$kegiatan = $this->kegiatan_model->get_aktif($this->session->program_id);
 		
+		// Jika ada kegiatan yg aktif
 		if ($kegiatan != null)
 		{
-			$program = $this->program_model->get_single($kegiatan->program_id);
 			$jumlah_proposal = $this->proposal_model->get_jumlah_per_pt($kegiatan->id, $this->session->perguruan_tinggi->id);
+			
+			// Jika diluar tanggal upload
+			if (time() < strtotime($kegiatan->tgl_awal_upload))
+			{
+				$this->smarty->assign('pesan', 'Masa upload proposal belum dimulai');
+				$this->smarty->assign('kegiatan', $kegiatan);
+				$this->smarty->display('proposal/create_unable.tpl'); 
+				exit();
+			}
+			
+			if (strtotime($kegiatan->tgl_akhir_upload) < time())
+			{
+				$this->smarty->assign('pesan', 'Masa upload proposal sudah selesai');
+				$this->smarty->assign('kegiatan', $kegiatan);
+				$this->smarty->display('proposal/create_unable.tpl'); 
+				exit();
+			}
 			
 			if ($kegiatan->proposal_per_pt <= $jumlah_proposal)
 			{
+				$this->smarty->assign('pesan', 'Jumlah proposal sudah maksimum');
 				$this->smarty->assign('kegiatan', $kegiatan);
-				$this->smarty->assign('nama_program', $program->nama_program);
-				$this->smarty->assign('tahun', $kegiatan->tahun);
 				$this->smarty->display('proposal/create_unable.tpl'); 
 				exit();
 			}
 		}
 		else
 		{
-			// tidak ada kegiatan yg aktif pada program terpilih
+			$this->smarty->assign('pesan', 'Tidak ada kegiatan yang aktif');
 			$this->smarty->assign('kegiatan', $kegiatan);
 			$this->smarty->display('proposal/create_unable.tpl'); 
 			exit();
