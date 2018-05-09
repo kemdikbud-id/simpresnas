@@ -165,6 +165,7 @@ class User_Reviewer extends Admin_Controller
 			->select("r.id, concat(r.nama,' (',ifnull(pt.nama_pt, r.asal_institusi),')') as nama")
 			->from('reviewer r')->join('perguruan_tinggi pt', 'pt.id = r.perguruan_tinggi_id', 'LEFT')
 			->or_where(['r.perguruan_tinggi_id <>' => $data->perguruan_tinggi_id, 'r.perguruan_tinggi_id IS NULL' => NULL])
+			->order_by('2 asc')
 			->get()->result_array();
 		$reviewer_option_set = array_column($reviewer_set, 'nama', 'id');
 		$this->smarty->assign('reviewer_option_set', $reviewer_option_set);
