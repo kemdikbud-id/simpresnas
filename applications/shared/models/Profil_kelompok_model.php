@@ -14,15 +14,30 @@ class Profil_kelompok_model extends CI_Model
 	 * @param int $perguruan_tinggi_id
 	 * @return Profil_kelompok_model
 	 */
-	public function get_single_by_pt($perguruan_tinggi_id)
+	public function get_single_by_pt($perguruan_tinggi_id, $is_kemenristek = 1, $kelompok_ke = 1)
 	{
-		$row = $this->db->get_where('profil_kelompok_usaha', ['perguruan_tinggi_id' => $perguruan_tinggi_id], 1)->row();
+		$row = $this->db->get_where('profil_kelompok_usaha', [
+			'perguruan_tinggi_id' => $perguruan_tinggi_id,
+			'is_kemenristek' => $is_kemenristek,
+			'kelompok_ke' => $kelompok_ke
+		], 1)->row();
 		
+		// Jika tidak ada
 		if ( ! $row)
 		{
-			$result = $this->db->insert('profil_kelompok_usaha', ['perguruan_tinggi_id' => $perguruan_tinggi_id]);
+			// Insert baru
+			$this->db->insert('profil_kelompok_usaha', [
+				'perguruan_tinggi_id' => $perguruan_tinggi_id,
+				'is_kemenristek' => $is_kemenristek,
+				'kelompok_ke' => $kelompok_ke
+			]);
 			
-			$row = $this->db->get_where('profil_kelompok_usaha', ['perguruan_tinggi_id' => $perguruan_tinggi_id], 1)->row();
+			// Ambil recordnya
+			$row = $this->db->get_where('profil_kelompok_usaha', [
+				'perguruan_tinggi_id' => $perguruan_tinggi_id,
+				'is_kemenristek' => $is_kemenristek,
+				'kelompok_ke' => $kelompok_ke
+			], 1)->row();
 		}
 		
 		return $row;

@@ -1,7 +1,7 @@
 {extends file='site_layout.tpl'}
 {block name='content'}
 	{$result = $ci->session->flashdata('result')}
-	<h1 class="page-header">{$result['page_title']}</h1>
+	<h2 class="page-header">{$result['page_title']}</h2>
 	<div class="row">
 		<div class="col-lg-12">
 			

@@ -61,7 +61,7 @@
 							<li><a href="{site_url('workshop/jadwal')}">Jadwal &amp; Lokasi</a></li>
 							{/if}
 							<li><a href="{site_url('site/download')}">Download</a></li>
-							<li><a href="{site_url('profil/update')}">Buku Profil</a></li>
+							<li><a href="{site_url('profil')}">Buku Profil</a></li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
 							{if $ci->session->user}

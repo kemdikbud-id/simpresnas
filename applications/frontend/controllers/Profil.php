@@ -28,10 +28,49 @@ class Profil extends Frontend_Controller
 
 	public function index()
 	{
+		// Ambil data perguruan tinggi
+		$perguruan_tinggi = $this->perguruan_tinggi_model->get_single($this->session->perguruan_tinggi->id);
+		
+		// Build string alamat
+		$alamat_array = [
+			$perguruan_tinggi->alamat_jalan,
+			$perguruan_tinggi->alamat_kecamatan,
+			$perguruan_tinggi->alamat_kota,
+			$perguruan_tinggi->alamat_provinsi
+		];
+		
+		$alamat_pt = implode(', ', $alamat_array);
+		
+		// Ambil data unit kewirausahaan
+		$unit_kewirausahaan = $this->unit_kewirausahaan_model->get_single_by_pt($perguruan_tinggi->id);
+		
+		// Ambil data profil kelompok usaha
+		$pku_ristek_1 = $this->profil_kelompok_model->get_single_by_pt($perguruan_tinggi->id, 1, 1);
+		$pku_ristek_2 = $this->profil_kelompok_model->get_single_by_pt($perguruan_tinggi->id, 1, 2);
+		$pku_ristek_3 = $this->profil_kelompok_model->get_single_by_pt($perguruan_tinggi->id, 1, 3);
+		$pku_nonristek_1 = $this->profil_kelompok_model->get_single_by_pt($perguruan_tinggi->id, 0, 1);
+		$pku_nonristek_2 = $this->profil_kelompok_model->get_single_by_pt($perguruan_tinggi->id, 0, 2);
+		$pku_nonristek_3 = $this->profil_kelompok_model->get_single_by_pt($perguruan_tinggi->id, 0, 3);
+		
+		// Assign ke template
+		$this->smarty->assign('pt', $perguruan_tinggi);
+		$this->smarty->assign('alamat_pt', $alamat_pt);
+		$this->smarty->assign('uk', $unit_kewirausahaan);
+		
+		$this->smarty->assign('pku_ristek_1', $pku_ristek_1);
+		$this->smarty->assign('pku_ristek_2', $pku_ristek_2);
+		$this->smarty->assign('pku_ristek_3', $pku_ristek_3);
+		$this->smarty->assign('pku_nonristek_1', $pku_nonristek_1);
+		$this->smarty->assign('pku_nonristek_2', $pku_nonristek_2);
+		$this->smarty->assign('pku_nonristek_3', $pku_nonristek_3);
+		
 		$this->smarty->display();
 	}
 
-	public function update()
+	/**
+	 * Update Unit Kewirausahaan
+	 */
+	public function update_uk()
 	{
 		// Ambil data perguruan tinggi
 		$perguruan_tinggi = $this->perguruan_tinggi_model->get_single($this->session->perguruan_tinggi->id);
@@ -39,9 +78,6 @@ class Profil extends Frontend_Controller
 		// Ambil data unit kewirausahaan
 		$unit_kewirausahaan = $this->unit_kewirausahaan_model->get_single_by_pt($perguruan_tinggi->id);
 
-		// Ambil data profil unit usaha
-		$profil_kelompok_usaha = $this->profil_kelompok_model->get_single_by_pt($perguruan_tinggi->id);
-			
 		if ($this->input->method() == 'post')
 		{
 			$upload_config = [
@@ -55,7 +91,7 @@ class Profil extends Frontend_Controller
 			// Create folder if not exist
 			if ( ! file_exists($upload_config['upload_path'])) { mkdir($upload_config['upload_path']); }
 			
-			// Assign all variabel
+			// Get $_POST variabel
 			$post = $this->input->post();
 
 			// Perguruan Tinggi
@@ -94,9 +130,112 @@ class Profil extends Frontend_Controller
 			$unit_kewirausahaan->ada_mk_kwu			 = isset($post['ada_mk_kwu']) ? $post['ada_mk_kwu'] : NULL;
 			$unit_kewirausahaan->sks_mk_kwu			 = !empty($post['sks_mk_kwu']) ? $post['sks_mk_kwu'] : NULL;
 			$unit_kewirausahaan->updated_at			 = date('Y-m-d H:i:s');
+			
+			// File unit wirausaha
+			$file_upload_set = [
+				'file_papan_nama_1', 'file_papan_nama_2', 'file_kegiatan_1', 'file_kegiatan_2',
+			];
+			
+			foreach ($file_upload_set as $file_upload)
+			{
+				// Jika filenya ada
+				if ( ! empty($_FILES[$file_upload]['name']))
+				{
+					// Proses upload
+					if ($this->upload->do_upload($file_upload))
+					{
+						$upload_data = $this->upload->data();
+						// Set nama file
+						$unit_kewirausahaan->{$file_upload} = $upload_data['file_name'];
+					}
+					else
+					{
+						// tampilkan pesan gagal
+						$this->fail_upload($this->upload->display_errors(), 'Pengisian Buku Profil Kewirausahaan', anchor('profil/update-uk', 'Kembali ke halaman update profil'));
+					}	
+				}
+				
+				// Jika terdeteksi perintah hapus
+				if (isset($post[$file_upload.'_remove']))
+				{
+					if ($post[$file_upload.'_remove'] == '1')
+					{
+						// Hapus file
+						@unlink('./upload/buku-profil/'.$perguruan_tinggi->npsn.'/'.$unit_kewirausahaan->{$file_upload});
+						// Set nama file null
+						$unit_kewirausahaan->{$file_upload} = NULL;
+					}
+				}
+			}			
+			
+			// Start db transaction
+			$this->db->trans_begin();
+			
+			$this->perguruan_tinggi_model->update($perguruan_tinggi, $perguruan_tinggi->id);
+			$this->unit_kewirausahaan_model->update($unit_kewirausahaan, $unit_kewirausahaan->id);
+			
+			if ($this->db->trans_status() === TRUE)
+			{
+				$this->db->trans_commit();
+				
+				$this->session->set_flashdata('result', [
+					'page_title' => 'Pengisian Buku Profil Kewirausahaan',
+					'message' => 'Data berhasil disimpan',
+					'link_1' => anchor('profil', 'Kembali ke halaman profil')
+				]);
+				
+				redirect('alert/success');
+				
+				exit();
+			}
+		}
+		
+		
+		
+		$this->smarty->assign('pt', $perguruan_tinggi);
+		$this->smarty->assign('uk', $unit_kewirausahaan);
+		
+		$this->smarty->display();
+	}
+	
+	/**
+	 * Update Kelompok Kewirausahaan didanai
+	 * @param int $is_ristek
+	 * @param int $kelompok_ke
+	 */
+	public function update_kelompok()
+	{
+		$get = $this->input->get();
+		
+		$is_kemenristek	= isset($get['kemenristek']) ? $get['kemenristek'] : 1;
+		$kelompok_ke	= isset($get['kelompok']) ? $get['kelompok'] : 1;
+		
+		// Ambil data perguruan tinggi
+		$perguruan_tinggi = $this->perguruan_tinggi_model->get_single($this->session->perguruan_tinggi->id);
+		
+		// Ambil data profil unit usaha
+		$profil_kelompok_usaha = $this->profil_kelompok_model->get_single_by_pt($this->session->perguruan_tinggi->id, $is_kemenristek, $kelompok_ke);
 
+		if ($this->input->method() == 'post')
+		{
+			$upload_config = [
+				'upload_path'	=> './upload/buku-profil/' . $perguruan_tinggi->npsn . '/',
+				'allowed_types'	=> 'jpeg|jpg|bmp|png',
+				'max_size'		=> $this::MAX_FILE_SIZE
+			];
+
+			$this->load->library('upload', $upload_config);
+
+			// Create folder if not exist
+			if ( ! file_exists($upload_config['upload_path'])) { mkdir($upload_config['upload_path']); }
+			
+			// Get $_POST variabel
+			$post = $this->input->post();
+			
 			// Profil Kelompok Usaha
 			$profil_kelompok_usaha->perguruan_tinggi_id	 = $perguruan_tinggi->id;
+			$profil_kelompok_usaha->is_kemenristek		 = $is_kemenristek;
+			$profil_kelompok_usaha->kelompok_ke			 = $kelompok_ke;
 			$profil_kelompok_usaha->nim_ketua			 = $post['nim_ketua'];
 			$profil_kelompok_usaha->nama_ketua			 = $post['nama_ketua'];
 			$profil_kelompok_usaha->prodi_ketua			 = $post['prodi_ketua'];
@@ -128,42 +267,13 @@ class Profil extends Frontend_Controller
 			$profil_kelompok_usaha->hp_anggota_5		 = $post['hp_anggota_5'];
 			$profil_kelompok_usaha->email_anggota_5		 = $post['email_anggota_5'];
 			$profil_kelompok_usaha->kategori_id			 = $post['kategori_id'];
+			$profil_kelompok_usaha->sumber_pendanaan	 = $post['sumber_pendanaan'];
 			$profil_kelompok_usaha->nama_produk			 = $post['nama_produk'];
 			$profil_kelompok_usaha->gambaran_bisnis		 = $post['gambaran_bisnis'];
 			$profil_kelompok_usaha->capaian_bisnis		 = $post['capaian_bisnis'];
 			$profil_kelompok_usaha->rencana_kedepan		 = $post['rencana_kedepan'];
 			$profil_kelompok_usaha->prestasi_bisnis		 = $post['prestasi_bisnis'];
 			$profil_kelompok_usaha->updated_at			 = date('Y-m-d H:i:s');
-			
-			// File unit wirausaha
-			$file_upload_set = [
-				'file_papan_nama_1', 'file_papan_nama_2', 'file_kegiatan_1', 'file_kegiatan_2',
-			];
-			
-			foreach ($file_upload_set as $file_upload)
-			{
-				// Jika filenya ada
-				if ( ! empty($_FILES[$file_upload]['name']))
-				{
-					// File papan nama 1
-					if ($this->upload->do_upload($file_upload))
-					{
-						$upload_data = $this->upload->data();
-						$unit_kewirausahaan->{$file_upload} = $upload_data['file_name'];
-					}
-					else
-					{
-						$this->fail_upload($this->upload->display_errors());
-					}	
-				}
-				
-				// Jika terdeteksi perintah hapus
-				if ($post[$file_upload.'_remove'] == '1')
-				{
-					@unlink('./upload/buku-profil/'.$perguruan_tinggi->npsn.'/'.$unit_kewirausahaan->{$file_upload});
-					$unit_kewirausahaan->{$file_upload} = NULL;
-				}
-			}
 			
 			// File profil kelompok usaha
 			$file_upload2_set = [
@@ -183,15 +293,22 @@ class Profil extends Frontend_Controller
 					}
 					else
 					{
-						$this->fail_upload($this->upload->display_errors());
+						$this->fail_upload($this->upload->display_errors(), 
+							'Update Kelompok Mahasiswa Wirausaha yang didanai ' . ($is_kemenristek ? 'Ristekdikti' : 'Non-Ristekdikti') . ' - Kelompok ' . $kelompok_ke, 
+							anchor('profil/update-kelompok?'.$_SERVER['QUERY_STRING'], 'Kembali ke halaman update kelompok'));
 					}	
 				}
 				
 				// Jika terdeteksi perintah hapus
-				if ($post[$file_upload.'_remove'] == '1')
+				if (isset($post[$file_upload.'_remove']))
 				{
-					@unlink('./upload/buku-profil/'.$perguruan_tinggi->npsn.'/'.$unit_kewirausahaan->{$file_upload});					
-					$unit_kewirausahaan->{$file_upload} = NULL;
+					if ($post[$file_upload.'_remove'] == '1')
+					{
+						// Hapus file
+						@unlink('./upload/buku-profil/'.$perguruan_tinggi->npsn.'/'.$profil_kelompok_usaha->{$file_upload});					
+						// Set nama file null
+						$profil_kelompok_usaha->{$file_upload} = NULL;
+					}
 				}
 			}
 			
@@ -199,7 +316,6 @@ class Profil extends Frontend_Controller
 			$this->db->trans_begin();
 			
 			$this->perguruan_tinggi_model->update($perguruan_tinggi, $perguruan_tinggi->id);
-			$this->unit_kewirausahaan_model->update($unit_kewirausahaan, $unit_kewirausahaan->id);
 			$this->profil_kelompok_model->update($profil_kelompok_usaha, $profil_kelompok_usaha->id);
 			
 			if ($this->db->trans_status() === TRUE)
@@ -207,9 +323,9 @@ class Profil extends Frontend_Controller
 				$this->db->trans_commit();
 				
 				$this->session->set_flashdata('result', [
-					'page_title' => 'Pengisian Buku Profil Kewirausahaan',
+					'page_title' => 'Update Kelompok Mahasiswa Wirausaha yang didanai ' . ($is_kemenristek ? 'Ristekdikti' : 'Non-Ristekdikti') . ' - Kelompok ' . $kelompok_ke,
 					'message' => 'Data berhasil disimpan',
-					'link_1' => anchor('profil/update', 'Kembali ke halaman profil')
+					'link_1' => anchor('profil', 'Kembali ke halaman profil')
 				]);
 				
 				redirect('alert/success');
@@ -218,22 +334,25 @@ class Profil extends Frontend_Controller
 			}
 		}
 		
+		// Assign ke template
+		$this->smarty->assign('pt', $perguruan_tinggi);
+		$this->smarty->assign('is_kemenristek', $is_kemenristek);
+		$this->smarty->assign('kelompok', $kelompok_ke);
+		$this->smarty->assign('pku', $profil_kelompok_usaha);
+		
 		// Jenis Kategori
 		$kategori_set = $this->db->get_where('kategori', ['program_id' => PROGRAM_KBMI])->result();
-		
-		$this->smarty->assign('pt', $perguruan_tinggi);
-		$this->smarty->assign('uk', $unit_kewirausahaan);
-		$this->smarty->assign('pku', $profil_kelompok_usaha);
 		$this->smarty->assignForCombo('kategori_set', $kategori_set, 'id', 'nama_kategori');
+		
 		$this->smarty->display();
 	}
 	
-	private function fail_upload($message)
+	private function fail_upload($message, $page_title, $link_1)
 	{
 		$this->session->set_flashdata('result', [
-			'page_title' => 'Pengisian Buku Profil Kewirausahaan',
-			'message' => 'Data gagal disimpan. ' . $message,
-			'link_1' => anchor('profil/update', 'Kembali ke halaman profil')
+			'page_title'	=> $page_title,
+			'message'		=> 'Data gagal disimpan. ' . $message,
+			'link_1'		=> $link_1
 		]);
 
 		redirect('alert/error');
