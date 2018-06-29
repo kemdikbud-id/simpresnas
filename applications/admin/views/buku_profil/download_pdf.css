@@ -1,0 +1,22 @@
+body {
+	font-family: sans;
+}
+h1, h3, h4 {
+	text-align: center;
+}
+
+table {
+	width: 100%;
+}
+
+td {
+	font-size: 10pt;
+	vertical-align: top;
+	padding: 4px;
+}
+
+td.deskripsi {
+	text-align: justify;
+	padding: 8px;
+	line-height: 150%;
+}

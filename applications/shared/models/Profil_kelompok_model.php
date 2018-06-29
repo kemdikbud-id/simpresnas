@@ -10,6 +10,17 @@ class Profil_kelompok_model extends CI_Model
 	public $id;
 	public $perguruan_tinggi_id;
 	
+	public $kategori_id;
+	public $kategori_lain;
+	public $sumber_pendanaan;
+	public $nama_produk;
+	public $gambaran_bisnis;
+	public $capaian_bisnis;
+	public $rencana_kedepan;
+	public $prestasi_bisnis;
+	public $file_anggota;
+	public $file_produk;
+	
 	/**
 	 * @param int $perguruan_tinggi_id
 	 * @return Profil_kelompok_model

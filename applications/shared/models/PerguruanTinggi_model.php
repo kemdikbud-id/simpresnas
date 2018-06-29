@@ -11,6 +11,11 @@ class PerguruanTinggi_model extends CI_Model
 	public $nama_pt;
 	public $email_pt;
 	
+	public $alamat_jalan;
+	public $alamat_kecamatan;
+	public $alamat_kota;
+	public $alamat_provinsi;
+	
 	public function list_all()
 	{
 		return $this->db->get('perguruan_tinggi')->result();

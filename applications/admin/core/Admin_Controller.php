@@ -12,6 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property CI_DB_query_builder $db
  * @property CI_DB_mysqli_driver $db
  * @property CI_Session $session
+ * @property Mpdf_wrapper $mpdf
  */
 class Admin_Controller extends CI_Controller
 {

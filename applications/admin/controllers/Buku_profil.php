@@ -1,7 +1,9 @@
 <?php
+set_time_limit(0);
 
 /**
  * @author Fathoni <m.fathoni@mail.com>
+ * @property CI_DB_result $result
  */
 class Buku_profil extends Admin_Controller
 {
@@ -241,5 +243,227 @@ class Buku_profil extends Admin_Controller
 		
 		// Output to client
 		$writer->save("php://output");;
+	}
+
+	public function export_pdf()
+	{
+		$this->smarty->display();
+	}
+	
+	/**
+	 * @return PerguruanTinggi_model[] 
+	 */
+	private function get_all_pt()
+	{
+		return $this->db->query(
+			"select pt.id, pt.npsn, pt.nama_pt, pt.alamat_jalan, pt.alamat_kecamatan, pt.alamat_kota, pt.alamat_provinsi
+			from perguruan_tinggi pt
+			where pt.id in (select perguruan_tinggi_id from profil_kelompok_usaha where nama_produk <> '')
+			/* where pt.id in (3157, 3171) */
+			order by 2 asc")->result();
+	}
+	
+	/**
+	 * @return Profil_kelompok_model[]
+	 */
+	private function get_all_pku_ristek()
+	{
+		return $this->db->query(
+			"select pku.*, k.nama_kategori
+			from profil_kelompok_usaha pku
+			left join kategori k on k.id = pku.kategori_id
+			where pku.is_kemenristek = 1 /* and perguruan_tinggi_id in (3157, 3171) */
+			order by perguruan_tinggi_id asc, is_kemenristek desc, kelompok_ke asc")->result();
+	}
+	
+	/**
+	 * @return Profil_kelompok_model[]
+	 */
+	private function get_all_pku_nonristek()
+	{
+		return $this->db->query(
+			"select pku.*, k.nama_kategori
+			from profil_kelompok_usaha pku
+			left join kategori k on k.id = pku.kategori_id
+			where pku.is_kemenristek = 0 /* and perguruan_tinggi_id in (3157, 3171) */
+			order by perguruan_tinggi_id asc, is_kemenristek desc, kelompok_ke asc")->result();
+	}
+
+	public function download_pdf()
+	{
+		$pt_set = $this->get_all_pt();
+		$pku_ristek_set = $this->get_all_pku_ristek();
+		// $pku_nonristek_set = $this->get_all_pku_nonristek();
+		
+		$css = file_get_contents(APPPATH . 'views/buku_profil/download_pdf.css');
+		$this->mpdf->WriteHTML($css, 1);
+		
+		$n = 0;
+		foreach ($pt_set as $pt)
+		{	
+			// $this->mpdf->SetFooter('<table><tr><td style="font-size: 9pt">'.$pt->nama_pt.'</td><td style="font-size: 9pt; text-align: right">{PAGENO}</td></tr></table>');
+			
+			$this->mpdf->AddPage('', '', '', '', '', 25, 20, 20, 20);
+			
+			$this->mpdf->WriteHTML("<bookmark content=\"{$pt->nama_pt}\" level=\"0\"/><h1>{$pt->nama_pt}</h1>");
+			$this->mpdf->WriteHTML("<h4>{$pt->alamat_jalan}, {$pt->alamat_kecamatan}, {$pt->alamat_kota}, {$pt->alamat_provinsi}</h4>");
+			
+			$this->mpdf->WriteHTML("<h3>WIRAUSAHA YANG DIDANAI RISTEKDIKTI</h3>");
+						
+			foreach ($pku_ristek_set as $pku)
+			{
+				// Skip jika tidak sama
+				if ($pku->perguruan_tinggi_id != $pt->id)
+					continue;
+				
+				// Halaman baru
+				if ($pku->kelompok_ke > 1)
+					$this->mpdf->AddPage();
+				
+				$html = '<table>';
+				$html .= '	<tbody>';
+				$html .= '		<tr>';
+				$html .= '			<td style="width: 50%; border: 1px solid black">';
+				$html .= '				<b>Bidang Bisnis</b><br/>' . htmlentities($pku->nama_kategori) . '<br/><br/>';
+				$html .= '				<b>Nama Produk</b><br/>' . htmlentities($pku->nama_produk) . '<br/><br/>';
+				$html .= '				<b>Sumber Pendanaan</b><br/>' . htmlentities($pku->sumber_pendanaan) . '<br/><br/>';
+				$html .= '			</td>';
+				$html .= '			<td style="width: 50%; border: 1px solid black">';
+				$html .= '				<b>Owner</b>';
+				
+				$html .= '				<table><tbody>';
+				
+				$html .= '					<tr><td style="width: 15px">1.</td><td>';
+				$html .=
+					htmlentities($pku->nama_ketua) . '<br/>' . htmlentities($pku->nim_ketua) . 
+					($pku->prodi_ketua != '' ? '<br/>' . htmlentities($pku->prodi_ketua) : '') . 
+					($pku->email_ketua != '' ? '<br/>' . '<a href="'.$pku->email_ketua.'">' . htmlentities($pku->email_ketua) . '</a>' : '') .
+					($pku->hp_ketua != '' ? '<br/>' . htmlentities($pku->hp_ketua) : '');
+				$html .= '					</td></tr>';
+				
+				if ($pku->nama_anggota_1 != '')
+				{
+					$html .= '					<tr><td style="width: 15px">2.</td><td>';
+					$html .=
+						htmlentities($pku->nama_anggota_1) . '<br/>' . htmlentities($pku->nim_anggota_1) . 
+						($pku->prodi_anggota_1 != '' ? '<br/>' . htmlentities($pku->prodi_anggota_1) : '') . 
+						($pku->email_anggota_1 != '' ? '<br/>' . '<a href="'.$pku->email_anggota_1.'">' . htmlentities($pku->email_anggota_1) . '</a>' : '') .
+						($pku->hp_anggota_1 != '' ? '<br/>' . htmlentities($pku->hp_anggota_1) : '');
+					$html .= '					</td></tr>';
+				}
+				
+				if ($pku->nama_anggota_2 != '')
+				{
+					$html .= '					<tr><td style="width: 15px">3.</td><td>';
+					$html .=
+						htmlentities($pku->nama_anggota_2) . '<br/>' . htmlentities($pku->nim_anggota_2) . 
+						($pku->prodi_anggota_2 != '' ? '<br/>' . htmlentities($pku->prodi_anggota_2) : '') . 
+						($pku->email_anggota_2 != '' ? '<br/>' . '<a href="'.$pku->email_anggota_2.'">' . htmlentities($pku->email_anggota_2) . '</a>' : '') .
+						($pku->hp_anggota_2 != '' ? '<br/>' . htmlentities($pku->hp_anggota_2) : '');
+					$html .= '					</td></tr>';
+				}
+				
+				if ($pku->nama_anggota_3 != '')
+				{
+					$html .= '					<tr><td style="width: 15px">4.</td><td>';
+					$html .=
+						htmlentities($pku->nama_anggota_3) . '<br/>' . htmlentities($pku->nim_anggota_3) . 
+						($pku->prodi_anggota_3 != '' ? '<br/>' . htmlentities($pku->prodi_anggota_3) : '') . 
+						($pku->email_anggota_3 != '' ? '<br/>' . '<a href="'.$pku->email_anggota_3.'">' . htmlentities($pku->email_anggota_3) . '</a>' : '') .
+						($pku->hp_anggota_3 != '' ? '<br/>' . htmlentities($pku->hp_anggota_3) : '');
+					$html .= '					</td></tr>';
+				}
+				
+				if ($pku->nama_anggota_4 != '')
+				{
+					$html .= '					<tr><td style="width: 15px">5.</td><td>';
+					$html .=
+						htmlentities($pku->nama_anggota_4) . '<br/>' . htmlentities($pku->nim_anggota_4) . 
+						($pku->prodi_anggota_4 != '' ? '<br/>' . htmlentities($pku->prodi_anggota_4) : '') . 
+						($pku->email_anggota_4 != '' ? '<br/>' . '<a href="'.$pku->email_anggota_4.'">' . htmlentities($pku->email_anggota_4) . '</a>' : '') .
+						($pku->hp_anggota_4 != '' ? '<br/>' . htmlentities($pku->hp_anggota_4) : '');
+					$html .= '					</td></tr>';
+				}
+				
+				$html .= '				</tbody></table>';
+				
+				$html .= '			</td>';
+				$html .= '		</tr>';
+				$html .= '	</tbody>';
+				$html .= '</table><br/>';
+				
+				$this->mpdf->WriteHTML($html);
+				
+				$html = '<table>';
+				$html .= '	<tbody>';
+				$html .= '		<tr>';
+				$html .= '			<td class="deskripsi" style="border: 1px solid orange">';
+				$html .= '				<b>Gambaran Bisnis</b>';
+				$html .= '				<p>' . htmlentities($pku->gambaran_bisnis) . '</p>';
+				$html .= '			</td>';
+				$html .= '		</tr>';
+				$html .= '	</tbody>';
+				$html .= '</table><br/>';
+				$html .= '<table>';
+				$html .= '	<tbody>';
+				$html .= '		<tr>';
+				$html .= '			<td class="deskripsi" style="border: 1px solid blue">';
+				$html .= '				<b>Capaian Bisnis</b>';
+				$html .= '				<p>' . htmlentities($pku->capaian_bisnis) . '</p>';
+				$html .= '			</td>';
+				$html .= '		</tr>';
+				$html .= '	</tbody>';
+				$html .= '</table><br/>';
+				$html .= '<table>';
+				$html .= '	<tbody>';
+				$html .= '		<tr>';
+				$html .= '			<td class="deskripsi" style="border: 1px solid blue">';
+				$html .= '				<b>Rencana Kedepan</b>';
+				$html .= '				<p>' . htmlentities($pku->rencana_kedepan) . '</p>';
+				$html .= '			</td>';
+				$html .= '		</tr>';
+				$html .= '	</tbody>';
+				$html .= '</table><br/>';
+				$html .= '<table>';
+				$html .= '	<tbody>';
+				$html .= '		<tr>';
+				$html .= '			<td class="deskripsi" style="border: 1px solid orange">';
+				$html .= '				<b>Prestasi Bisnis</b>';
+				$html .= '				<p>' . htmlentities($pku->prestasi_bisnis) . '</p>';
+				$html .= '			</td>';
+				$html .= '		</tr>';
+				$html .= '	</tbody>';
+				$html .= '</table><br/>';
+				$html .= '<table>';
+				$html .= '	<tbody>';
+				$html .= '		<tr>';
+				$html .= '			<td class="deskripsi" style="border: 1px solid green">';
+				$html .= '				<p><b>Foto Usaha / Produk</b></p>';
+				
+				if (file_exists('../upload/buku-profil/'.$pt->npsn.'/'.$pku->file_produk))
+				{
+					$html .= '			<p><img src="'.'../upload/buku-profil/'.$pt->npsn.'/'.$pku->file_produk.'" alt="" /></p>';
+				}
+				
+				$html .= '				<p><b>Foto Anggota</b></p>';
+				
+				if (file_exists('../upload/buku-profil/'.$pt->npsn.'/'.$pku->file_anggota))
+				{
+					$html .= '			<p><img src="'.'../upload/buku-profil/'.$pt->npsn.'/'.$pku->file_anggota.'" alt="" /></p>';
+				}
+				
+				$html .= '			</td>';
+				$html .= '		</tr>';
+				$html .= '	</tbody>';
+				$html .= '</table>';
+				
+				$this->mpdf->WriteHTML($html);
+			}
+			
+			$n++;
+			// if ($n == 50) break;
+		}
+		
+		$this->mpdf->Output();
 	}
 }

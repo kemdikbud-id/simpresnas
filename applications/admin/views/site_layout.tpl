@@ -85,7 +85,11 @@
 								</ul>
 							</li>
 							<li>
-								<a href="{site_url('buku-profil')}">Buku Profil</a>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Buku Profil <span class="caret"></span></a>
+								<ul class="dropdown-menu">
+									<li><a href="{site_url('buku-profil')}">Daftar Isian</a></li>
+									<li><a href="{site_url('buku-profil/export-pdf')}">Export PDF</a></li>
+								</ul>
 							</li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
