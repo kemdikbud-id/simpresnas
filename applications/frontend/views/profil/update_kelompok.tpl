@@ -21,7 +21,7 @@
 				
 				<table class="table table-bordered">
 					<col style="width: 30px" /><col style="width: 40%" /><col />
-					<caption>Profil Kelompok Mahasiswa Wirausaha Yang Didanai Ristekdikti</caption>
+					<caption>Profil Kelompok Mahasiswa Wirausaha Yang Didanai {if $is_kemenristek}Ristekdikti{else}Non-Ristekdikti{/if}</caption>
 					<tbody>
 						<tr>
 							<td class="text-center">A.</td>
