@@ -182,12 +182,12 @@ class Auth extends Frontend_Controller
 	public function get_captcha()
 	{		
 		$this->load->helper('captcha');
-		
+			
 		// Captcha Parameter
 		$captcha_params = array(
-			'img_path'		=> './assets/captcha/',
+			'img_path'		=> FCPATH . 'assets/captcha/',
 			'img_url'		=> base_url('assets/captcha/'),
-			'font_path'		=> './assets/fonts/OpenSans-Semibold.ttf',
+			'font_path'		=> FCPATH . 'assets/fonts/OpenSans-Semibold.ttf',
 			'img_width'     => 180,
 			'img_height'    => 60,
 			'expiration'    => $this::CAPTCHA_TIMEOUT,
