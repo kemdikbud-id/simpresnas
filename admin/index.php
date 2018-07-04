@@ -1,6 +1,6 @@
 <?php
 
-include '../header-index.php';
+include dirname(__FILE__) . '/../header-index.php';
 
 /*
  *---------------------------------------------------------------
@@ -17,7 +17,7 @@ include '../header-index.php';
  *
  * NO TRAILING SLASH!
  */
-	$application_folder = '../applications/admin';
+	$application_folder = dirname(__FILE__) . '/../applications/admin';
 
 /*
  *---------------------------------------------------------------
@@ -85,4 +85,4 @@ include '../header-index.php';
 // END OF USER CONFIGURABLE SETTINGS.  DO NOT EDIT BELOW THIS LINE
 // --------------------------------------------------------------------
 
-include '../footer-index.php';
+include dirname(__FILE__) . '/../footer-index.php';
