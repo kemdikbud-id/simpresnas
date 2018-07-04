@@ -1,12 +1,19 @@
 <?php
-set_time_limit(0);
 
 /**
  * @author Fathoni <m.fathoni@mail.com>
  * @property CI_DB_result $result
+ * @property CI_Input $input
+ * @property Smarty_wrapper $smarty
+ * @property Mpdf_wrapper $mpdf
  */
-class Buku_profil extends Admin_Controller
+class Buku_profil extends CI_Controller
 {
+	const NAMA_FILE_1 = 'download/buku-profil-ristekdikti.pdf';
+	const NAMA_FILE_2 = 'download/buku-profil-non-ristekdikti.pdf';
+	const PROSES_GENERATE_PDF_1 = 'proses-generate-pdf-1';
+	const PROSES_GENERATE_PDF_2 = 'proses-generate-pdf-2';
+	
 	public function index()
 	{
 		$sql = 
@@ -247,20 +254,82 @@ class Buku_profil extends Admin_Controller
 
 	public function export_pdf()
 	{
+		// Generate Buku Profil Ristek dikti
+		if (isset($_GET['generate-pdf-1']))
+		{
+			// Uncomment untuk mengaktifkan
+			//exec("php " . FCPATH . "admin/index.php buku-profil generate-pdf 1 /dev/null 2>&1 &");
+			
+			redirect('buku-profil/export-pdf');
+			return;
+		}
+		
+		// Generate Buku Profil Ristek dikti
+		if (isset($_GET['generate-pdf-2']))
+		{
+			// Uncomment untuk mengaktifkan
+			//exec("php " . FCPATH . "admin/index.php buku-profil generate-pdf 2 /dev/null 2>&1 &");
+			
+			redirect('buku-profil/export-pdf');
+			return;
+		}
+		
+		$status_file_1 = FALSE;
+		$status_file_2 = FALSE;
+		$status_generate_1 = FALSE;
+		$status_generate_2 = FALSE;
+		
+		if (file_exists(FCPATH . Buku_profil::NAMA_FILE_1))
+		{
+			$status_file_1 = TRUE;
+		}
+		
+		if (file_exists(FCPATH . Buku_profil::NAMA_FILE_2))
+		{
+			$status_file_2 = TRUE;
+		}
+		
+		if (file_exists(FCPATH . Buku_profil::PROSES_GENERATE_PDF_1))
+		{
+			$status_generate_1 = TRUE;
+		}
+		
+		if (file_exists(FCPATH . Buku_profil::PROSES_GENERATE_PDF_2))
+		{
+			$status_generate_2 = TRUE;
+		}
+		
+		$this->smarty->assign('status_file_1', $status_file_1);
+		$this->smarty->assign('status_file_2', $status_file_2);
+		$this->smarty->assign('status_generate_1', $status_generate_1);
+		$this->smarty->assign('status_generate_2', $status_generate_2);
 		$this->smarty->display();
 	}
 	
 	/**
 	 * @return PerguruanTinggi_model[] 
 	 */
-	private function get_all_pt()
+	private function get_all_pt($jenis)
 	{
-		return $this->db->query(
-			"select pt.id, pt.npsn, pt.nama_pt, pt.alamat_jalan, pt.alamat_kecamatan, pt.alamat_kota, pt.alamat_provinsi
-			from perguruan_tinggi pt
-			where pt.id in (select perguruan_tinggi_id from profil_kelompok_usaha where nama_produk <> '')
-			/* where pt.id in (3157, 3171) */
-			order by 2 asc")->result();
+		// Ambil perguruan tinggi yg kelompok usaha dibiayai ristekdikti
+		if ($jenis == 1)
+		{
+			return $this->db->query(
+				"select pt.id, pt.npsn, pt.nama_pt, pt.alamat_jalan, pt.alamat_kecamatan, pt.alamat_kota, pt.alamat_provinsi
+				from perguruan_tinggi pt
+				where pt.id in (select perguruan_tinggi_id from profil_kelompok_usaha where nama_produk <> '' and is_kemenristek = 1)
+				order by 2 asc")->result();
+		}
+		
+		// Ambil perguruan tinggi yg kelompok usaha dibiayai non ristekdikti
+		if ($jenis == 2)
+		{
+			return $this->db->query(
+				"select pt.id, pt.npsn, pt.nama_pt, pt.alamat_jalan, pt.alamat_kecamatan, pt.alamat_kota, pt.alamat_provinsi
+				from perguruan_tinggi pt
+				where pt.id in (select perguruan_tinggi_id from profil_kelompok_usaha where nama_produk <> '' and is_kemenristek = 0)
+				order by 2 asc")->result();
+		}
 	}
 	
 	/**
@@ -272,7 +341,7 @@ class Buku_profil extends Admin_Controller
 			"select pku.*, k.nama_kategori
 			from profil_kelompok_usaha pku
 			left join kategori k on k.id = pku.kategori_id
-			where pku.is_kemenristek = 1 /* and perguruan_tinggi_id in (3157, 3171) */
+			where pku.is_kemenristek = 1
 			order by perguruan_tinggi_id asc, is_kemenristek desc, kelompok_ke asc")->result();
 	}
 	
@@ -285,15 +354,29 @@ class Buku_profil extends Admin_Controller
 			"select pku.*, k.nama_kategori
 			from profil_kelompok_usaha pku
 			left join kategori k on k.id = pku.kategori_id
-			where pku.is_kemenristek = 0 /* and perguruan_tinggi_id in (3157, 3171) */
+			where pku.is_kemenristek = 0
 			order by perguruan_tinggi_id asc, is_kemenristek desc, kelompok_ke asc")->result();
 	}
 
-	public function download_pdf()
+	public function generate_pdf($jenis)
 	{
-		$pt_set = $this->get_all_pt();
-		$pku_ristek_set = $this->get_all_pku_ristek();
-		// $pku_nonristek_set = $this->get_all_pku_nonristek();
+		$pt_set = $this->get_all_pt($jenis);
+		
+		if ($jenis == 1)
+		{
+			$handle = fopen(FCPATH . Buku_profil::PROSES_GENERATE_PDF_1, 'w');
+			fclose($handle);
+			
+			$pku_ristek_set = $this->get_all_pku_ristek();
+		}
+		
+		if ($jenis == 2)
+		{
+			$handle = fopen(FCPATH . Buku_profil::PROSES_GENERATE_PDF_2, 'w');
+			fclose($handle);
+			
+			$pku_ristek_set = $this->get_all_pku_nonristek();
+		}
 		
 		$css = file_get_contents(APPPATH . 'views/buku_profil/download_pdf.css');
 		$this->mpdf->WriteHTML($css, 1);
@@ -301,8 +384,6 @@ class Buku_profil extends Admin_Controller
 		$n = 0;
 		foreach ($pt_set as $pt)
 		{	
-			// $this->mpdf->SetFooter('<table><tr><td style="font-size: 9pt">'.$pt->nama_pt.'</td><td style="font-size: 9pt; text-align: right">{PAGENO}</td></tr></table>');
-			
 			$this->mpdf->AddPage('', '', '', '', '', 25, 20, 20, 20);
 			
 			$this->mpdf->WriteHTML("<bookmark content=\"{$pt->nama_pt}\" level=\"0\"/><h1>{$pt->nama_pt}</h1>");
@@ -314,11 +395,15 @@ class Buku_profil extends Admin_Controller
 			{
 				// Skip jika tidak sama
 				if ($pku->perguruan_tinggi_id != $pt->id)
+				{
 					continue;
+				}
 				
 				// Halaman baru
 				if ($pku->kelompok_ke > 1)
+				{
 					$this->mpdf->AddPage();
+				}
 				
 				$html = '<table>';
 				$html .= '	<tbody>';
@@ -461,9 +546,26 @@ class Buku_profil extends Admin_Controller
 			}
 			
 			$n++;
-			// if ($n == 50) break;
+			
 		}
 		
-		$this->mpdf->Output();
+		if ( ! file_exists(FCPATH . 'download/'))
+		{
+			mkdir(FCPATH . 'download/');
+		}
+		
+		if ($jenis == 1)
+		{
+			$this->mpdf->Output(FCPATH . Buku_profil::NAMA_FILE_1);
+
+			unlink(FCPATH . Buku_profil::PROSES_GENERATE_PDF_1);
+		}
+		
+		if ($jenis == 2)
+		{
+			$this->mpdf->Output(FCPATH . Buku_profil::NAMA_FILE_2);
+			
+			unlink(FCPATH . Buku_profil::PROSES_GENERATE_PDF_2);
+		}
 	}
 }
