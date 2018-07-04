@@ -525,16 +525,16 @@ class Buku_profil extends CI_Controller
 				$html .= '			<td class="deskripsi" style="border: 1px solid green">';
 				$html .= '				<p><b>Foto Usaha / Produk</b></p>';
 				
-				if (file_exists('../upload/buku-profil/'.$pt->npsn.'/'.$pku->file_produk))
+				if (file_exists(FCPATH . 'upload/buku-profil/'.$pt->npsn.'/'.$pku->file_produk))
 				{
-					$html .= '			<p><img src="'.'../upload/buku-profil/'.$pt->npsn.'/'.$pku->file_produk.'" alt="" /></p>';
+					$html .= '			<p><img src="upload/buku-profil/'.$pt->npsn.'/'.$pku->file_produk.'" alt="" /></p>';
 				}
 				
 				$html .= '				<p><b>Foto Anggota</b></p>';
 				
-				if (file_exists('../upload/buku-profil/'.$pt->npsn.'/'.$pku->file_anggota))
+				if (file_exists(FCPATH . 'upload/buku-profil/'.$pt->npsn.'/'.$pku->file_anggota))
 				{
-					$html .= '			<p><img src="'.'../upload/buku-profil/'.$pt->npsn.'/'.$pku->file_anggota.'" alt="" /></p>';
+					$html .= '			<p><img src="upload/buku-profil/'.$pt->npsn.'/'.$pku->file_anggota.'" alt="" /></p>';
 				}
 				
 				$html .= '			</td>';
