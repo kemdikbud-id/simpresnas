@@ -28,14 +28,14 @@
 			<tr>
 				<td>Buku Profil Kewirausahaan Dibiayai Non-Ristekdikti</td>
 				<td>
-					{if $status_file_1}
+					{if $status_file_2}
 						<a href="{base_url()}../download/buku-profil-non-ristekdikti.pdf" target="_blank" class="btn btn-danger"><i class="glyphicon glyphicon-download-alt"></i> Download</a>
-						<a href="{site_url('buku-profil/export-pdf?generate-pdf-1')}" class="btn btn-success"><i class="glyphicon glyphicon-file"></i> Generate Ulang PDF</a>
+						<a href="{site_url('buku-profil/export-pdf?generate-pdf-2')}" class="btn btn-success"><i class="glyphicon glyphicon-file"></i> Generate Ulang PDF</a>
 					{else}
-						{if $status_generate_1}
+						{if $status_generate_2}
 							Proses generate...
 						{else}
-							<a href="{site_url('buku-profil/export-pdf?generate-pdf-1')}" class="btn btn-success"><i class="glyphicon glyphicon-file"></i> Generate PDF</a>
+							<a href="{site_url('buku-profil/export-pdf?generate-pdf-2')}" class="btn btn-success"><i class="glyphicon glyphicon-file"></i> Generate PDF</a>
 						{/if}
 					{/if}
 				</td>
