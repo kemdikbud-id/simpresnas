@@ -42,6 +42,8 @@
 								<ul class="dropdown-menu">
 									<li><a href="{site_url('kegiatan')}">Jadwal Kegiatan</a></li>
 									<li><a href="{site_url('kegiatan/lokasi')}">Lokasi Workshop</a></li>
+									<li role="separator" class="divider"></li>
+									<li><a href="{site_url('download')}">Download File</a></li>
 								</ul>
 							</li>
 							<li>

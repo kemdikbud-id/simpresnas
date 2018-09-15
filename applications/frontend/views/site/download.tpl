@@ -1,17 +1,35 @@
 {extends file='site_layout.tpl'}
 {block name='content'}
 	<h2 class="page-header">Download File</h2>
-	
+
 	<div class="row">
+		
 		<div class="col-lg-12">
-			<ul>
-				<li>Panduan Kompetisi Bisnis Mahasiswa Indonesia 2018 (<a href="{base_url()}download/PANDUAN_KBMI_2018.pdf" target="_blank">Download</a>)</li>
-				<li>Panduan Workshop Kewirausahaan 2018 (<a href="{base_url()}download/panduan-workshop-kewirausahaan-2018.pdf" target="_blank">Download</a>)</li>
-				<li>Panduan Expo KMI 2017 di Politeknik Negeri Pontianak (<a href="http://belmawa.ristekdikti.go.id/wp-content/uploads/2017/10/Panduan-KMI-Expo-20171.pdf" target="_blank">Download</a>)</li>
-				<li>Format Usulan Kegiatan Expo KMI (<a href="{base_url()}download/Format_Usulan_Kegiatan_Expo_KMI.docx" target="_blank">Download</a>)</li>
-				<li>Lembar Pengesahan Expo KMI (<a href="{base_url()}download/Lembar_Pengesahan_Expo_KMI.docx" target="_blank">Download</a>)</li>
-				<li>Panduan PKMI 2017 (<a href="http://belmawa.ristekdikti.go.id/wp-content/uploads/2017/04/PANDUAN-PKMI-20171.pdf" target="_blank">Download</a>)</li>
-			</ul>
+			
+			{foreach $download_set as $download}
+				<div class="media">
+					<div class="media-left">
+						{if $download->is_external}
+							<a href="{$download->link}" target="_blank">
+								<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+							</a>
+						{else}
+							<a href="{base_url()}download/{$download->nama_file}" target="_blank">
+								<span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+							</a>
+						{/if}
+					</div>
+					<div class="media-body">
+						{if $download->is_external}
+							<h5 class="media-heading"><a href="{$download->link}" style="color:#317eac">{$download->judul}</a></h5>
+						{else}
+							<h5 class="media-heading"><a href="{base_url()}download/{$download->nama_file}" style="color:#317eac">{$download->judul}</a></h5>
+						{/if}
+					</div>
+				</div>
+			{/foreach}
+
 		</div>
+
 	</div>
 {/block}

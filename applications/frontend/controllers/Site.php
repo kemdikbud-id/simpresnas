@@ -40,6 +40,9 @@ class Site extends Frontend_Controller
 	
 	public function download()
 	{
+		$download_set = $this->db->order_by('created_at', 'DESC')->get('download')->result();
+		
+		$this->smarty->assign('download_set', $download_set);
 		$this->smarty->display();
 	}
 	
