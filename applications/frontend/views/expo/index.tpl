@@ -86,10 +86,7 @@
 				</tbody>
 			</table>
 			<ul>
-				<li>Batas Usulan : 3 Judul Usaha</li>
-				<li class="text-danger">Setiap delegasi terdiri dari maksimum 3 (tiga) jenis / kategori usaha. Masing-masing jenis usaha diwakili oleh 1 (satu) orang mahasiswa sebagai tim.
-					Delegasi dapat didampingi oleh dosen Pembimbing Kewirausahaannya.</li>
-				<li>Hanya 1 judul usaha yang bisa diikutkan lomba KMI Award</li>
+				<li>Batas Usulan : {$kegiatan->proposal_per_pt} Judul Usaha</li>
 				<li>Informasi Status : <br/>
 					<span class="label label-info">Seleksi Kelayakan</span> : Dalam proses seleksi oleh tim penilai.<br/>
 					<span class="label label-success">Ikut EXPO</span> : Usulan disetujui dan berhak mengikut Expo KMI<br/>
