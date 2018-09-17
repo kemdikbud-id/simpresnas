@@ -29,7 +29,7 @@ class Download extends Admin_Controller
 			// Inisialisasi file upload
 			$this->load->library('upload', [
 				'upload_path' => './../download/',
-				'allowed_types' => ['pdf']
+				'allowed_types' => ['pdf','doc','docx']
 			]);
 			
 			if ($this->upload->do_upload('file'))
