@@ -8,8 +8,9 @@
 {/block}
 {block name='content'}
 	<div class="jumbotron text-center">
-        <h1>Selamat datang di Portal SIM-PKMI</h1>
-		<!-- <p class="lead">Pendaftaran <strong>Workshop Kewirausahaan 2018</strong> telah dibuka dan dilaksanakan di 9 lokasi !<br/>Segera login untuk melakukan pendaftaran</p> -->
+        <h1>KMI Expo 2018</h1>
+		<p class="lead">Pendaftaran KMI Expo 2018 telah dibuka dan dilaksanakan di Institut Pertanian Bogor pada tanggal 9 - 12 Nopember 2018 !<br/>Segera login untuk melakukan pendaftaran</p>
+		<p><a target="_blank" href="{base_url()}download/Panduan_KMI_Ekspo_2018.pdf" class="btn btn-success">Download Panduan KMI Expo 2018</a></p>
     </div>
 	
 	<hr/>
@@ -36,6 +37,8 @@
 		<div class="col-md-4 text-center">
 			<h3>Expo KMI</h3>
 			<p>Expo Kewirausahaan Mahasiswa Indonesia (Expo KMI) adalah kegiatan tahunan berupa pameran usaha yang telah dijalankan dan ajang temu bisnis bagi mahasiswa pelaksana kewirausahaan</p>
+			<p>Expo KMI 2018 akan diselenggarakan di Institut Pertanian Bogor pada tanggal 9 - 12 Nopember 2018.</p>
+			<p><a target="_blank" href="{base_url()}download/Panduan_KMI_Ekspo_2018.pdf">Download Panduan KMI Expo 2018</a></p>
 		</div>
 	</div>
 
