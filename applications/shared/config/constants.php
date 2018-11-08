@@ -40,4 +40,4 @@ defined('TAHAPAN_EVALUASI')			or define('TAHAPAN_EVALUASI', 1);
 defined('TAHAPAN_MONEV')			or define('TAHAPAN_MONEV', 2);
 defined('TAHAPAN_SELEKSI_EXPO')		or define('TAHAPAN_SELEKSI_EXPO', 3);
 defined('TAHAPAN_KMI_AWARD')		or define('TAHAPAN_KMI_AWARD', 4);
-defined('TAHAPAN_STAND_EXPO')		or define('TAHAPAN_STAND_EXPO', 5);
+defined('TAHAPAN_STAN_EXPO')		or define('TAHAPAN_STAN_EXPO', 5);
