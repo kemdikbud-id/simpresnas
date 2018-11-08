@@ -185,8 +185,8 @@ class Review extends Reviewer_Controller
 		$download_url = $this->config->item('global_base_url') . '/index.php/download/';
 		$this->smarty->assign('download_url', $download_url);
 		
-		if ($kegiatan->program_id == 1) { $program_folder = 'pbbt'; $username = $pt->npsn . '01'; }
-		if ($kegiatan->program_id == 2) { $program_folder = 'kbmi'; $username = $pt->npsn . '02'; }
+		if ($kegiatan->program_id == PROGRAM_PBBT) { $program_folder = 'pbbt'; $username = $pt->npsn . '01'; }
+		if ($kegiatan->program_id == PROGRAM_KBMI) { $program_folder = 'kbmi'; $username = $pt->npsn . '02'; }
 		$preview_url = $this->config->item('global_base_url') . '/upload/file-proposal/'.$program_folder.'/'.$username.'/'.$proposal->id.'/';
 		$this->smarty->assign('preview_url', $preview_url);
 		
