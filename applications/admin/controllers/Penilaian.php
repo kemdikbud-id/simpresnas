@@ -5,6 +5,7 @@
  * @property Kegiatan_model $kegiatan_model 
  * @property Tahapan_model $tahapan_model 
  * @property PerguruanTinggi_model $pt_model
+ * @property Kelas_presentasi_model $kelas_model
  */
 class Penilaian extends Admin_Controller
 {
@@ -15,6 +16,7 @@ class Penilaian extends Admin_Controller
 		$this->load->model(MODEL_KEGIATAN, 'kegiatan_model');
 		$this->load->model(MODEL_TAHAPAN, 'tahapan_model');
 		$this->load->model(MODEL_PERGURUAN_TINGGI, 'pt_model');
+		$this->load->model(MODEL_KELAS_PRESENTASI, 'kelas_model');
 	}
 	
 	public function index()
@@ -129,6 +131,76 @@ class Penilaian extends Admin_Controller
 			$this->smarty->display('penilaian/komentar2.tpl');
 		else
 			$this->smarty->display();
+	}
+	
+	/**
+	 * Penilaian KMI Award
+	 */
+	public function kmi_award()
+	{
+		$kegiatan_id			= $this->input->get('kegiatan_id');
+		$tahapan_id				= $this->input->get('tahapan_id');
+		$kelas_presentasi_id	= $this->input->get('kelas_presentasi_id');
+		
+		$this->smarty->assign('kegiatan_option_set', $this->kegiatan_model->list_aktif_for_option());
+		$this->smarty->assign('tahapan_option_set', $this->tahapan_model->list_all_for_option());
+		$this->smarty->assign('kelas_option_set', $this->kelas_model->list_all_for_option($kegiatan_id));
+		
+		$rumus_nilai_total = 
+			"CASE "
+			. "WHEN pr3.id IS NULL THEN (pr1.nilai_reviewer + pr2.nilai_reviewer) "
+			. "ELSE "
+			. "  IF( ABS(pr1.nilai_reviewer - pr3.nilai_reviewer) < ABS(pr2.nilai_reviewer - pr3.nilai_reviewer), pr1.nilai_reviewer + pr3.nilai_reviewer, pr2.nilai_reviewer + pr3.nilai_reviewer ) "
+			. "END";
+		
+		$rumus_rata_rekom =
+			"CASE "
+			. "WHEN pr3.id IS NULL THEN (pr1.biaya_rekomendasi + pr2.biaya_rekomendasi) / 2 "
+			. "ELSE "
+			. "  IF( ABS(pr1.nilai_reviewer - pr3.nilai_reviewer) < ABS(pr2.nilai_reviewer - pr3.nilai_reviewer), ((pr1.biaya_rekomendasi + pr3.biaya_rekomendasi) / 2), ((pr2.biaya_rekomendasi + pr3.biaya_rekomendasi) / 2) ) "
+			. "END";
+		
+		// Tambahan untuk filter perguruan tinggi
+		if ($kelas_presentasi_id != 'all')
+			$this->db->where('p.kelas_presentasi_id', $kelas_presentasi_id);
+		
+		if ($kegiatan_id != '' && $tahapan_id != '' && $kelas_presentasi_id != '')
+		{
+			$data_set = $this->db
+				->select('p.judul, k.nama_kategori, pt.nama_pt, r1.nama as reviewer_1, r2.nama as reviewer_2, r3.nama as reviewer_3') // 6 col
+				->select('pr1.biaya_rekomendasi as biaya_rekomendasi_1, pr2.biaya_rekomendasi as biaya_rekomendasi_2, pr3.biaya_rekomendasi as biaya_rekomendasi_3') // 3 col
+				->select('pr1.nilai_reviewer as nilai_reviewer_1, pr2.nilai_reviewer as nilai_reviewer_2, pr3.nilai_reviewer as nilai_reviewer_3, ABS(pr1.nilai_reviewer - pr2.nilai_reviewer) as nilai_selisih') // 4 col
+				->select('pr1.komentar as komentar_1, pr2.komentar as komentar_2, pr3.komentar as komentar_3') // 3 col
+				->select($rumus_nilai_total . ' as nilai_total', FALSE) // col 17
+				->select($rumus_rata_rekom . ' as rata_rekomendasi', FALSE)
+				->select('p.is_afirmasi')
+				->from('tahapan_proposal tp')
+				->join('proposal p', 'p.id = tp.proposal_id')
+				->join('kategori k', 'k.id = p.kategori_id')
+				->join('perguruan_tinggi pt', 'pt.id = p.perguruan_tinggi_id')
+				->join('plot_reviewer pr1', 'pr1.tahapan_proposal_id = tp.id AND pr1.no_urut = 1', 'LEFT')
+				->join('reviewer r1', 'r1.id = pr1.reviewer_id', 'LEFT')
+				->join('plot_reviewer pr2', 'pr2.tahapan_proposal_id = tp.id AND pr2.no_urut = 2', 'LEFT')
+				->join('reviewer r2', 'r2.id = pr2.reviewer_id', 'LEFT')
+				->join('plot_reviewer pr3', 'pr3.tahapan_proposal_id = tp.id AND pr3.no_urut = 3', 'LEFT')
+				->join('reviewer r3', 'r3.id = pr3.reviewer_id', 'LEFT')
+				->where(['tp.kegiatan_id' => $kegiatan_id, 'tp.tahapan_id' => $tahapan_id])
+				->order_by('p.is_didanai DESC, 17 DESC', NULL, FALSE) // didanai, nilai total
+				->get()->result();
+			
+			$this->smarty->assign('data_set', $data_set);
+		}
+		else
+		{
+			$this->smarty->assign('data_set', array());		
+		}
+		
+		$this->smarty->display();
+	}
+	
+	public function data_kelas($kegiatan_id)
+	{
+		echo json_encode($this->kelas_model->list_all_for_option($kegiatan_id));
 	}
 	
 	public function didanai_pt()

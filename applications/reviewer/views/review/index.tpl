@@ -51,8 +51,8 @@
 	<script src="{base_url('../assets/js/dataTables.bootstrap.min.js')}"></script>
 	<script type="text/javascript">
 		
-		var keg_id = '{if isset($smarty.get.kegiatan_id)}{$smarty.get.kegiatan_id}{else}0{/if}';
-		var thp_id = '{if isset($smarty.get.tahapan_id)}{$smarty.get.tahapan_id}{else}0{/if}';
+		var keg_id = $('select[name="kegiatan_id"]').val();
+		var thp_id = $('select[name="tahapan_id"]').val();
 		
 		var dataTable = $('#table').DataTable({
 			lengthMenu: [[10,20,25,50,-1],[10,20,25,50,'Semua']],
@@ -61,7 +61,6 @@
 			columns: [
 				{
 					data: null, className: 'text-center', defaultContent: '', orderable: false
-					// render: function(data, type, row, meta) { return meta.row + 1; }
 				},
 				{ data: 'judul' }, { data: 'nama_pt' }, 
 				{ data: 'biaya_rekomendasi', className: 'text-center', render: $.fn.dataTable.render.number('.') }, 
@@ -69,10 +68,12 @@
 				{
 					data: 'id', 
 					render: function(data, type, row, meta) {
-						if (thp_id === '1')
+						if (thp_id === '{$smarty.const.TAHAPAN_EVALUASI}')
 							return '<a class="btn btn-sm btn-info" href="{site_url('review/penilaian/')}'+data+'">Nilai</a>';
-						else if (thp_id === '2')
+						else if (thp_id === '{$smarty.const.TAHAPAN_MONEV}')
 							return '<a class="btn btn-sm btn-info" href="{site_url('review/monev/')}'+data+'">Nilai</a>';
+						else if (thp_id === '{$smarty.const.TAHAPAN_KMI_AWARD}')
+							return '<a class="btn btn-sm btn-info" href="{site_url('review/kmi-award/')}'+data+'">Nilai</a>';
 						else 
 							return '';
 					},
@@ -80,6 +81,14 @@
 				}
 			]
 		});
+		
+		// Jika KMI Award hilangkan kolom rekom
+		if (thp_id === '{$smarty.const.TAHAPAN_KMI_AWARD}') {
+			dataTable.column(3).visible(false);
+		}
+		else {
+			dataTable.column(3).visible(true);
+		}
 		
 		// Numbering
 		dataTable.on('order.dt search.dt', function() {
