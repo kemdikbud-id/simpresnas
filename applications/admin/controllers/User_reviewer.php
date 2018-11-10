@@ -34,6 +34,14 @@ class User_Reviewer extends Admin_Controller
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') { $this->_post_update($id); }
 		
 		$user = $this->user_model->get_single_by_reviewer($id);
+		
+		if ($user == NULL)
+		{
+			$user = new stdClass();
+			$user->username = NULL;
+			$user->password = NULL;
+		}
+		
 		$user->reviewer = $this->reviewer_model->get_single($id);
 		$this->smarty->assign('data', $user);
 		$this->smarty->display();
@@ -43,12 +51,29 @@ class User_Reviewer extends Admin_Controller
 	{
 		$this->db->trans_begin();
 		
-		$this->db->update('user', array(
-			'username'		=> $this->input->post('username'),
-			'password'		=> $this->input->post('password'),
-			'password_hash'	=> sha1($this->input->post('password')),
-			'updated_at'	=> date('Y-m-d H:i:s')
-		), ['reviewer_id' => $id]);
+		$user = $this->db->get_where('user', ['reviewer_id' => $id], 1)->row();
+		
+		if ($user != NULL)
+		{
+			$this->db->update('user', array(
+				'username'		=> $this->input->post('username'),
+				'password'		=> $this->input->post('password'),
+				'password_hash'	=> sha1($this->input->post('password')),
+				'updated_at'	=> date('Y-m-d H:i:s')
+			), ['reviewer_id' => $id]);
+		}
+		else
+		{
+			$this->db->insert('user', array(
+				'tipe_user'		=> TIPE_USER_REVIEWER,
+				'program_id'	=> PROGRAM_KBMI,
+				'username'		=> $this->input->post('username'),
+				'password'		=> $this->input->post('password'),
+				'password_hash'	=> sha1($this->input->post('password')),
+				'reviewer_id'	=> $id,
+				'created_at'	=> date('Y-m-d H:i:s')
+			));
+		}
 		
 		$this->db->update('reviewer', array(
 			'nama'			=> $this->input->post('nama'),
