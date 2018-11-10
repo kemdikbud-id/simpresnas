@@ -12,7 +12,7 @@ class Reviewer_model extends CI_Model
 			->select('r.id, r.nama, r.kompetensi, ifnull(pt.nama_pt, r.asal_institusi) as asal, r.no_kontak, u.username, u.password')
 			->from('reviewer r')
 			->join('perguruan_tinggi pt', 'pt.id = r.perguruan_tinggi_id', 'LEFT')
-			->join('user u', 'u.reviewer_id = r.id')
+			->join('user u', 'u.reviewer_id = r.id', 'LEFT')
 			->get()
 			->result();
 	}
