@@ -55,13 +55,11 @@
 							</li>
 							{/if}
 							{if $ci->session->program_id == PROGRAM_WORKSHOP}
-							<li><a href="{site_url('home')}">Workshop Kewirausahaan</a></li>
+							<li><a href="{site_url('home')}">Workshop</a></li>
 							<li><a href="{site_url('workshop')}">Pendaftaran Peserta</a></li>
-							<li><a href="{site_url('workshop/proposal')}">Unggah Proposal</a></li>
 							<li><a href="{site_url('workshop/jadwal')}">Jadwal &amp; Lokasi</a></li>
 							{/if}
 							<li><a href="{site_url('site/download')}">Download</a></li>
-							<li><a href="{site_url('profil')}">Buku Profil</a></li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
 							{if $ci->session->user}

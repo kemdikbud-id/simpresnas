@@ -23,6 +23,8 @@ define('MODEL_KATEGORI', 'Kategori_model');
 define('MODEL_UNIT_KEWIRAUSAHAAN', 'Unit_kewirausahaan_model');
 define('MODEL_PROFIL_KELOMPOK', 'Profil_kelompok_model');
 define('MODEL_KELAS_PRESENTASI', 'Kelas_presentasi_model');
+define('MODEL_LOKASI_WORKSHOP', 'LokasiWorkshop_model');
+define('MODEL_PESERTA_WORKSHOP', 'PesertaWorkshop_model');
 
 // Jenis Program
 defined('PROGRAM_PBBT')	or define('PROGRAM_PBBT', 1);

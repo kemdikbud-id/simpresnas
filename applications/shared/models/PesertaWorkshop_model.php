@@ -30,6 +30,26 @@ class PesertaWorkshop_model extends CI_Model
 		return $this->db->insert_batch('peserta_workshop', $peserta_set);
 	}
 	
+	public function add_single()
+	{
+		$post = $this->input->post();
+		
+		$peserta = new stdClass();
+		$peserta->nama					= trim($post['nama']);
+		$peserta->perguruan_tinggi_id	= $post['perguruan_tinggi_id'];
+		$peserta->program_studi			= $post['program_studi'];
+		$peserta->nim					= $post['nim'];
+		$peserta->angkatan				= $post['angkatan'];
+		$peserta->email					= $post['email'];
+		$peserta->no_hp					= $post['no_hp'];
+		$peserta->username_ig			= $post['username_ig'];
+		$peserta->lokasi_workshop_id	= $post['lokasi_workshop_id'];
+		$peserta->noble_purpose			= $post['noble_purpose'];
+		$peserta->tujuan_mulia			= $post['tujuan_mulia'];
+		
+		return $this->db->insert('peserta_workshop', $peserta);
+	}
+	
 	public function list_all_by_lokasi($lokasi_workshop_id)
 	{
 		return $this->db

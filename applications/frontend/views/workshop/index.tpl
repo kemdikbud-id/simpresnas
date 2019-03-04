@@ -18,13 +18,6 @@
 						<th style="width: 40px"></th>
 					</tr>
 				</thead>
-				<tfoot>
-					<tr>
-						<td colspan="7">
-							<a href="{site_url('workshop/add-peserta')}" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Tambah Mahasiswa</a>
-						</td>
-					</tr>
-				</tfoot>
 				<tbody>
 					{foreach $peserta_set as $peserta}
 						<tr>

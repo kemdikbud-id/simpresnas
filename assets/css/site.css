@@ -1,3 +1,7 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,700'); /* Heading */
+@import url('https://fonts.googleapis.com/css?family=Comfortaa'); /* Body */
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
@@ -5,8 +9,12 @@ html {
 	min-height: 100%;
 }
 body {
+	font-family: 'Comfortaa', cursive;
 	/* Margin bottom by footer height */
 	margin-bottom: 80px;
+}
+h1,h2,h3,h4,h5,h6 { 
+	font-family: 'Nunito', sans-serif;
 }
 .footer {
 	position: absolute;

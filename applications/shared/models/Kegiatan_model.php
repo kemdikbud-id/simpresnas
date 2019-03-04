@@ -140,4 +140,17 @@ class Kegiatan_model extends CI_Model
 			'is_aktif' => 1
 		], 1)->row();
 	}
+	
+	/**
+	 * @param int $program_id
+	 * @param int $tahun
+	 * @return Kegiatan_model
+	 */
+	public function get_by_program($program_id, $tahun)
+	{
+		return $this->db->get_where('kegiatan', [
+			'program_id'	=> $program_id,
+			'tahun'			=> $tahun
+		], 1)->row();
+	}
 }
