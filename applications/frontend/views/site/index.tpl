@@ -6,6 +6,7 @@
 		.jumbotron h1 { font-size: 46px; font-family: 'Boogaloo', cursive; }
 		.btn-daftar { padding: 10px 15px; }
 		h4 { font-weight: bold; }
+		.btn { margin-top: 5px; }
 	</style>
 {/block}
 {block name='content'}
@@ -16,12 +17,12 @@
 	
 	<div class="row">
 		<div class="col-md-6">
-			<div class="panel panel-info" style="height: 210px !important">
+			<div class="panel panel-info">
 				<div class="panel-body">
 					<div class="media">
 						<div class="media-left">
 							<a href="#">
-								<img class="media-object" src="{base_url('assets/kbmi.png')}" alt="KBMI">
+								<img class="media-object" src="{base_url('assets/kbmi.png')}" alt="KBMI" style="width: 64px; height: 64px">
 							</a>
 						</div>
 						<div class="media-body">
@@ -36,12 +37,12 @@
 			</div>
 		</div>
 		<div class="col-md-6">
-			<div class="panel panel-success" style="height: 210px !important">
+			<div class="panel panel-success">
 				<div class="panel-body">
 					<div class="media">
 						<div class="media-left">
 							<a href="#">
-								<img class="media-object" src="{base_url('assets/workshop.png')}" alt="Workshop">
+								<img class="media-object" src="{base_url('assets/workshop.png')}" alt="Workshop" style="width: 64px; height: 64px;">
 							</a>
 						</div>
 						<div class="media-body">
