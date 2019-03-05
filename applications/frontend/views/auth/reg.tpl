@@ -3,9 +3,12 @@
 	<link rel="stylesheet" href="{base_url('assets/jquery-ui-1.12.1.custom/jquery-ui.min.css')}" />
 {/block}
 {block name='content'}
-	<h2 class="page-header">Registrasi Akun SIM-PKMI</h2>
+	<h2 class="page-header">Registrasi Akun SIM-PKMI untuk Perguruan Tinggi</h2>
 	<div class="row">
 		<div class="col-md-12">
+			
+			<h4>Halaman ini adalah halaman untuk registrasi akun operator perguruan tinggi. Untuk registrasi
+				Workshop Rencana Bisnis untuk mahasiswa silahkan klik <a href="{site_url('jform/workshop')}" class="btn btn-xs btn-info">Registrasi Workshop</a></h4>
 
 			{if isset($error)}
 				<p>{$error['message']}</p>
