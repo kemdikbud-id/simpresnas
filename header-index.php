@@ -66,7 +66,10 @@
  * TANPA garis miring di akhir
  */
 	if (ENVIRONMENT == 'production')
-		define('GLOBAL_BASE_URL', 'http://sim-pkmi.ristekdikti.go.id');
+		if (isset($_SERVER['HTTPS']))
+			define('GLOBAL_BASE_URL', 'https://sim-pkmi.ristekdikti.go.id');
+		else
+			define('GLOBAL_BASE_URL', 'http://sim-pkmi.ristekdikti.go.id');
 	if (ENVIRONMENT == 'development')
 		if (php_sapi_name() !== 'cli')
 			define('GLOBAL_BASE_URL', 'http://' . $_SERVER['HTTP_HOST']);
