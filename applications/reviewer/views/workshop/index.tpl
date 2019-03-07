@@ -96,10 +96,6 @@
 		
 		$(document).ready(function() {
 			
-			$('#reviewPesertaWorkshop').DataTable({ ordering : false, stateSave: true });
-			
-			$('#reviewPesertaWorkshop').show();
-			
 			$('[name="kegiatan_id"]').on('change', function() {
 				$('[name="lokasi_workshop_id"]').html('<option value="">-- Pilih Lokasi --</option>');
 				$.getJSON('{site_url('workshop/data-lokasi')}/' + $(this).val(), function(data) {
@@ -158,6 +154,10 @@
 					}
 				});
 			});
+			
+			$('#reviewPesertaWorkshop').DataTable({ ordering : false, stateSave: true });
+			
+			$('#reviewPesertaWorkshop').show();
 			
 		});
 	</script>
