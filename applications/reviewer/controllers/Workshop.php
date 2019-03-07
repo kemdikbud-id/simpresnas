@@ -27,10 +27,19 @@ class Workshop extends Reviewer_Controller
 		if ($this->input->get('kegiatan_id'))
 		{
 			$this->smarty->assign('lokasi_set', $this->lokasi_model->list_all($this->input->get('kegiatan_id')));
-			$this->smarty->assign('data_set', $this->peserta_model->list_all_by_reviewer(
+			
+			$data_set = $this->peserta_model->list_all_by_reviewer(
 				$this->input->get('lokasi_workshop_id'),
 				$this->session->userdata('user')->reviewer_id
-			));
+			);
+			
+			foreach ($data_set as &$data)
+			{
+				// Clean instagram username
+				$data->username_ig = ltrim($data->username_ig, '@');
+			}
+			
+			$this->smarty->assign('data_set', $data_set);
 			
 			$jumlah_peserta_seminar = $this->db
 				->where('lokasi_workshop_id', $this->input->get('lokasi_workshop_id'))

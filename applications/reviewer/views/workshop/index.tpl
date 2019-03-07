@@ -52,6 +52,7 @@
 								<th>Nama</th>
 								<th>Noble Purpose</th>
 								<th>Tujuan Mulia</th>
+								<th>Instagram</th>
 								<th>Seminar</th>
 								<th>Pelatihan</th>
 							</tr>
@@ -63,6 +64,7 @@
 									<td>{$data->nama}</td>
 									<td>{$data->noble_purpose|nl2br}</td>
 									<td>{$data->tujuan_mulia|nl2br}</td>
+									<td><a href="https://www.instagram.com/{$data->username_ig}" target="_blank">@{$data->username_ig}</a></td>
 									<td class="text-center">
 										<select class="form-control input-sm set-review seminar-{$data->id}" data-id="{$data->id}" data-mode="seminar">
 											<option value="0">Tidak</option>
@@ -155,7 +157,11 @@
 				});
 			});
 			
-			$('#reviewPesertaWorkshop').DataTable({ ordering : false, stateSave: true });
+			$('#reviewPesertaWorkshop').DataTable({ 
+				ordering : false, 
+				stateSave: true,
+				autoWidth: false
+			});
 			
 			$('#reviewPesertaWorkshop').show();
 			
