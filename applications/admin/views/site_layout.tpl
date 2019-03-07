@@ -10,7 +10,7 @@
 		{/if}
 		{if ENVIRONMENT == 'production'}
 			<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-			<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+			<link href="https://fonts.googleapis.com/css?family=Oswald|Comfortaa|Nunito+Sans:400,700" rel="stylesheet">
 		{/if}
 		<link href="{base_url('../assets/css/bootstrap-cerulean.min.css')}" rel="stylesheet"/>
 		<link href="{base_url('../assets/css/site.css')}" rel="stylesheet"/>
@@ -68,6 +68,7 @@
 									<li role="separator" class="divider"></li>
 									<li><h5 style="padding: 3px 20px; margin: 0"><i>Workshop</i></h5></li>
 									<li><a href="{site_url('workshop/peserta')}">Daftar Peserta</a></li>
+									<li><a href="{site_url('workshop/plotting')}">Plotting Reviewer</a></li>
 									<li><a href="{site_url('workshop/proposal')}">Daftar Proposal</a></li>
 									<li role="separator" class="divider"></li>
 									<li><h5 style="padding: 3px 20px; margin: 0"><i>Expo KMI</i></h5></li>

@@ -24,6 +24,7 @@ define('MODEL_UNIT_KEWIRAUSAHAAN', 'Unit_kewirausahaan_model');
 define('MODEL_PROFIL_KELOMPOK', 'Profil_kelompok_model');
 define('MODEL_KELAS_PRESENTASI', 'Kelas_presentasi_model');
 define('MODEL_LOKASI_WORKSHOP', 'LokasiWorkshop_model');
+define('MODEL_PROPOSAL_WORKSHOP', 'ProposalWorkshop_model');
 define('MODEL_PESERTA_WORKSHOP', 'PesertaWorkshop_model');
 
 // Jenis Program

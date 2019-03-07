@@ -53,12 +53,28 @@ class PesertaWorkshop_model extends CI_Model
 	public function list_all_by_lokasi($lokasi_workshop_id)
 	{
 		return $this->db
-			->select('peserta_workshop.*, pt.nama_pt')
+			->select('peserta_workshop.*, pt.nama_pt, r.nama as nama_reviewer')
 			->from('peserta_workshop')
 			->join('lokasi_workshop', 'lokasi_workshop.id = peserta_workshop.lokasi_workshop_id')
 			->join('perguruan_tinggi pt', 'peserta_workshop.perguruan_tinggi_id = pt.id')
+			->join('plot_reviewer_workshop pr', 'pr.peserta_workshop_id = peserta_workshop.id', 'LEFT')
+			->join('reviewer r', 'r.id = pr.reviewer_id', 'LEFT')
+			->where(['peserta_workshop.lokasi_workshop_id' => $lokasi_workshop_id])
+			->get()->result();
+	}
+	
+	public function list_all_by_reviewer($lokasi_workshop_id, $reviewer_id)
+	{
+		return $this->db
+			->select('peserta_workshop.*, pt.nama_pt, r.nama as nama_reviewer')
+			->from('peserta_workshop')
+			->join('lokasi_workshop', 'lokasi_workshop.id = peserta_workshop.lokasi_workshop_id')
+			->join('perguruan_tinggi pt', 'peserta_workshop.perguruan_tinggi_id = pt.id')
+			->join('plot_reviewer_workshop pr', 'pr.peserta_workshop_id = peserta_workshop.id')
+			->join('reviewer r', 'r.id = pr.reviewer_id')
 			->where([
-				'peserta_workshop.lokasi_workshop_id' => $lokasi_workshop_id
+				'peserta_workshop.lokasi_workshop_id' => $lokasi_workshop_id,
+				'r.id' => $reviewer_id
 			])
 			->get()->result();
 	}
@@ -82,5 +98,29 @@ class PesertaWorkshop_model extends CI_Model
 	public function delete($id)
 	{
 		return $this->db->delete('peserta_workshop', ['id' => $id], 1);
+	}
+	
+	public function set_reviewer($peserta_ids, $reviewer_id)
+	{
+		$this->db->trans_begin();
+		
+		foreach ($peserta_ids as $peserta_id)
+		{
+			// Check di plotting sudah ada / belum
+			$count = $this->db->where('peserta_workshop_id', $peserta_id)->count_all_results('plot_reviewer_workshop');
+			
+			$exist = $count > 0;
+			
+			if ($exist)
+			{
+				$this->db->update('plot_reviewer_workshop', ['reviewer_id' => $reviewer_id], ['peserta_workshop_id' => $peserta_id]);
+			}
+			else
+			{
+				$this->db->insert('plot_reviewer_workshop', ['peserta_workshop_id' => $peserta_id, 'reviewer_id' => $reviewer_id]);
+			}
+		}
+		
+		return $this->db->trans_commit();
 	}
 }

@@ -4,7 +4,7 @@
 	<style>.table>thead>tr>th, .table>tbody>tr>td { font-size: 13px }</style>
 {/block}
 {block name='content'}
-	<h2 class="page-header">Daftar Peserta Workshop</h2>
+	<h2 class="page-header">Plotting Reviewer Peserta Workshop</h2>
 
 	<div class="row">
 		<div class="col-lg-12">
@@ -31,33 +31,40 @@
 			</form>
 			
 			{if !empty($smarty.get.kegiatan_id)}
-				<table class="table table-bordered table-condensed table-striped" id="pesertaTable" style="display: none;">
-					<thead>
-						<tr>
-							<th>Perguruan Tinggi</th>
-							<th>Nama</th>
-							<th style="width: 25px">Seminar</th>
-							<th style="width: 25px">Pelatihan</th>
-						</tr>
-					</thead>
-					<tbody>
-						{foreach $data_set as $data}
+				<form action="{site_url('workshop/plotting/pilih-reviewer')}" method="post">
+					<input type="hidden" name="mode" value="pilih-reviewer" />
+					<table class="table table-bordered table-condensed table-striped" id="plottingPesertaTable" style="display: none;">
+						<thead>
 							<tr>
-								<td>{$data->nama_pt}</td>
-								<td>{$data->nama}</td>
-								<td class="text-center">{if $data->ikut_seminar}<span class="label label-primary">Ya</span>{/if}</td>
-								<td class="text-center">{if $data->ikut_pelatihan}<span class="label label-info">Ya</span>{/if}</td>
+								<th></th>
+								<th>Perguruan Tinggi</th>
+								<th>Nama</th>
+								<th style="width: 25px">Seminar</th>
+								<th style="width: 25px">Pelatihan</th>
+								<th>Reviewer</th>
 							</tr>
-						{/foreach}
-					</tbody>
-					<tfoot>
-						<tr>
-							<td colspan="4">
-								<a href="{site_url('workshop/excel-pendaftar')}?kegiatan_id={$smarty.get.kegiatan_id}&lokasi_workshop_id={$smarty.get.lokasi_workshop_id}">Download Excel</a>
-							</td>
-						</tr>
-					</tfoot>
-				</table>
+						</thead>
+						<tbody>
+							{foreach $data_set as $data}
+								<tr>
+									<td class="text-center"><input type="checkbox" name="peserta_ids[]" value="{$data->id}" /></td>
+									<td>{$data->nama_pt}</td>
+									<td>{$data->nama}</td>
+									<td class="text-center">{if $data->ikut_seminar}<span class="label label-primary">Ya</span>{/if}</td>
+									<td class="text-center">{if $data->ikut_pelatihan}<span class="label label-info">Ya</span>{/if}</td>
+									<td>{$data->nama_reviewer}</td>
+								</tr>
+							{/foreach}
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="6" class="text-right">
+									<input type="submit" value="Set Reviewer" class="btn btn-default" />
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				</form>
 			{/if}
 		</div>
 	</div>
@@ -69,9 +76,13 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			
-			$('#pesertaTable').DataTable({ stateSave: true });
+			$('#plottingPesertaTable').DataTable({
+				columnDefs: [
+					{ orderable: false, targets: 0 }
+				]
+			});
 			
-			$('#pesertaTable').show();
+			$('#plottingPesertaTable').show();
 			
 			$('[name="kegiatan_id"]').on('change', function() {
 				$('[name="lokasi_workshop_id"]').html('<option value="">-- Pilih Lokasi --</option>');
