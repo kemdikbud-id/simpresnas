@@ -138,7 +138,7 @@
 								Hal apa yang memicu Anda untuk mewujudkan tujuan mulia tersebut?</label>
 							<p class="help-block">Contoh: Mursida Rambe menyaksikan seorang ibu-ibu tua dan anaknya diusir dari 
 								rumah gubuknya oleh rentenir karena tidak mampu membayar hutangnya.</p>
-							<textarea class="form-control" name="tujuan_mulia" rows="5" placeholder="Isi tujuan mulia Anda disini" required></textarea>
+							<textarea class="form-control" name="tujuan_mulia" rows="5" placeholder="Isi apa yang menjadi pemicu tujuan mulia Anda disini" required></textarea>
 						</div>
 					</div>
 					
