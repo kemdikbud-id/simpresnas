@@ -41,14 +41,14 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label" for="nama">Nama Lengkap</label>  
 						<div class="col-md-5">
-							<input type='text' class="form-control input-md" name="nama" value="{set_value('nama')}" required/>
+							<input type='text' class="form-control input-md" name="nama" required/>
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label class="col-md-3 control-label" for="perguruan_tinggi">Perguruan Tinggi</label>
 						<div class="col-md-5">
-							<input type='text' class="form-control input-md" name="perguruan_tinggi" value="{set_value('perguruan_tinggi')}" required/>
+							<input type='text' class="form-control input-md" name="perguruan_tinggi" required/>
 							<input type='hidden' name="perguruan_tinggi_id" value='' />
 						</div>
 					</div>
@@ -56,42 +56,42 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label" for="program_studi">Program Studi</label>  
 						<div class="col-md-5">
-							<input type='text' class="form-control input-md" name="program_studi" value="{set_value('program_studi')}" required/>
+							<input type='text' class="form-control input-md" name="program_studi" required/>
 						</div>
 					</div>
 						
 					<div class="form-group">
 						<label class="col-md-3 control-label" for="nim">NIM</label>  
 						<div class="col-md-5">
-							<input type='text' class="form-control input-md" name="nim" value="{set_value('nim')}" required/>
+							<input type='text' class="form-control input-md" name="nim" required/>
 						</div>
 					</div>
 						
 					<div class="form-group">
 						<label class="col-md-3 control-label" for="angkatan">Angkatan</label>  
 						<div class="col-md-2 col-xs-3">
-							<input type='text' class="form-control input-md" name="angkatan" value="{set_value('angkatan')}" maxlength="4" required/>
+							<input type='text' class="form-control input-md" name="angkatan" maxlength="4" required/>
 						</div>
 					</div>
 						
 					<div class="form-group">
 						<label class="col-md-3 control-label" for="email">Email</label>  
 						<div class="col-md-5">
-							<input type='email' class="form-control input-md" name="email" value="{set_value('email')}" required/>
+							<input type='email' class="form-control input-md" name="email" required/>
 						</div>
 					</div>
 						
 					<div class="form-group">
 						<label class="col-md-3 control-label" for="no_hp">No HP</label>  
 						<div class="col-md-5">
-							<input type='text' class="form-control input-md" name="no_hp" value="{set_value('no_hp')}" required/>
+							<input type='text' class="form-control input-md" name="no_hp" required/>
 						</div>
 					</div>
 						
 					<div class="form-group">
 						<label class="col-md-3 control-label" for="username_ig">Username Instagram</label>  
 						<div class="col-md-5">
-							<input type='text' class="form-control input-md" name="username_ig" value="{set_value('username_ig')}" required/>
+							<input type='text' class="form-control input-md" name="username_ig" required/>
 							<span class="help-block">Pastikan mengupload <i>noble purpose</i> dengan hashtag
 								<a href="https://www.instagram.com/explore/tags/KBMI2019/">#KBMI2019</a>
 								dengan username yang didaftarkan. Boleh menggunakan username bisnis yang
