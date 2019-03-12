@@ -21,6 +21,11 @@ class PerguruanTinggi_model extends CI_Model
 		return $this->db->get('perguruan_tinggi')->result();
 	}
 	
+	public function list_all_order_name()
+	{
+		return $this->db->select('id, nama_pt')->order_by('nama_pt')->get('perguruan_tinggi')->result();
+	}
+	
 	/**
 	 * Pencarian berbasis Full-Text Search
 	 * @param string $nama_pt

@@ -7,6 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property Kegiatan_model $kegiatan_model
  * @property LokasiWorkshop_model $lokasi_model 
  * @property PesertaWorkshop_model $peserta_model
+ * @property PerguruanTinggi_model $pt_model
  */
 class Jform extends Frontend_Controller
 {
@@ -17,6 +18,7 @@ class Jform extends Frontend_Controller
 		$this->load->model(MODEL_KEGIATAN, 'kegiatan_model');
 		$this->load->model(MODEL_LOKASI_WORKSHOP, 'lokasi_model');
 		$this->load->model(MODEL_PESERTA_WORKSHOP, 'peserta_model');
+		$this->load->model(MODEL_PERGURUAN_TINGGI, 'pt_model');
 	}
 	
 	public function kbmi()
@@ -63,7 +65,8 @@ class Jform extends Frontend_Controller
 			echo anchor(site_url(), 'Kembali ke halaman depan');
 			exit();
 		}
-		
+
+		$pt_set		= $this->pt_model->list_all_order_name();
 		$lokasi_set = $this->lokasi_model->list_all_aktif($kegiatan->id);
 		
 		// Pre process untuk format waktu pelaksanaan
@@ -74,6 +77,7 @@ class Jform extends Frontend_Controller
 		}
 		
 		$this->smarty->assign('lokasi_set', $lokasi_set);
+		$this->smarty->assign('pt_set', $pt_set);
 		
 		$this->smarty->display();
 	}

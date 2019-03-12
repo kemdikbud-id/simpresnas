@@ -1,6 +1,7 @@
 {extends file='site_layout.tpl'}
 {block name='head'}
 	<link rel="stylesheet" href="{base_url('assets/jquery-ui-1.12.1.custom/jquery-ui.min.css')}" />
+	<link rel="stylesheet" href="{base_url('assets/select2/css/select2.min.css')}" />
 	<style>
 		.col-centered {
 			float: none;
@@ -48,8 +49,12 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label" for="perguruan_tinggi">Perguruan Tinggi</label>
 						<div class="col-md-5">
-							<input type='text' class="form-control input-md" name="perguruan_tinggi" required/>
-							<input type='hidden' name="perguruan_tinggi_id" value='' />
+							<select name="perguruan_tinggi_id" class="form-control" style="width: 100%" required>
+								<option value=""></option>
+								{foreach $pt_set as $pt}
+									<option value="{$pt->id}">{$pt->nama_pt}</option>
+								{/foreach}
+							</select>
 						</div>
 					</div>
 
@@ -70,7 +75,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label" for="angkatan">Angkatan</label>  
 						<div class="col-md-2 col-xs-3">
-							<input type='text' class="form-control input-md" name="angkatan" maxlength="4" required/>
+							<input type='text' class="form-control input-md" name="angkatan" maxlength="4" required placeholder="Cth: 2017"/>
 						</div>
 					</div>
 						
@@ -101,7 +106,7 @@
 							
 					<div class="form-group text-center">
 						<a class="btn btn-default btn-prev">Sebelumnya</a>
-						<a class="btn btn-default btn-next">Berikutnya</a>
+						<a class="btn btn-default btn-next check-pt">Berikutnya</a>
 					</div>
 					
 				</fieldset>
@@ -156,8 +161,11 @@
 {/block}
 {block name='footer-script'}
 	<script src="{base_url('assets/jquery-ui-1.12.1.custom/jquery-ui.min.js')}" type="text/javascript"></script>
+	<script src="{base_url('assets/select2/js/select2.min.js')}" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
+			
+			$('select[name="perguruan_tinggi_id"]').select2();
 			
 			$('.btn-next').on('click', function(e) {
 				// get all inputs
@@ -182,15 +190,6 @@
 				$(this).parent().parent().hide();
 				// Previous Fieldset
 				$(this).parent().parent().prev().show();
-			});
-			
-			/* Autocomplete */
-			$('input[name="perguruan_tinggi"]').autocomplete({
-				source: '{site_url('auth/search_pt/')}',
-				minLength: 3,
-				select: function(event, ui) {
-					$('input[name="perguruan_tinggi_id"]').val(ui.item.id);
-				}
 			});
 			
 		});
