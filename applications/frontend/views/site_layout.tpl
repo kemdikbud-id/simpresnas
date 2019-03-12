@@ -7,10 +7,11 @@
 		<title>SIM-PKMI Program Kewirausahaan Mahasiswa Indonesia</title>
 		{if ENVIRONMENT == 'development'}
 			<link href="{base_url('assets/css/bootstrap.min.css')}" rel="stylesheet"/>
+			<link href="https://fonts.googleapis.com/css?family=Oswald|Comfortaa|Nunito+Sans:400,700" rel="stylesheet">
 		{/if}
 		{if ENVIRONMENT == 'production'}
 			<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-			<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+			<link href="https://fonts.googleapis.com/css?family=Oswald|Comfortaa|Nunito+Sans:400,700" rel="stylesheet">
 		{/if}
 		<link href="{base_url('assets/css/bootstrap-cerulean.min.css')}" rel="stylesheet"/>
 		<link href="{base_url('assets/css/site.css')}" rel="stylesheet"/>
