@@ -39,6 +39,8 @@
 					{if $ci->session->user}
 						<ul class="nav navbar-nav">
 							{if $ci->session->program_id == PROGRAM_PBBT or $ci->session->program_id == PROGRAM_KBMI}
+							{*
+							Ini untuk link pengusulan proposal Tahun 2017, 2018
 							<li>
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Proposal {if $ci->session->program_id == 1}PBBT{else}KBMI{/if}<span class="caret"></span></a>
 								<ul class="dropdown-menu">
@@ -46,6 +48,8 @@
 									<li><a href="{site_url('proposal/create')}">Usulan Baru</a></li>
 								</ul>
 							</li>
+							*}
+							<li><a href="{site_url('proposal-kbmi')}">Proposal {if $ci->session->program_id == 1}PBBT{else}KBMI{/if}</a></li>
 							{/if}
 							{if $ci->session->program_id == PROGRAM_EXPO}
 							<li>
