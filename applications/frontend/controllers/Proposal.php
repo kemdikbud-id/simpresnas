@@ -31,29 +31,33 @@ class Proposal extends Frontend_Controller
 	
 	public function index()
 	{
+		$data_set = array();
 		
-		$data_set = $this->db->query(
-			"select 
-				proposal.id, judul, nama_kategori, nim_ketua, nama_ketua, tp.id as tp_id,
-				count(syarat.id) jumlah_syarat, 
-				count(file_proposal.id) syarat_terupload,
-				sum(syarat.is_wajib) syarat_wajib, 
-				sum(if(syarat.is_wajib = 1 AND file_proposal.id IS NOT NULL, 1,0)) syarat_wajib_terupload
-			from proposal
-			join kegiatan on kegiatan.id = proposal.kegiatan_id
-			join program on program.id = kegiatan.program_id
-			join kategori on kategori.id = proposal.kategori_id
-			join syarat on syarat.kegiatan_id = kegiatan.id
-			left join file_proposal on file_proposal.proposal_id = proposal.id and file_proposal.syarat_id = syarat.id
-			left join tahapan_proposal tp on tp.kegiatan_id = kegiatan.id AND tp.proposal_id = proposal.id and tp.tahapan_id = 1 /* Submit --> Tahapan Evaluasi Proposal */
-			where
-				proposal.kegiatan_id = ? and
-				proposal.perguruan_tinggi_id = ?
-			group by proposal.id, judul, nama_kategori, nim_ketua, nama_ketua, tp.id
-			order by proposal.id", array(
-				$this->session->kegiatan->id,
-				$this->session->perguruan_tinggi->id
-			))->result();
+		if ($this->session->kegiatan != null)
+		{
+			$data_set = $this->db->query(
+				"select 
+					proposal.id, judul, nama_kategori, nim_ketua, nama_ketua, tp.id as tp_id,
+					count(syarat.id) jumlah_syarat, 
+					count(file_proposal.id) syarat_terupload,
+					sum(syarat.is_wajib) syarat_wajib, 
+					sum(if(syarat.is_wajib = 1 AND file_proposal.id IS NOT NULL, 1,0)) syarat_wajib_terupload
+				from proposal
+				join kegiatan on kegiatan.id = proposal.kegiatan_id
+				join program on program.id = kegiatan.program_id
+				join kategori on kategori.id = proposal.kategori_id
+				join syarat on syarat.kegiatan_id = kegiatan.id
+				left join file_proposal on file_proposal.proposal_id = proposal.id and file_proposal.syarat_id = syarat.id
+				left join tahapan_proposal tp on tp.kegiatan_id = kegiatan.id AND tp.proposal_id = proposal.id and tp.tahapan_id = 1 /* Submit --> Tahapan Evaluasi Proposal */
+				where
+					proposal.kegiatan_id = ? and
+					proposal.perguruan_tinggi_id = ?
+				group by proposal.id, judul, nama_kategori, nim_ketua, nama_ketua, tp.id
+				order by proposal.id", array(
+					$this->session->kegiatan->id,
+					$this->session->perguruan_tinggi->id
+				))->result();
+		}
 		
 		$this->smarty->assign('data_set', $data_set);
 		
