@@ -57,7 +57,7 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="tgl_awal_upload">Tanggal Awal Upload</label>
 						<div class="col-md-5">
-							{html_select_date field_order="DMY" prefix="awal_upload_" all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
+							{html_select_date field_order="DMY" prefix="awal_upload_" year_as_text=true all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
 							<input type="text" name="awal_upload_time" value="" placeholder="00:00:00" class="form-control input-md" style="display: inline-block; width: 85px" />
 						</div>
 					</div>
@@ -66,7 +66,7 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="tgl_akhir_upload">Tanggal Akhir Upload</label>
 						<div class="col-md-5">
-							{html_select_date field_order="DMY" prefix="akhir_upload_" all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
+							{html_select_date field_order="DMY" prefix="akhir_upload_" year_as_text=true all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
 							<input type="text" name="akhir_upload_time" value="" placeholder="00:00:00" class="form-control input-md" style="display: inline-block; width: 85px" />
 						</div>
 					</div>
@@ -75,7 +75,7 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="tgl_awal_review">Tanggal Awal Review</label>
 						<div class="col-md-5">
-							{html_select_date field_order="DMY" prefix="awal_review_" all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
+							{html_select_date field_order="DMY" prefix="awal_review_" year_as_text=true all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
 							<input type="text" name="awal_review_time" value="" placeholder="00:00:00" class="form-control input-md" style="display: inline-block; width: 85px" />
 						</div>
 					</div>
@@ -84,7 +84,7 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="tgl_akhir_review">Tanggal Akhir Review</label>
 						<div class="col-md-5">
-							{html_select_date field_order="DMY" prefix="akhir_review_" all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
+							{html_select_date field_order="DMY" prefix="akhir_review_" year_as_text=true all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
 							<input type="text" name="akhir_review_time" value="" placeholder="00:00:00" class="form-control input-md" style="display: inline-block; width: 85px" />
 						</div>
 					</div>
@@ -93,7 +93,7 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="tgl_pengumuman">Tanggal Pengumuman</label>
 						<div class="col-md-5">
-							{html_select_date field_order="DMY" prefix="pengumuman_" all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
+							{html_select_date field_order="DMY" prefix="pengumuman_" year_as_text=true all_extra='class="form-control input-md" style="display: inline-block; width: auto;"'}
 							<input type="text" name="pengumuman_time" value="" placeholder="00:00:00" class="form-control input-md" style="display: inline-block; width: 85px" />
 						</div>
 					</div>
