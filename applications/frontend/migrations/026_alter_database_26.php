@@ -71,10 +71,25 @@ class Migration_Alter_database_26 extends CI_Migration
 			'CONSTRAINT fk_user_mahasiswa FOREIGN KEY (mahasiswa_id) REFERENCES mahasiswa (id)'
 		]);
 		echo "OK\n";
+		
+		echo "  > alter table anggota_proposal ... ";
+		$this->dbforge->add_column('anggota_proposal', [
+			'mahasiswa_id INT NULL AFTER no_urut',
+			'CONSTRAINT fk_anggota_prop_mahasiswa FOREIGN KEY (mahasiswa_id) REFERENCES mahasiswa (id)'
+		]);
+		echo "OK\n";
 	}
 	
 	function down()
 	{
+		echo "  > drop foreign key anggota_proposal (fk_anggota_prop_mahasiswa) ... ";
+		$this->db->query('ALTER TABLE anggota_proposal DROP FOREIGN KEY fk_anggota_prop_mahasiswa');
+		echo "OK\n";
+		
+		echo "  > drop column anggota_proposal (mahasiswa_id) ... ";
+		$this->dbforge->drop_column('anggota_proposal', 'mahasiswa_id');
+		echo "OK\n";
+		
 		echo "  > drop foreign key user (fk_user_mahasiswa) ... ";
 		$this->db->query('ALTER TABLE user DROP FOREIGN KEY fk_user_mahasiswa');
 		echo "OK\n";
