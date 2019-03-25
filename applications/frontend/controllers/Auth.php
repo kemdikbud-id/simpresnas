@@ -10,6 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property User_model $user_model
  * @property Kegiatan_model $kegiatan_model
  * @property Reviewer_model $reviewer_model 
+ * @property Mahasiswa_model $mahasiswa_model 
  */
 class Auth extends Frontend_Controller
 {
@@ -26,6 +27,7 @@ class Auth extends Frontend_Controller
 		$this->load->model(MODEL_USER, 'user_model');
 		$this->load->model(MODEL_KEGIATAN, 'kegiatan_model');
 		$this->load->model(MODEL_REVIEWER, 'reviewer_model');
+		$this->load->model(MODEL_MAHASISWA, 'mahasiswa_model');
 	}
 	
 	public function reg()
@@ -129,6 +131,8 @@ class Auth extends Frontend_Controller
 						}
 						else if ($user->tipe_user == TIPE_USER_MAHASISWA)
 						{
+							// tambahkan session mahasiswa
+							$this->session->user->mahasiswa = $this->mahasiswa_model->get($this->session->user->mahasiswa_id);
 							redirect(base_url() . 'mahasiswa');
 						}
 						else if ($user->tipe_user == TIPE_USER_ADMIN)
