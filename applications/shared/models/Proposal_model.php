@@ -3,6 +3,7 @@
 /**
  * @author Fathoni <m.fathoni@mail.com>
  * @property CI_DB_query_builder $db
+ * @property CI_DB_mysqli_driver $db
  * @property int $id
  * @property int $perguruan_tinggi_id
  * @property string $judul
@@ -39,6 +40,13 @@ class Proposal_model extends CI_Model
 		$this->db->where(['id' => $id]);
 		if ($perguruan_tinggi_id != NULL) $this->db->where(['perguruan_tinggi_id' => $perguruan_tinggi_id]);
 		return $this->db->get('proposal', 1)->row();
+	}
+	
+	public function add(stdClass &$model)
+	{
+		$result = $this->db->insert('proposal', $model);
+		$model->id = $this->db->insert_id();
+		return $result;
 	}
 	
 	public function update($id, stdClass $model)
