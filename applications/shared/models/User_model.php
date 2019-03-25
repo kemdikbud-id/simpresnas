@@ -15,6 +15,8 @@ class User_model extends CI_Model
 	public $tipe_user;
 	public $program_id;
 	public $perguruan_tinggi_id;
+	public $reviewer_id;
+	public $mahasiswa_id;
 	public $latest_login;
 	public $status = 1;
 	public $created_at;
