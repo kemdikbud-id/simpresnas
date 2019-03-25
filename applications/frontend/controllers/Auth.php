@@ -118,15 +118,23 @@ class Auth extends Frontend_Controller
 
 						// redirect
 						if ($user->tipe_user == TIPE_USER_NORMAL)
+						{
 							redirect(site_url('home'));  // Home Controller dari applikasi Frontend
+						}
 						else if ($user->tipe_user == TIPE_USER_REVIEWER)
 						{
 							// tambahkan session reviewer
 							$this->session->user->reviewer = $this->reviewer_model->get_single($this->session->user->reviewer_id);
 							redirect(base_url() . 'reviewer');
 						}
+						else if ($user->tipe_user == TIPE_USER_MAHASISWA)
+						{
+							redirect(base_url() . 'mahasiswa');
+						}
 						else if ($user->tipe_user == TIPE_USER_ADMIN)
+						{
 							redirect(base_url() . 'admin');
+						}
 						
 						// end output after redirect
 						exit();
