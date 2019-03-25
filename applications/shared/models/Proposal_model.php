@@ -3,7 +3,6 @@
 /**
  * @author Fathoni <m.fathoni@mail.com>
  * @property CI_DB_query_builder $db
- * @property CI_DB_mysqli_driver $db
  * @property int $id
  * @property int $perguruan_tinggi_id
  * @property string $judul
@@ -26,6 +25,19 @@ class Proposal_model extends CI_Model
 			->join('file_proposal fp', 'fp.proposal_id = p.id AND fp.syarat_id = s.id', 'LEFT')
 			->where(['p.kegiatan_id' => $kegiatan_id])
 			->group_by("p.id, p.judul, pt.nama_pt, ktg.nama_kategori, p.nim_ketua, p.nama_ketua, p.created_at")
+			->get()->result();
+	}
+	
+	public function list_by_perguruan_tinggi($perguruan_tinggi_id, $kegiatan_id)
+	{
+		return $this->db
+			->select('p.id, p.judul, ap.mahasiswa_id, m.nim, m.nama, ps.nama as nama_program_studi, d.nama as nama_dosen, p.is_submited')
+			->from('proposal p')
+			->join('anggota_proposal ap', 'ap.proposal_id = p.id AND ap.no_urut = 1') // Ketua di No Urut 1
+			->join('mahasiswa m', 'm.id = ap.mahasiswa_id')
+			->join('program_studi ps', 'ps.id = m.program_studi_id')
+			->join('dosen d', 'd.id = p.dosen_id', 'LEFT')
+			->where(['p.perguruan_tinggi_id' => $perguruan_tinggi_id, 'kegiatan_id' => $kegiatan_id])
 			->get()->result();
 	}
 	
