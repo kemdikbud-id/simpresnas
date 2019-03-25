@@ -67,7 +67,7 @@ class Migration_Alter_database_26 extends CI_Migration
 		$this->dbforge->modify_column('user', 'username VARCHAR(50) NOT NULL');
 		$this->dbforge->modify_column('user', 'tipe_user INT(2) NOT NULL COMMENT \'99-Administrator; 1-User PT; 2-User Reviewer; 3-Verifikator; 4-Mahasiswa\'');
 		$this->dbforge->add_column('user', [
-			'mahasiswa_id INT NULL',
+			'mahasiswa_id INT NULL AFTER reviewer_id',
 			'CONSTRAINT fk_user_mahasiswa FOREIGN KEY (mahasiswa_id) REFERENCES mahasiswa (id)'
 		]);
 		echo "OK\n";
@@ -78,10 +78,24 @@ class Migration_Alter_database_26 extends CI_Migration
 			'CONSTRAINT fk_anggota_prop_mahasiswa FOREIGN KEY (mahasiswa_id) REFERENCES mahasiswa (id)'
 		]);
 		echo "OK\n";
+		
+		echo "  > alter table proposal ... ";
+		$this->dbforge->add_column('proposal', [
+			'dosen_id INT NULL AFTER nama_anggota_5',
+			'CONSTRAINT fk_proposal_dosen FOREIGN KEY (dosen_id) REFERENCES dosen (id)'
+		]);
+		$this->dbforge->modify_column('proposal', 'kategori_id INT NULL');
+		echo "OK\n";
 	}
 	
 	function down()
 	{
+		echo "  > alter table proposal ... ";
+		$this->dbforge->modify_column('proposal', 'kategori_id INT NOT NULL');
+		$this->db->query('ALTER TABLE proposal DROP FOREIGN KEY fk_proposal_dosen');
+		$this->dbforge->drop_column('proposal', 'dosen_id');
+		echo "OK\n";
+		
 		echo "  > drop foreign key anggota_proposal (fk_anggota_prop_mahasiswa) ... ";
 		$this->db->query('ALTER TABLE anggota_proposal DROP FOREIGN KEY fk_anggota_prop_mahasiswa');
 		echo "OK\n";
