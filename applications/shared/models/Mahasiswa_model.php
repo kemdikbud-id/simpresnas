@@ -1,4 +1,5 @@
 <?php
+use GuzzleHttp\Client;
 
 /**
  * @author Fathoni <m.fathoni@mail.com>
@@ -10,6 +11,7 @@
  * @property string $nama
  * @property int $program_studi_id
  * @property Program_studi_model $program_studi 
+ * @property GuzzleHttp\Client $client
  */
 class Mahasiswa_model extends CI_Model
 {
@@ -25,18 +27,66 @@ class Mahasiswa_model extends CI_Model
 	
 	/**
 	 * @param string $npsn Kode Perguruan Tinggi
+	 * @param int $program_studi_id program_studi untuk pencarian ke api forlap
 	 * @param string $nim NIM Mahasiswa
 	 * @return Mahasiswa_model
 	 */
-	function get_by_nim($npsn, $nim)
+	function get_by_nim($npsn, $program_studi_id, $nim)
 	{
-		return $this->db
+		$mahasiswa = $this->db
 			->select('m.*')
 			->from('mahasiswa m')
 			->join('perguruan_tinggi pt', 'pt.id = m.perguruan_tinggi_id')
 			->where('pt.npsn', $npsn)
 			->where('m.nim', $nim)
 			->get()->first_row();
+		
+		// Jika tidak ada dalam DB
+		if ($mahasiswa == NULL)
+		{
+			
+			// Ambil konfigurasi
+			$this->config->load('pddikti');
+			$pddikti_url = $this->config->item('pddikti_url');
+			$pddikti_auth = $this->config->item('pddikti_auth');
+			
+			$this->client = new Client([
+				'base_uri' => $pddikti_url,
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => 'Bearer ' . $pddikti_auth
+				]
+			]); 
+
+			$program_studi = $this->program_studi_model->get($program_studi_id);
+			$program_studi->kode_prodi = trim($program_studi->kode_prodi);
+
+			// Cari dari Forlap
+			$response = $this->client->get("pt/{$npsn}/prodi/{$program_studi->kode_prodi}/mahasiswa/{$nim}");
+			
+
+			if ($response->getStatusCode() == 200)
+			{
+				$body = $response->getBody();
+				$mahasiswa_pddikti = json_decode($body);
+
+				// cek jika mahasiswa sudah lulus
+				if ($mahasiswa_pddikti[0]->terdaftar->tgl_keluar != '')
+				{
+					throw new Exception("Mahasiswa \"{$mahasiswa_pddikti[0]->terdaftar->nim} {$mahasiswa_pddikti[0]->nama}\" sudah tidak aktif / lulus");
+				}
+				else
+				{
+					// Insert Mahasiswa dari Pddikti
+					$this->insert_from_pddikti($mahasiswa_pddikti[0]);
+
+					// di query ulang
+					$mahasiswa = $this->get_by_nim($npsn, $program_studi_id, $nim);
+				}
+			}
+		}
+		
+		return $mahasiswa;
 	}
 	
 	function insert_from_pddikti($param)

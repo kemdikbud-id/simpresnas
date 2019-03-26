@@ -92,7 +92,8 @@
 				{if $error_type == 'MHS_TIDAK_AKTIF'}
 					<div class="alert alert-warning alert-dismissible">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<p>Mahasiswa "{$mahasiswa->nim} {$mahasiswa->nama}" sudah tidak aktif lagi. Silahkan ulangi pencarian</p>
+						<p>{$error_message}</p>
+						<p>Silahkan ulangi pencarian</p>
 					</div>
 				{/if}
 			{/if}

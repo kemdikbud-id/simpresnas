@@ -50,63 +50,30 @@ class Proposal_KBMI extends Frontend_Controller
 			// Algoritma :
 			// 1 - Cari data mahasiswa dari database terlebih dahulu
 			// 2 - Jika tidak ada, mengambil dari API Forlap
-			
 			$nim = trim($this->input->post('nim'));
-			$mahasiswa = $this->mahasiswa_model->get_by_nim($current_pt->npsn, $nim);
+			$mahasiswa = null;
 			
-			if ($mahasiswa != NULL)
+			try
 			{
-				// Ubah selected prodi-nya ke prodi yang benar sesuai input nim
-				$_POST['program_studi_id'] = $mahasiswa->program_studi_id;
+				$mahasiswa = $this->mahasiswa_model->get_by_nim($current_pt->npsn, $this->input->post('program_studi_id'), $nim);
 				
-				// Ambil Informasi Program Studi
-				$mahasiswa->program_studi = $this->program_studi_model->get($mahasiswa->program_studi_id);
-			}
-			else
-			{
-				// Ambil konfigurasi
-				$this->config->load('pddikti');
-				$pddikti_url = $this->config->item('pddikti_url');
-				$pddikti_auth = $this->config->item('pddikti_auth');
-				
-				$this->client = new Client([
-					'base_uri' => $pddikti_url,
-					'headers' => [
-						'Accept' => 'application/json',
-						'Authorization' => 'Bearer ' . $pddikti_auth
-					]
-				]); 
-				
-				$program_studi = $this->program_studi_model->get($this->input->post('program_studi_id'));
-				// Di cleansing 
-				$program_studi->kode_prodi = trim($program_studi->kode_prodi);
-				
-				// Cari dari Forlap
-				$response = $this->client->get("pt/{$current_pt->npsn}/prodi/{$program_studi->kode_prodi}/mahasiswa/{$nim}");
-				
-				if ($response->getStatusCode() == 200)
+				if ($mahasiswa != NULL)
 				{
-					$body = $response->getBody();
-					$mahasiswa_pddikti = json_decode($body);
-					
-					// cek jika mahasiswa sudah lulus
-					if ($mahasiswa_pddikti[0]->terdaftar->tgl_keluar != '')
-					{
-						$error_type = "MHS_TIDAK_AKTIF";
-						$mahasiswa = new stdClass();
-						$mahasiswa->nim = $mahasiswa_pddikti[0]->terdaftar->nim;
-						$mahasiswa->nama = $mahasiswa_pddikti[0]->nama;
-					}
-					else
-					{
-						// Insert Mahasiswa dari Pddikti
-						$this->mahasiswa_model->insert_from_pddikti($mahasiswa_pddikti[0]);
-						
-						// di query ulang
-						$mahasiswa = $this->mahasiswa_model->get_by_nim($current_pt->npsn, $nim);
-						$mahasiswa->program_studi = $this->program_studi_model->get($mahasiswa->program_studi_id);
-					}
+					// Ubah selected prodi-nya ke prodi yang benar sesuai input nim
+					$_POST['program_studi_id'] = $mahasiswa->program_studi_id;
+
+					// Ambil Informasi Program Studi
+					$mahasiswa->program_studi = $this->program_studi_model->get($mahasiswa->program_studi_id);
 				}
+				else
+				{
+					$error_type = 'MHS_TIDAK_DITEMUKAN';
+				}
+			}
+			catch (Exception $exc)
+			{
+				$error_type = 'MHS_TIDAK_AKTIF';
+				$this->smarty->assign('error_message', $exc->getMessage());
 			}
 			
 			$this->smarty->assignByRef('mahasiswa', $mahasiswa);
