@@ -3,12 +3,21 @@
 /**
  * @author Fathoni <m.fathoni@mail.com>
  * @property CI_DB_query_builder $db
+ * @property int $mahasiswa_id
+ * @property Mahasiswa_model $mahasiswa
  */
 class Anggota_proposal_model extends CI_Model
 {	
 	public function add(stdClass $model)
 	{
-		return $this->db->insert('anggota_proposal', $model);
+		$result = $this->db->insert('anggota_proposal', $model);
+		
+		if ($result)
+		{
+			$model->id = $this->db->last_insert_id();
+		}
+		
+		return $result;
 	}
 	
 	public function is_sudah_terdaftar($mahasiswa_id, $kegiatan_id)
