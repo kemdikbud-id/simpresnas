@@ -3,8 +3,9 @@ use GuzzleHttp\Client;
 
 /**
  * @author Fathoni <m.fathoni@mail.com>
+ * @property CI_Loader $load
  * @property CI_DB_query_builder $db 
- * 
+ * @property Program_studi_model $program_studi_model
  * @property int $id
  * @property int $perguruan_tinggi_id 
  * @property string $nim
@@ -58,6 +59,7 @@ class Mahasiswa_model extends CI_Model
 				]
 			]); 
 
+			$this->load->model(MODEL_PROGRAM_STUDI, 'program_studi_model');
 			$program_studi = $this->program_studi_model->get($program_studi_id);
 			$program_studi->kode_prodi = trim($program_studi->kode_prodi);
 
@@ -69,9 +71,13 @@ class Mahasiswa_model extends CI_Model
 			{
 				$body = $response->getBody();
 				$mahasiswa_pddikti = json_decode($body);
-
+				
+				if ( ! isset($mahasiswa_pddikti[0]))
+				{
+					throw new Exception("Mahasiswa tidak ditemukan");
+				}
 				// cek jika mahasiswa sudah lulus
-				if ($mahasiswa_pddikti[0]->terdaftar->tgl_keluar != '')
+				else if ($mahasiswa_pddikti[0]->terdaftar->tgl_keluar != '')
 				{
 					throw new Exception("Mahasiswa \"{$mahasiswa_pddikti[0]->terdaftar->nim} {$mahasiswa_pddikti[0]->nama}\" sudah tidak aktif / lulus");
 				}
