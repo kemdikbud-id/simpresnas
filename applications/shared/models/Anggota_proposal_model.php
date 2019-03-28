@@ -14,7 +14,7 @@ class Anggota_proposal_model extends CI_Model
 		
 		if ($result)
 		{
-			$model->id = $this->db->last_insert_id();
+			$model->id = $this->db->insert_id();
 		}
 		
 		return $result;
