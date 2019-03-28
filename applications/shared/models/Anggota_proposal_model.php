@@ -20,6 +20,11 @@ class Anggota_proposal_model extends CI_Model
 		return $result;
 	}
 	
+	public function get($id)
+	{
+		return $this->db->get_where('anggota_proposal', ['id' => $id], 1)->row();
+	}
+	
 	public function is_sudah_terdaftar($mahasiswa_id, $kegiatan_id)
 	{
 		$count = $this->db
