@@ -3,6 +3,7 @@
 /**
  * @author Fathoni <m.fathoni@mail.com>
  * @property CI_DB_query_builder $db
+ * @property int $id
  * @property int $mahasiswa_id
  * @property Mahasiswa_model $mahasiswa
  */
