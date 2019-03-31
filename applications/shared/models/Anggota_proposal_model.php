@@ -26,6 +26,11 @@ class Anggota_proposal_model extends CI_Model
 		return $this->db->get_where('anggota_proposal', ['id' => $id], 1)->row();
 	}
 	
+	public function update(stdClass $model)
+	{
+		return $this->db->update('anggota_proposal', $model, ['id' => $model->id]);
+	}
+	
 	public function is_sudah_terdaftar($mahasiswa_id, $kegiatan_id)
 	{
 		$count = $this->db
@@ -50,8 +55,13 @@ class Anggota_proposal_model extends CI_Model
 	public function list_by_proposal($proposal_id)
 	{
 		return $this->db
-			->order_by('no_urut')
-			->get_where('anggota_proposal', ['proposal_id' => $proposal_id])->result();
+			->select('ap.id, ap.mahasiswa_id, m.nim, m.nama, m.program_studi_id, ps.nama as nama_program_studi')
+			->from('anggota_proposal ap')
+			->join('mahasiswa m', 'm.id = ap.mahasiswa_id', 'LEFT')
+			->join('program_studi ps', 'ps.id = m.program_studi_id', 'LEFT')
+			->where('ap.proposal_id', $proposal_id)
+			->order_by('ap.no_urut')
+			->get()->result();
 	}
 	
 	public function delete_by_proposal($proposal_id)
