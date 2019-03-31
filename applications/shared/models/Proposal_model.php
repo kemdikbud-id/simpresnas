@@ -10,6 +10,7 @@
  * @property Anggota_proposal_model $ketua
  * @property File_proposal_model[] $file_proposal_set
  * @property Anggota_proposal_model[] $anggota_proposal_set
+ * @property Dosen_model $dosen
  */
 class Proposal_model extends CI_Model
 {
@@ -203,5 +204,16 @@ class Proposal_model extends CI_Model
 			->where(['proposal.kegiatan_id' => $kegiatan_id, 'is_submited' => 1])
 			->group_by('nama_kategori')
 			->get()->result();
+	}
+	
+	function update_dosen($perguruan_tinggi_id, $proposal_id, $dosen_id)
+	{
+		return $this->db->update('proposal', [
+			'dosen_id' => $dosen_id,
+			'updated_at' => date('Y-m-d H:i:s')
+		], [
+			'perguruan_tinggi_id' => $perguruan_tinggi_id,
+			'id' => $proposal_id
+		]);
 	}
 }
