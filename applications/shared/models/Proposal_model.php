@@ -6,6 +6,8 @@
  * @property int $id
  * @property int $perguruan_tinggi_id
  * @property string $judul
+ * @property int $kegiatan_id
+ * @property Anggota_proposal_model $ketua
  * @property File_proposal_model[] $file_proposal_set
  * @property Anggota_proposal_model[] $anggota_proposal_set
  */
@@ -52,6 +54,21 @@ class Proposal_model extends CI_Model
 		$this->db->where(['id' => $id]);
 		if ($perguruan_tinggi_id != NULL) $this->db->where(['perguruan_tinggi_id' => $perguruan_tinggi_id]);
 		return $this->db->get('proposal', 1)->row();
+	}
+	
+	/**
+	 * @param int $mahasiswa_id
+	 * @return Proposal_model
+	 */
+	public function get_by_ketua($kegiatan_id, $mahasiswa_id)
+	{
+		return $this->db
+			->select('p.*')
+			->from('proposal p')
+			->join('anggota_proposal ap', 'ap.proposal_id = p.id AND ap.no_urut = 1')
+			->where('p.kegiatan_id', $kegiatan_id)
+			->where('ap.mahasiswa_id', $mahasiswa_id)
+			->get()->row();
 	}
 	
 	public function add(stdClass &$model)
