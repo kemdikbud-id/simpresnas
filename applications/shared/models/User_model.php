@@ -3,6 +3,7 @@
 /**
  * @author Fathoni <m.fathoni@mail.com>
  * @property CI_DB_query_builder $db
+ * @property Mahasiswa_model $mahasiswa
  */
 class User_model extends CI_Model
 {
