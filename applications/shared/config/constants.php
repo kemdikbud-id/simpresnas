@@ -28,6 +28,7 @@ define('MODEL_PROPOSAL_WORKSHOP', 'ProposalWorkshop_model');
 define('MODEL_PESERTA_WORKSHOP', 'PesertaWorkshop_model');
 define('MODEL_PROGRAM_STUDI', 'Program_studi_model');
 define('MODEL_MAHASISWA', 'Mahasiswa_model');
+define('MODEL_DOSEN', 'Dosen_model');
 
 // Jenis Program
 define('PROGRAM_PBBT', 1);
