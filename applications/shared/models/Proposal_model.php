@@ -7,6 +7,8 @@
  * @property int $perguruan_tinggi_id
  * @property string $judul
  * @property int $kegiatan_id
+ * @property int $dosen_id
+ * @property string $updated_at
  * @property Anggota_proposal_model $ketua
  * @property File_proposal_model[] $file_proposal_set
  * @property Anggota_proposal_model[] $anggota_proposal_set
