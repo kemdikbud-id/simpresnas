@@ -176,14 +176,11 @@ class Auth extends Frontend_Controller
 	 */
 	public function logout()
 	{
-		if ($_SERVER['REQUEST_METHOD'] == 'POST' or $_SERVER['REQUEST_METHOD'] == 'GET')
-		{
-			$this->session->unset_userdata('user');
-			$this->session->unset_userdata('program_id');
-			
-			// redirect to home
-			redirect(base_url());
-		}
+		$this->session->unset_userdata('user');
+		$this->session->unset_userdata('program_id');
+
+		// redirect to home
+		redirect(base_url());
 	}
 	
 	public function search_pt()
