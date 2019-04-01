@@ -11,6 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property Kegiatan_model $kegiatan_model
  * @property Reviewer_model $reviewer_model 
  * @property Mahasiswa_model $mahasiswa_model 
+ * @property Program_studi_model $program_studi_model
  */
 class Auth extends Frontend_Controller
 {
@@ -28,6 +29,7 @@ class Auth extends Frontend_Controller
 		$this->load->model(MODEL_KEGIATAN, 'kegiatan_model');
 		$this->load->model(MODEL_REVIEWER, 'reviewer_model');
 		$this->load->model(MODEL_MAHASISWA, 'mahasiswa_model');
+		$this->load->model(MODEL_PROGRAM_STUDI, 'program_studi_model');
 	}
 	
 	public function reg()
@@ -109,6 +111,29 @@ class Auth extends Frontend_Controller
 						// Ambil kegiatan yang aktif
 						$kegiatan = $this->kegiatan_model->get_aktif($user->program_id);
 
+						// redirect
+						if ($user->tipe_user == TIPE_USER_NORMAL)
+						{
+							$redirect_to = site_url('home');
+						}
+						else if ($user->tipe_user == TIPE_USER_REVIEWER)
+						{
+							// tambahkan session reviewer
+							$user->reviewer = $this->reviewer_model->get_single($this->session->user->reviewer_id);
+							$redirect_to = base_url() . 'reviewer';
+						}
+						else if ($user->tipe_user == TIPE_USER_MAHASISWA)
+						{
+							// tambahkan session mahasiswa
+							$user->mahasiswa = $this->mahasiswa_model->get($user->mahasiswa_id);
+							$user->mahasiswa->program_studi = $this->program_studi_model->get($user->mahasiswa->program_studi_id);
+							$redirect_to = base_url() . 'mahasiswa';
+						}
+						else if ($user->tipe_user == TIPE_USER_ADMIN)
+						{
+							$redirect_to = base_url() . 'admin';
+						}
+						
 						// Assign data login ke session
 						$this->session->set_userdata('user', $user);
 						$this->session->set_userdata('perguruan_tinggi', $perguruan_tinggi);
@@ -117,30 +142,9 @@ class Auth extends Frontend_Controller
 						
 						// update latest login
 						$this->db->update('user', array('latest_login' => date('Y-m-d H:i:s')), array('id' => $user->id));
-
-						// redirect
-						if ($user->tipe_user == TIPE_USER_NORMAL)
-						{
-							redirect(site_url('home'));  // Home Controller dari applikasi Frontend
-						}
-						else if ($user->tipe_user == TIPE_USER_REVIEWER)
-						{
-							// tambahkan session reviewer
-							$this->session->user->reviewer = $this->reviewer_model->get_single($this->session->user->reviewer_id);
-							redirect(base_url() . 'reviewer');
-						}
-						else if ($user->tipe_user == TIPE_USER_MAHASISWA)
-						{
-							// tambahkan session mahasiswa
-							$this->session->user->mahasiswa = $this->mahasiswa_model->get($this->session->user->mahasiswa_id);
-							redirect(base_url() . 'mahasiswa');
-						}
-						else if ($user->tipe_user == TIPE_USER_ADMIN)
-						{
-							redirect(base_url() . 'admin');
-						}
 						
 						// end output after redirect
+						redirect($redirect_to);
 						exit();
 					}
 					else
