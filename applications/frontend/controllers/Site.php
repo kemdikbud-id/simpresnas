@@ -12,11 +12,21 @@ class Site extends Frontend_Controller
 		if ($this->session->userdata('user') !== NULL)
 		{
 			if ($this->session->userdata('user')->tipe_user == TIPE_USER_ADMIN)
+			{
 				redirect(GLOBAL_BASE_URL . '/admin/');
+			}
 			else if ($this->session->userdata('user')->tipe_user == TIPE_USER_REVIEWER)
+			{
 				redirect(GLOBAL_BASE_URL . '/reviewer/');
+			}
+			else if ($this->session->userdata('user')->tipe_user == TIPE_USER_MAHASISWA)
+			{
+				redirect(GLOBAL_BASE_URL . '/mahasiswa/');
+			}
 			else
+			{
 				redirect('home');
+			}
 		}
 		
 		$this->smarty->display();
