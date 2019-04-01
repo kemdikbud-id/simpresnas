@@ -65,7 +65,14 @@ class Smarty_wrapper extends Smarty
 		}
 		else
 		{
-			parent::display($template, $cache_id, $compile_id, $parent);
+			try
+			{
+				parent::display($template, $cache_id, $compile_id, $parent);
+			} 
+			catch (SmartyException $ex)
+			{
+				show_error($ex->getMessage());
+			}
 		}
 	}
 	
