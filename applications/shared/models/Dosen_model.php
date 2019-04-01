@@ -13,6 +13,15 @@ use GuzzleHttp\Client;
 class Dosen_model extends CI_Model
 {
 	/**
+	 * @param int $id
+	 * @return Dosen_model
+	 */
+	public function get($id)
+	{
+		return $this->db->get_where('dosen', ['id' => $id], 1)->row();
+	}
+	
+	/**
 	 * @param string $npsn
 	 * @param int $program_studi_id
 	 * @param string $nidn
