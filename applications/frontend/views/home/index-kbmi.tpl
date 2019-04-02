@@ -6,18 +6,17 @@
 			<div class="panel panel-default">
 				<div class="panel-body">
 					<p>
-						Sebelum melakukan upload proposal pastikan :
+						Perubahan program KBMI tahun 2019:
 					</p>
 					<ul>
-						<li>Persiapkan semua syarat agar proses upload lebih cepat</li>
-						<li>Proposal sudah lengkap mulai dari awal hingga akhir</li>
-						<li>File proposal dan syarat sudah harus berbentuk file PDF</li>
-						<li>Apabila ada pertanyaan silahkan tanya ke helpdesk</li>
+						<li>Operator Perguruan Tinggi hanya perlu membuatkan login untuk mahasiswa melalui halaman Usulan Proposal</li>
+						<li>Mahasiswa akan melengkapi secara mandiri isian proposal</li>
+						<li>Mahasiswa diwajibkan mengupload lembar pengesahan yang sudah di tanda tangani dan di cap resmi</li>
 					</ul>
 				</div>
 			</div>
 			<p>
-				<a href="{site_url('proposal')}" class="btn btn-primary">Usulan Proposal</a>
+				<a href="{site_url('proposal-kbmi')}" class="btn btn-primary">Usulan Proposal</a>
 			</p>
 		</div>
 	</div>
