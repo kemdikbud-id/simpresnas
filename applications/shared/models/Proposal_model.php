@@ -218,4 +218,32 @@ class Proposal_model extends CI_Model
 			'id' => $proposal_id
 		]);
 	}
+	
+	function get_isian_proposal($proposal_id, $isian_ke)
+	{
+		$isian_proposal = $this->db->get_where('isian_proposal', ['proposal_id' => $proposal_id, 'isian_ke' => $isian_ke], 1)->row();
+		
+		if ($isian_proposal == NULL)
+		{
+			$this->db->insert('isian_proposal', [
+				'proposal_id' => $proposal_id,
+				'isian_ke' => $isian_ke,
+				'created_at' => date('Y-m-d H:i:s')
+			]);
+			
+			$isian_proposal = $this->db->get_where('isian_proposal', ['proposal_id' => $proposal_id, 'isian_ke' => $isian_ke], 1)->row();
+		}
+		
+		return $isian_proposal;
+	}
+	
+	function update_isian_proposal($proposal_id, $isian_ke, $isian)
+	{
+		$isian = strlen(trim($isian)) == 0 ? NULL : $isian;
+		
+		return $this->db->update('isian_proposal', [
+			'isian' => $isian,
+			'updated_at' => date('Y-m-d H:i:s')
+		], ['proposal_id' => $proposal_id, 'isian_ke' => $isian_ke]);
+	}
 }
