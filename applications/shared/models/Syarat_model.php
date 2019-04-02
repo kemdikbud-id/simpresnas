@@ -4,16 +4,36 @@
  * @author Fathoni <m.fathoni@mail.com>
  * @property CI_DB_query_builder $db
  * @property CI_Input $input
+ * @property int $id
+ * @property int $kegiatan_id
+ * @property string $syarat
+ * @property string $keterangan
+ * @property bool $is_wajib
+ * @property int $urutan
+ * @property bool $is_aktif
  */
 class Syarat_model extends CI_Model
 {
-	public function list_by_kegiatan($kegiatan_id)
+	/**
+	 * @param int $kegiatan_id
+	 * @return Syarat_model[]
+	 */
+	public function list_by_kegiatan($kegiatan_id, $proposal_id = 0)
 	{
-		return $this->db
-			->from('syarat')
-			->where(['kegiatan_id' => $kegiatan_id])
-			->order_by('urutan')
-			->get()->result();
+		if ($proposal_id != 0)
+		{
+			return $this->db
+				->select('s.id, s.syarat, s.keterangan, s.is_wajib, s.allowed_types, s.max_size, s.is_aktif')
+				->select('fp.id as file_proposal_id, fp.nama_file, fp.nama_asli')
+				->from('syarat s')->join('file_proposal fp', 'fp.syarat_id = s.id AND fp.proposal_id = '.$proposal_id, 'LEFT')
+				->where(['s.kegiatan_id' => $kegiatan_id])->order_by('urutan')
+				->get()->result();
+		}
+		else
+		{
+			return $this->db->from('syarat')->where(['kegiatan_id' => $kegiatan_id])->order_by('urutan')->get()->result();
+		}
+		
 	}
 	
 	public function is_deletable($id)
