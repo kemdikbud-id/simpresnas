@@ -10,7 +10,7 @@
  * @property Anggota_proposal_model $anggota_model
  * @property Syarat_model $syarat_model
  */
-class KBMI extends Mahasiswa_Controller
+class Kbmi extends Mahasiswa_Controller
 {
 	public function __construct()
 	{
