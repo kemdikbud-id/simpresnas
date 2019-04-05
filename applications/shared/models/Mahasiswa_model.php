@@ -10,12 +10,18 @@ use GuzzleHttp\Client;
  * @property int $perguruan_tinggi_id 
  * @property string $nim
  * @property string $nama
+ * @property string $email
+ * @property string $no_hp
  * @property int $program_studi_id
  * @property Program_studi_model $program_studi 
  * @property GuzzleHttp\Client $client
  */
 class Mahasiswa_model extends CI_Model
 {
+	/**
+	 * @param int $id
+	 * @return Mahasiswa_model
+	 */
 	function get($id)
 	{
 		return $this->db->get_where('mahasiswa', ['id' => $id])->row();
