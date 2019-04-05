@@ -166,6 +166,29 @@ class Proposal_KBMI extends Frontend_Controller
 		$mahasiswa = $this->mahasiswa_model->get($anggota->mahasiswa_id);
 		$mahasiswa->program_studi = $this->program_studi_model->get($mahasiswa->program_studi_id);
 		
+		if ($this->input->method() == 'post')
+		{
+			$proposal->judul = $this->input->post('judul');
+			$proposal->updated_at = date('Y-m-d H:i:s');
+			$this->proposal_model->update($proposal->id, $proposal);
+			
+			$mahasiswa->email = $this->input->post('email');
+			$mahasiswa->no_hp = $this->input->post('no_hp');
+			$mahasiswa->updated_at = date('Y-m-d H:i:s');
+			$this->mahasiswa_model->update($mahasiswa);
+			
+			$this->session->set_flashdata('result', [
+				'page_title' => 'Edit Proposal',
+				'message' => 'Berhasil di update',
+				'link_1' => anchor('proposal-kbmi/update/' . $proposal_id, 'Kembali'),
+				'link_2' => anchor('proposal-kbmi/index/', 'Kembali ke Daftar Proposal')
+			]);
+				
+			redirect('alert/success');
+				
+			exit();
+		}
+		
 		$this->smarty->assign('proposal', $proposal);
 		$this->smarty->assign('mahasiswa', $mahasiswa);
 		$this->smarty->display();
