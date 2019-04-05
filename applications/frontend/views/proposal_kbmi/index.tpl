@@ -3,6 +3,7 @@
 	<link rel="stylesheet" href="{base_url('../assets/css/dataTables.bootstrap.min.css')}" />
 	<style type="text/css">
 		.table { font-size: 14px; }
+		.table > tbody > tr > td:last-child { width: 1%; white-space: nowrap; }
 		td > p { margin-bottom: 0 }
 		p.judul { font-weight: bold; }
 		p.sub-judul { font-size: 12px; }
@@ -20,7 +21,7 @@
 						<th>Usulan</th>
 						<th>Kelengkapan Isian</th>
 						<th>Status</th>
-						<th style="width: 160px">Aksi</th>
+						<th>Aksi</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -47,7 +48,7 @@
 								</form>
 								<a href="{site_url('proposal-kbmi/update')}/{$data->id}" class="btn btn-xs btn-success">Edit</a>
 								{if $data->is_submited == FALSE}{* Hanya bisa didelete sebelum di submit *}
-								<a href="{site_url('proposal-kbmi/delete')}/{$data->id}" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
+								<a href="{site_url('proposal-kbmi/delete')}/{$data->id}" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i></a>
 								{else}
 								<a href="{site_url('proposal-kbmi/cancel-submit')}/{$data->id}" class="btn btn-xs btn-default" style="margin-top: 5px">Batalkan Submit</a>
 								{/if}
