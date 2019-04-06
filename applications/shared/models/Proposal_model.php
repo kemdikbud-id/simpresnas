@@ -74,18 +74,32 @@ class Proposal_model extends CI_Model
 			->get()->row();
 	}
 	
-	public function add(stdClass &$model)
+	/**
+	 * @param Proposal_model $model
+	 * @return bool
+	 */
+	public function add(&$model)
 	{
 		$result = $this->db->insert('proposal', $model);
 		$model->id = $this->db->insert_id();
 		return $result;
 	}
 	
-	public function update($id, stdClass $model)
+	/**
+	 * @param int $id
+	 * @param Proposal_model $model
+	 * @return bool
+	 */
+	public function update($id, $model)
 	{
 		return $this->db->update('proposal', $model, ['id' => $id]);
 	}
 	
+	/**
+	 * @param int $id
+	 * @param int $perguruan_tinggi_id
+	 * @return bool
+	 */
 	public function delete($id, $perguruan_tinggi_id = NULL)
 	{
 		if ($perguruan_tinggi_id != NULL)
@@ -95,6 +109,8 @@ class Proposal_model extends CI_Model
 				'perguruan_tinggi_id' => $perguruan_tinggi_id
 			), 1);
 		}
+
+		return FALSE;
 	}
 	
 	/**

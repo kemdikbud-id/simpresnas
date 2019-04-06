@@ -27,7 +27,10 @@ class Mahasiswa_model extends CI_Model
 		return $this->db->get_where('mahasiswa', ['id' => $id])->row();
 	}
 	
-	function update(stdClass $model)
+	/**
+	 * @param Mahasiswa_model $model
+	 */
+	function update($model)
 	{
 		return $this->db->update('mahasiswa', $model, ['id' => $model->id]);
 	}
