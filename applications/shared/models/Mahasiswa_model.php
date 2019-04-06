@@ -65,7 +65,8 @@ class Mahasiswa_model extends CI_Model
 				'headers' => [
 					'Accept' => 'application/json',
 					'Authorization' => 'Bearer ' . $pddikti_auth
-				]
+				],
+				'verify' => FALSE	// Disable CA Verification !
 			]); 
 
 			$this->load->model(MODEL_PROGRAM_STUDI, 'program_studi_model');
