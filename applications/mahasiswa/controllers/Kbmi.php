@@ -214,7 +214,11 @@ class Kbmi extends Mahasiswa_Controller
 		$this->smarty->display();
 	}
 	
-	private function _step($step, Proposal_model $proposal)
+	/**
+	 * @param int $step
+	 * @param Proposal_model $proposal
+	 */
+	private function _step($step, $proposal)
 	{
 		if ($step == 0)
 		{
