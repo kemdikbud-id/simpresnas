@@ -104,10 +104,14 @@ class Proposal_model extends CI_Model
 	{
 		if ($perguruan_tinggi_id != NULL)
 		{
-			return $this->db->delete('proposal', array(
+			$delete1 = $this->db->delete('isian_proposal', ['proposal_id' => $id]);
+			
+			$delete2 = $this->db->delete('proposal', array(
 				'id' => $id,
 				'perguruan_tinggi_id' => $perguruan_tinggi_id
 			), 1);
+			
+			return $delete1 && $delete2;
 		}
 
 		return FALSE;

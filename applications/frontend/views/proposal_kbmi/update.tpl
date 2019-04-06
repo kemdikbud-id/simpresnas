@@ -3,11 +3,12 @@
 	<h2 class="page-header">Edit Proposal</h2>
 	<div class="row">
 		<div class="col-lg-12">
-			
+
 			<form action="{current_url()}" method="post" class="form-horizontal">
 				<input type="hidden" name="proposal_id" value="{$proposal->id}" />
 				<input type="hidden" name="mahasiswa_id" value="{$mahasiswa->id}" />
 				<fieldset>
+					<legend>Identitas</legend>
 
 					<div class="form-group">
 						<label class="col-lg-2 control-label">Nama</label>
@@ -50,8 +51,26 @@
 					</div>
 
 				</fieldset>
+				<fieldset>
+					<legend>Login</legend>
+					
+					<div class="form-group">
+						<label class="col-lg-2 control-label">Username</label>
+						<div class="col-lg-3">
+							<input type="text" class="form-control" readonly value="{$user_mahasiswa->username}" />
+						</div>
+					</div>
+						
+					<div class="form-group">
+						<label class="col-lg-2 control-label">Password</label>
+						<div class="col-lg-3">
+							<input type="text" class="form-control" readonly value="{$user_mahasiswa->password}" />
+						</div>
+					</div>
+					
+				</fieldset>
 			</form>
-			
+
 		</div>
 	</div>
 {/block}

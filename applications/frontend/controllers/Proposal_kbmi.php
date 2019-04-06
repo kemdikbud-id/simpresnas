@@ -165,6 +165,7 @@ class Proposal_KBMI extends Frontend_Controller
 		$anggota = $this->anggota_model->get_ketua($proposal_id);
 		$mahasiswa = $this->mahasiswa_model->get($anggota->mahasiswa_id);
 		$mahasiswa->program_studi = $this->program_studi_model->get($mahasiswa->program_studi_id);
+		$user_mahasiswa = $this->user_model->get_single_by_mahasiswa($mahasiswa->id);
 		
 		if ($this->input->method() == 'post')
 		{
@@ -191,6 +192,7 @@ class Proposal_KBMI extends Frontend_Controller
 		
 		$this->smarty->assign('proposal', $proposal);
 		$this->smarty->assign('mahasiswa', $mahasiswa);
+		$this->smarty->assign('user_mahasiswa', $user_mahasiswa);
 		$this->smarty->display();
 	}
 	

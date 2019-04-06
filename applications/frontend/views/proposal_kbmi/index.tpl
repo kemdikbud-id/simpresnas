@@ -47,10 +47,10 @@
 									<input type="hidden" name="mahasiswa_id" value="{$data->mahasiswa_id}" />
 								</form>
 								<a href="{site_url('proposal-kbmi/update')}/{$data->id}" class="btn btn-xs btn-success">Edit</a>
-								{if $data->is_submited == FALSE}{* Hanya bisa didelete sebelum di submit *}
-								<a href="{site_url('proposal-kbmi/delete')}/{$data->id}" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i></a>
-								{else}
-								<a href="{site_url('proposal-kbmi/cancel-submit')}/{$data->id}" class="btn btn-xs btn-default" style="margin-top: 5px">Batalkan Submit</a>
+								{if $data->is_submited == FALSE}
+									<a href="{site_url('proposal-kbmi/delete')}/{$data->id}" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i></a>
+									{else}
+									<a href="{site_url('proposal-kbmi/cancel-submit')}/{$data->id}" class="btn btn-xs btn-default" style="margin-top: 5px">Batalkan Submit</a>
 								{/if}
 							</td>
 						</tr>
@@ -72,6 +72,8 @@
 					</tr>
 				</tfoot>
 			</table>
+
+			<p style="font-size: small">* Login mahasiswa bisa dilihat di menu Edit apabila email tidak terkirim melalui menu Kirim Login.</p>
 
 		</div>
 	</div>
