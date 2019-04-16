@@ -99,7 +99,7 @@
 	<script src="{base_url('../assets/js/dataTables.bootstrap.min.js')}"></script>
 	<script type="text/javascript">
 		
-		$('#table').DataTable();
+		$('#table').DataTable({ stateSave: true });
 		$('#table').show();
 		
 		$('#resetDialog').on('show.bs.modal', function (event) {
