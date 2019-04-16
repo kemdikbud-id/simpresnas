@@ -86,7 +86,8 @@
 				{if $error_type == 'MHS_TIDAK_DITEMUKAN'}
 					<div class="alert alert-warning alert-dismissible">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<p>Mahasiswa tidak ditemukan. Silahkan ulangi pencarian</p>
+						<p>Mahasiswa tidak ditemukan di sistem maupun di PDDIKTI. Silahkan ulangi pencarian.</p>
+						<p>Untuk memastikan mahasiswa terdaftar di PDDIKTI buka laman <a href="https://forlap.ristekdikti.go.id/mahasiswa" target="_blank">https://forlap.ristekdikti.go.id/mahasiswa</a></p>
 					</div>
 				{/if}
 				{if $error_type == 'MHS_TIDAK_AKTIF'}
