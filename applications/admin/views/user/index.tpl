@@ -1,7 +1,10 @@
 {extends file='site_layout.tpl'}
 {block name='head'}
 	<link rel="stylesheet" href="{base_url('../assets/css/dataTables.bootstrap.min.css')}" />
-	<style>.table>thead>tr>th, .table>tbody>tr>td { font-size: 13px }</style>
+	<style>
+		.table>thead>tr>th, .table>tbody>tr>td { font-size: 13px }
+		.table>tbody>tr>td:last-child { width: 1%; white-space: nowrap; }
+	</style>
 {/block}
 {block name='content'}
 	<h2 class="page-header">Daftar User</h2>
@@ -15,7 +18,8 @@
 						<th>Password</th>
 						<th>Perguruan Tinggi</th>
 						<th>Program</th>
-						<th style="width: 165px"></th>
+						<th>Email</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -25,6 +29,7 @@
 							<td>{$data->password}</td>
 							<td>{$data->nama_pt}</td>
 							<td>{$data->nama_program_singkat}</td>
+							<td><code>{$data->email}</code></td>
 							<td>
 								<a href="{site_url("user/update/{$data->id}")}" class="btn btn-xs btn-default">Edit</a>
 								<a class="btn btn-xs btn-danger" 
