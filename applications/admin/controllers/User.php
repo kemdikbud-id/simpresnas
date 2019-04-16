@@ -161,7 +161,7 @@ class User extends Admin_Controller
 
 				// Kirim Email
 
-				$this->email->from('no-reply@sim-pkmi.ristekdikti.go.id', 'SIM-PKMI Ristekdikti');
+				$this->email->from('no-reply@ristekdikti.go.id', 'SIM-PKMI Ristekdikti');
 				$this->email->to($data->email);
 				$this->email->subject('Informasi Akun SIM-PKMI');
 				$this->email->message($body);
@@ -202,7 +202,7 @@ class User extends Admin_Controller
 			$this->request_user_model->reject($id, $reject_message);
 			
 			// Kirim email
-			$this->email->from('no-reply@sim-pkmi.ristekdikti.go.id', 'SIM-PKMI Ristekdikti');
+			$this->email->from('no-reply@ristekdikti.go.id', 'SIM-PKMI Ristekdikti');
 			$this->email->to($data->email);
 			$this->email->subject('Registrasi User SIM PKMI Tidak Disetujui '. date('H:i:s d/m/Y'));
 			$this->smarty->assign('message', $reject_message);
@@ -246,7 +246,7 @@ class User extends Admin_Controller
 			$body = $this->smarty->fetch("email/user_reset_password.tpl");
 			
 			// Kirim Email
-			$this->email->from('no-reply@sim-pkmi.ristekdikti.go.id', 'SIM-PKMI Ristekdikti');
+			$this->email->from('no-reply@ristekdikti.go.id', 'SIM-PKMI Ristekdikti');
 			$this->email->to($user->email);
 			$this->email->subject('Reset Password Berhasil - SIM-PKMI');
 			$this->email->message($body);
@@ -276,7 +276,7 @@ class User extends Admin_Controller
 			$body = $this->smarty->fetch("email/user_resend_login.tpl");
 			
 			// Kirim Email
-			$this->email->from('no-reply@sim-pkmi.ristekdikti.go.id', 'SIM-PKMI Ristekdikti');
+			$this->email->from('no-reply@ristekdikti.go.id', 'SIM-PKMI Ristekdikti');
 			$this->email->to($user->email);
 			$this->email->subject('Informasi Login - SIM-PKMI');
 			$this->email->message($body);
