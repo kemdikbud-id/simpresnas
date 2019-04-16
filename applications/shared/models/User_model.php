@@ -103,4 +103,16 @@ class User_model extends CI_Model
 			'updated_at'	=> date('Y-m-d H:i:s')
 		), ['id' => $user_id], 1);
 	}
+	
+	/**
+	 * @param User_model $user
+	 * @return bool
+	 */
+	public function change_email($user)
+	{
+		return $this->db->update('user', [
+			'email' => $user->email,
+			'updated_at' => date('Y-m-d H:i:s')
+		], ['id' => $user->id], 1);
+	}
 }
