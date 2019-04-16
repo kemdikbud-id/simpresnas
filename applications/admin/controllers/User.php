@@ -44,7 +44,20 @@ class User extends Admin_Controller
 	}
 	
 	public function update($id)
-	{		
+	{	
+		$user = $this->user_model->get_single($id);
+		
+		if ($this->input->method() == 'post')
+		{
+			$user->email = $this->input->post('email');
+			$result = $this->user_model->change_email($user);
+			$this->smarty->assign('result', $result);
+		}
+		
+		$user->program = $this->program_model->get_single($user->program_id);
+		$user->perguruan_tinggi = $this->pt_model->get_single($user->perguruan_tinggi_id);
+		
+		$this->smarty->assign('user', $user);
 		$this->smarty->display();
 	}
 	
