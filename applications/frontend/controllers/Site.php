@@ -40,6 +40,11 @@ class Site extends Frontend_Controller
 		$this->smarty->display();
 	}
 	
+	public function alur_kbmi_2019()
+	{
+		$this->smarty->display();
+	}
+	
 	public function test_send_mail()
 	{
 		$this->load->library('email');  // configuration file : applications/user/config/email.php
