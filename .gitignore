@@ -41,6 +41,9 @@ applications/sessions/*
 !applications/sessions/index.html
 applications/*/views_compiled/*
 !applications/*/views_compiled/index.html
+applications/frontend/views/site/index_jumbotron.tpl
+applications/frontend/views/site/index_pengumuman.tpl
+applications/frontend/views/site/index_content.tpl
 assets/js/jquery-validation-*/
 assets/js/*.zip
 assets/captcha/*
@@ -51,5 +54,6 @@ db-dump/
 # Upload File
 upload/
 
+# Download / Untrackted files
 download/buku-profil*
 download/
