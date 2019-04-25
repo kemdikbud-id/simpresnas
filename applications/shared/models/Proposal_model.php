@@ -38,13 +38,15 @@ class Proposal_model extends CI_Model
 	public function list_by_perguruan_tinggi($perguruan_tinggi_id, $kegiatan_id)
 	{
 		return $this->db
-			->select('p.id, p.judul, ap.mahasiswa_id, m.nim, m.nama, ps.nama as nama_program_studi, d.nama as nama_dosen, p.is_submited')
+			->select('p.id, p.judul, ap.mahasiswa_id, m.nim, m.nama, ps.nama as nama_program_studi, d.nama as nama_dosen, p.is_submited, count(ip.id) as jumlah_isian')
 			->from('proposal p')
 			->join('anggota_proposal ap', 'ap.proposal_id = p.id AND ap.no_urut = 1') // Ketua di No Urut 1
 			->join('mahasiswa m', 'm.id = ap.mahasiswa_id')
 			->join('program_studi ps', 'ps.id = m.program_studi_id')
 			->join('dosen d', 'd.id = p.dosen_id', 'LEFT')
+			->join('isian_proposal ip', 'ip.proposal_id = p.id AND ip.isian_ke > 0', 'LEFT')
 			->where(['p.perguruan_tinggi_id' => $perguruan_tinggi_id, 'kegiatan_id' => $kegiatan_id])
+			->group_by('p.id, p.judul, ap.mahasiswa_id, m.nim, m.nama, ps.nama, d.nama, p.is_submited')
 			->get()->result();
 	}
 	
