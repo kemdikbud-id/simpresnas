@@ -34,6 +34,11 @@ class Proposal_KBMI extends Frontend_Controller
 		$kegiatan_aktif = $this->kegiatan_model->get_aktif(PROGRAM_KBMI);
 		$data_set = $this->proposal_model->list_by_perguruan_tinggi($current_pt->id, $kegiatan_aktif->id);
 		
+		foreach ($data_set as &$data)
+		{
+			$data->jumlah_isian = $data->jumlah_isian . ' dari 31'; // Khusus tahun 2019
+		}
+		
 		$this->smarty->assign('kegiatan', $kegiatan_aktif);
 		$this->smarty->assign('data_set', $data_set);
 		$this->smarty->display();
@@ -258,5 +263,17 @@ class Proposal_KBMI extends Frontend_Controller
 		$proposal = $this->proposal_model->get_single($proposal_id);
 		$this->smarty->assign('proposal', $proposal);
 		$this->smarty->display();
+	}
+	
+	public function cancel_submit($proposal_id)
+	{
+		$proposal = $this->proposal_model->get_single($proposal_id);
+		
+		$proposal->is_submited = 0;
+		$proposal->updated_at = date('Y-m-d H:i:s');
+		
+		$this->proposal_model->update($proposal->id, $proposal);
+		
+		redirect('proposal-kbmi/index');
 	}
 }

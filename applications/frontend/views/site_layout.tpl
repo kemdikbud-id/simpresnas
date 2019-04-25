@@ -7,7 +7,6 @@
 		<title>SIM-PKMI Program Kewirausahaan Mahasiswa Indonesia</title>
 		{if ENVIRONMENT == 'development'}
 			<link href="{base_url('assets/css/bootstrap.min.css')}" rel="stylesheet"/>
-			<link href="https://fonts.googleapis.com/css?family=Oswald|Comfortaa|Nunito+Sans:400,700" rel="stylesheet">
 		{/if}
 		{if ENVIRONMENT == 'production'}
 			<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -38,7 +37,7 @@
 				<div id="navbar" class="collapse navbar-collapse">
 					{if $ci->session->user}
 						<ul class="nav navbar-nav">
-							{if $ci->session->program_id == PROGRAM_PBBT or $ci->session->program_id == PROGRAM_KBMI}
+							{if $ci->session->program_id == PROGRAM_KBMI}
 							{*
 							Ini untuk link pengusulan proposal Tahun 2017, 2018
 							<li>
@@ -49,7 +48,7 @@
 								</ul>
 							</li>
 							*}
-							<li><a href="{site_url('proposal-kbmi')}">Proposal {if $ci->session->program_id == 1}PBBT{else}KBMI{/if}</a></li>
+							<li><a href="{site_url('proposal-kbmi')}">Proposal KBMI</a></li>
 							{/if}
 							{if $ci->session->program_id == PROGRAM_EXPO}
 							<li>

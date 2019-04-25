@@ -33,7 +33,7 @@
 								<p class="sub-judul">{$data->nama} - {$data->nim} - {$data->nama_program_studi}</p>
 								<p class="sub-judul">Pembimbing: {$data->nama_dosen}</p>
 							</td>
-							<td class="text-center">0%</td>
+							<td class="text-center">{$data->jumlah_isian}</td>
 							<td class="text-center">
 								{if $data->is_submited == FALSE}
 									<label class="label label-default">Pengisian Form</label>
@@ -47,9 +47,9 @@
 									<input type="hidden" name="mahasiswa_id" value="{$data->mahasiswa_id}" />
 								</form>
 								<a href="{site_url('proposal-kbmi/update')}/{$data->id}" class="btn btn-xs btn-success">Edit</a>
-								{if $data->is_submited == FALSE}
+								{if $data->is_submited == 0}{* Jika belum disubmit, bisa dihapus *}
 									<a href="{site_url('proposal-kbmi/delete')}/{$data->id}" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i></a>
-									{else}
+								{else $data->is_reviewed == 0}{* Jika belum di review, bisa dibatalkan *}
 									<a href="{site_url('proposal-kbmi/cancel-submit')}/{$data->id}" class="btn btn-xs btn-default" style="margin-top: 5px">Batalkan Submit</a>
 								{/if}
 							</td>
