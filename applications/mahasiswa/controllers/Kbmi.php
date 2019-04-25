@@ -12,6 +12,9 @@
  */
 class Kbmi extends Mahasiswa_Controller
 {
+	const CAPTCHA_TIMEOUT = 120;
+	const CAPTCHA_LENGTH = 8;
+	
 	public function __construct()
 	{
 		parent::__construct();
@@ -42,10 +45,14 @@ class Kbmi extends Mahasiswa_Controller
 		// Tombol Berikutnya di klik
 		if ($this->input->method() == 'post')
 		{
-			// Update Judul saja
-			$proposal->judul = trim($this->input->post('judul'));
-			$proposal->updated_at = date('Y-m-d H:i:s');
-			$this->proposal_model->update($proposal->id, $proposal);
+			// Update jika belum di submit
+			if (!$proposal->is_submited)
+			{
+				// Update Judul saja
+				$proposal->judul = trim($this->input->post('judul'));
+				$proposal->updated_at = date('Y-m-d H:i:s');
+				$this->proposal_model->update($proposal->id, $proposal);
+			}
 			
 			redirect('kbmi/step/0');
 			exit();
@@ -180,7 +187,6 @@ class Kbmi extends Mahasiswa_Controller
 		if (in_array($step, [1, 2, 3, 4, 5]))
 		{
 			$this->smarty->assign('heading', 'Noble Purpose');
-			
 		}
 		
 		if (in_array($step, [6, 7, 8, 9, 10, 11, 12]))
@@ -211,6 +217,7 @@ class Kbmi extends Mahasiswa_Controller
 		$this->smarty->assign('isian_proposal', $this->proposal_model->get_isian_proposal($proposal->id, $step));
 
 		$this->smarty->assign('step', $step);
+		$this->smarty->assign('proposal', $proposal);
 		$this->smarty->display();
 	}
 	
@@ -237,7 +244,11 @@ class Kbmi extends Mahasiswa_Controller
 		// Bab Noble Purpose, Sasaran Pelanggan
 		if ($step >= 1 && $step <= 31)
 		{
-			$this->proposal_model->update_isian_proposal($proposal->id, $step, $this->input->post('isian'));
+			// Data proposal diupdate jika belum disubmit
+			if (!$proposal->is_submited)
+			{
+				$this->proposal_model->update_isian_proposal($proposal->id, $step, $this->input->post('isian'));
+			}
 			
 			if ($this->input->post('tombol') == 'Sebelumnya')
 			{
@@ -264,6 +275,11 @@ class Kbmi extends Mahasiswa_Controller
 		if ($this->input->post('tombol') == 'Sebelumnya')
 		{
 			redirect("kbmi/step/31"); exit();
+		}
+		
+		if ($this->input->post('tombol') == 'Berikutnya')
+		{
+			redirect("kbmi/confirm"); exit();
 		}
 		
 		$kegiatan = $this->kegiatan_model->get_aktif(PROGRAM_KBMI);
@@ -293,7 +309,7 @@ class Kbmi extends Mahasiswa_Controller
 				if ($this->upload->do_upload('file_syarat_' . $syarat->id))
 				{
 					$data = $this->upload->data();
-				
+					
 					$file_row_exist = $this->db->where(array(
 						'proposal_id' => $proposal->id,
 						'syarat_id' => $syarat->id
@@ -307,7 +323,7 @@ class Kbmi extends Mahasiswa_Controller
 							'nama_file' => $data['file_name']
 						), array('proposal_id' => $proposal->id, 'syarat_id' => $syarat->id));
 					}
-					else // update
+					else // insert
 					{
 						$this->db->insert('file_proposal', array(
 							'proposal_id' => $proposal->id,
@@ -329,9 +345,127 @@ class Kbmi extends Mahasiswa_Controller
 					}
 				}
 			}
+			
+			redirect('kbmi/upload');
+			exit();
 		}
 
 		$this->smarty->assign('syarat_set', $syarat_set);
+		$this->smarty->assign('proposal', $proposal);
+		$this->smarty->display();
+	}
+	
+	public function confirm()
+	{
+		$kegiatan = $this->kegiatan_model->get_aktif(PROGRAM_KBMI);
+		$proposal = $this->proposal_model->get_by_ketua($kegiatan->id, $this->session->user->mahasiswa_id);
+		$kelengkapan = $this->proposal_model->get_kelengkapan_proposal($proposal->id);
+		
+		// Jika sudah submit, redirect ke halaman submit
+		if ($proposal->is_submited)
+		{
+			redirect('kbmi/submited'); exit();
+		}
+		
+		// Tombol Sebelumnya ke halaman upload
+		if ($this->input->post('tombol') == 'Sebelumnya')
+		{
+			redirect("kbmi/upload"); exit();
+		}
+		
+		// Tombol Submit Proposal
+		if ($this->input->post('tombol') == 'Submit Proposal')
+		{
+			$expiration = time() - $this::CAPTCHA_TIMEOUT;
+			
+			// Hapus file captcha lama yang expired
+			$captcha_set = $this->db
+				->where('length(word)', $this::CAPTCHA_LENGTH)
+				->where('captcha_time < ', $expiration)
+				->get('captcha')->result();
+			foreach ($captcha_set as $captcha_row)
+				@unlink('./assets/captcha/'.$captcha_row->filename);
+			// Hapus record db
+			$this->db
+				->where('length(word)', $this::CAPTCHA_LENGTH)
+				->where('captcha_time < ', $expiration)
+				->delete('captcha');
+			
+			// ambil data captcha
+			$captcha_count = $this->db->query(
+				"SELECT COUNT(*) AS count FROM captcha WHERE word = ? AND ip_address = ? AND captcha_time > ?",
+				[$this->input->post('captcha'), $this->input->ip_address(), $expiration])
+				->row()->count;
+			
+			// Jika captcha match
+			if ($captcha_count > 0)
+			{				
+				// Proses submit proposal
+				$this->proposal_model->submit($proposal->id);
+				
+				redirect('kbmi/submited');
+				exit();
+			}
+			else
+			{
+				$this->smarty->assign('error_message', 'Kode keamanan tidak sesuai. Silahkan ulangi.');
+			}
+		}
+		
+		$this->smarty->assign('kelengkapan', $kelengkapan);
+		$this->smarty->assign('img_captcha', $this->get_captcha());
+		$this->smarty->display();
+	}
+	
+	public function get_captcha()
+	{		
+		$this->load->helper('captcha');
+			
+		// Captcha Parameter
+		$captcha_params = [
+			'img_path'		=> FCPATH . 'assets/captcha/',
+			'img_url'		=> base_url('../assets/captcha/'),
+			'font_path'		=> FCPATH . 'assets/fonts/OpenSans-Semibold.ttf',
+			'img_width'     => 300,
+			'img_height'    => 60,
+			'expiration'    => $this::CAPTCHA_TIMEOUT,
+			'word_length'   => $this::CAPTCHA_LENGTH,
+			'font_size'     => 28,
+			'pool'          => '0123456789abcdefghijklmnopqrstuvwxyz',
+			'img_id'		=> time(),
+
+			// White background and border, black text and red grid
+			'colors'        => [
+				'background'	=> [255, 255, 255],
+				'border'		=> [0, 0, 0],
+				'text'			=> [0, 0, 0],
+				'grid'			=> [rand(0, 255), rand(0, 255), rand(0, 255)]
+			]
+		];
+		
+		$captcha = create_captcha($captcha_params);
+		
+		if ($captcha)
+		{
+			$data = [
+				'captcha_time'  => $captcha['time'],
+				'ip_address'    => $this->input->ip_address(),
+				'word'          => $captcha['word'],
+				'filename'		=> $captcha['filename']
+			];
+
+			$this->db->insert('captcha', $data);
+
+			return $captcha['image'];
+		}
+		else
+		{
+			return 'Captcha Error: GD Extension / Image Path Not Writeable';
+		}
+	}
+	
+	public function submited()
+	{
 		$this->smarty->display();
 	}
 }

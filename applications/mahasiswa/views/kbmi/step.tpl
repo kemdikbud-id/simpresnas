@@ -373,6 +373,14 @@
 						</div>
 					</div>
 					
+					{if $proposal->is_submited}
+						<div class="row">
+							<div class="col-lg-12">
+								<p class="text-danger text-center">Proposal sudah disubmit, perubahan tidak akan disimpan dalam sistem.</p>
+							</div>
+						</div>
+					{/if}
+					
 				</fieldset>
 				
 			</form>

@@ -41,6 +41,7 @@
 							<li><a href="{site_url('kbmi/identitas')}">Identitas Proposal</a></li>
 							<li><a href="{site_url('kbmi/step/0')}">Isi Proposal</a></li>
 							<li><a href="{site_url('kbmi/upload')}">Unggah Berkas</a></li>
+							<li><a href="{site_url('kbmi/confirm')}">Submit Proposal</a></li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
 							{if $ci->session->user}

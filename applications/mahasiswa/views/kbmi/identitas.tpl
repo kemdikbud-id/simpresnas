@@ -16,7 +16,11 @@
 					<div class="form-group">
 						<label class="col-lg-2 control-label">Nama (Calon) Perusahaan</label>
 						<div class="col-lg-10">
-							<input type="text" name="judul" class="form-control" value="{$proposal->judul}" />
+							{if $proposal->is_submited == FALSE}
+								<input type="text" name="judul" class="form-control" value="{$proposal->judul}" />
+							{else}
+								<p class="form-control-static">{$proposal->judul}</p>
+							{/if}
 						</div>
 					</div>
 					
@@ -41,11 +45,15 @@
 							
 							<div class="col-lg-8 col-md-10" id="anggota-view-{$no_urut}" {if !isset($anggota)}style="display: none"{/if}>
 								<p class="form-control-static label-view-{$no_urut}" style="width: 75%">{if isset($anggota)}{$anggota->nama} - {$anggota->nim} - {$anggota->nama_program_studi}{/if}</p>
-								<button class="btn btn-default btn-ganti" data-no-urut="{$no_urut}">Ganti</button>
-								<button class="btn btn-danger btn-hapus" data-no-urut="{$no_urut}"><i class="glyphicon glyphicon-remove"></i></button>
+								{if $proposal->is_submited == FALSE}
+									<button class="btn btn-default btn-ganti" data-no-urut="{$no_urut}">Ganti</button>
+									<button class="btn btn-danger btn-hapus" data-no-urut="{$no_urut}"><i class="glyphicon glyphicon-remove"></i></button>
+								{/if}
 							</div>
 							<div class="col-lg-8 col-md-10" id="anggota-tambah-{$no_urut}" {if isset($anggota)}style="display: none"{/if}>
-								<button class="btn btn-default btn-tambah" data-no-urut="{$no_urut}">Tambah</button>
+								{if $proposal->is_submited == FALSE}
+									<button class="btn btn-default btn-tambah" data-no-urut="{$no_urut}">Tambah</button>
+								{/if}
 							</div>
 							
 							<div class="col-lg-8 col-md-10" id="anggota-cari-{$no_urut}" style="display: none">
@@ -79,7 +87,9 @@
 							{else}
 								<p class="form-control-static label-dosen-view" style="display:none"></p>
 							{/if}
-							<button class="btn btn-default btn-dosen-ganti">Ubah</button>
+							{if $proposal->is_submited == FALSE}
+								<button class="btn btn-default btn-dosen-ganti">Ubah</button>
+							{/if}
 						</div>
 						<div class="col-lg-8 col-md-10" id="dosen-cari" style="display: none">
 							<select name="program_studi_id_dosen" class="form-control" style="width: 50%; display: inline">
@@ -110,6 +120,15 @@
 						<button class="btn btn-primary">Selanjutnya</button>
 					</div>
 				</div>
+					
+				{if $proposal->is_submited}
+					<div class="row">
+						<div class="col-lg-12">
+							<p class="text-danger text-center">Proposal sudah disubmit, perubahan tidak akan disimpan dalam sistem.</p>
+						</div>
+					</div>
+				{/if}
+				
 			</form>			
 
 		</div>
