@@ -8,11 +8,13 @@
  * @property string $judul
  * @property int $kegiatan_id
  * @property int $dosen_id
+ * @property bool $is_submited
  * @property string $updated_at
  * @property Anggota_proposal_model $ketua
  * @property File_proposal_model[] $file_proposal_set
  * @property Anggota_proposal_model[] $anggota_proposal_set
  * @property Dosen_model $dosen
+ * @property Syarat_model $syarat_model
  */
 class Proposal_model extends CI_Model
 {
@@ -265,5 +267,54 @@ class Proposal_model extends CI_Model
 			'isian' => $isian,
 			'updated_at' => date('Y-m-d H:i:s')
 		], ['proposal_id' => $proposal_id, 'isian_ke' => $isian_ke]);
+	}
+	
+	/**
+	 * Mengambil status kelengkapan isian proposal
+	 * @param int $proposal_id
+	 * @return mixed Array - Jika terdapat kelengkapan yang belum lengkap. TRUE - Jika sudah lengkap
+	 */
+	function get_kelengkapan_proposal($proposal_id)
+	{
+		$hasil = array();
+		
+		// Ambil jumlah anggota kelompok
+		$jumlah_anggota = $this->db->where('proposal_id', $proposal_id)->count_all_results('anggota_proposal');
+		
+		// Cek jumlah anggota 3-5
+		if ($jumlah_anggota < 3 || $jumlah_anggota > 5)
+		{
+			array_push($hasil, 'Jumlah anggota kelompok harus 3-5 orang.');
+		}
+		
+		// Ambil jumlah isian
+		$jumlah_isian_proposal = $this->db->where([
+			'isian_ke > ' => 0,
+			'isian IS NOT NULL' => NULL
+		])->count_all_results('isian_proposal');
+		
+		// Cek isian form harus 31
+		if ($jumlah_isian_proposal < 31)
+		{
+			array_push($hasil, 'Isian proposal masih kurang lengkap');
+		}
+		
+		// Ambil syarat beserta hasil upload
+		$file_lengkap = $this->db
+			->select('count(syarat.id) = count(file_proposal.id) as file_lengkap', FALSE)
+			->from('proposal')
+			->join('kegiatan', 'kegiatan.id = proposal.kegiatan_id')
+			->join('syarat', 'syarat.kegiatan_id = kegiatan.id AND syarat.is_wajib = 1')
+			->join('file_proposal', 'file_proposal.proposal_id = proposal.id AND file_proposal.syarat_id = syarat.id', 'LEFT')
+			->where('proposal.id', $proposal_id)
+			->get()->row()->file_lengkap;
+		
+		// Cek kelengkapan file syarat
+		if ($file_lengkap == 0)
+		{
+			array_push($hasil, 'Berkas proposal masih ada yang belum diunggah');
+		}
+		
+		return (count($hasil) == 0) ? TRUE : $hasil;
 	}
 }
