@@ -45,7 +45,7 @@ class Proposal_model extends CI_Model
 	 * @param int $kegiatan_id
 	 * @return array Array untuk diformat json kebutuhan datatables
 	 */
-	public function list_all_per_kegiatan_v2_dt($kegiatan_id, $dt_params, $debug_query = false)
+	public function list_all_per_kegiatan_v2_dt($kegiatan_id, $tampilan, $dt_params, $debug_query = false)
 	{
 		$result = new stdClass();
 		
@@ -54,16 +54,27 @@ class Proposal_model extends CI_Model
 		
 		// Basic Query
 		$this->db
-			->select('p.id, p.judul, m.nama, pt.nama_pt, p.updated_at')
+			->select('p.id, p.judul, m.nama, pt.nama_pt')
+			->select('case p.is_submited when 1 then p.updated_at when 0 then null end as updated_at', false)
 			->from('proposal p')
 			->join('anggota_proposal ap', 'ap.proposal_id = p.id AND ap.no_urut = 1')
 			->join('mahasiswa m', 'm.id = ap.mahasiswa_id')
 			->join('perguruan_tinggi pt', 'pt.id = p.perguruan_tinggi_id')
-			->where('p.kegiatan_id', $kegiatan_id)
-			->where('p.is_submited', 1);
+			->where('p.kegiatan_id', $kegiatan_id);
+		
+		if ($tampilan == 'submited')
+		{
+			$this->db->where('p.is_submited', 1);
+		}
 		
 		// Total records
 		$result->recordsTotal = $this->db->count_all_results('', FALSE);
+		
+		if ($debug_query)
+		{
+			$result->sql = array();
+			array_push($result->sql, $this->db->last_query());
+		}
 		
 		// Sorting
 		if (count($dt_params['order']) > 0)
@@ -84,6 +95,11 @@ class Proposal_model extends CI_Model
 			$this->db->group_end();
 			
 			$result->recordsFiltered = $this->db->count_all_results('', FALSE);
+			
+			if ($debug_query)
+			{
+				array_push($result->sql, $this->db->last_query());
+			}
 		}
 		else
 		{
@@ -98,7 +114,7 @@ class Proposal_model extends CI_Model
 		
 		if ($debug_query)
 		{
-			$result->sql = $this->db->last_query();
+			array_push($result->sql, $this->db->last_query());
 		}
 		
 		return $result;

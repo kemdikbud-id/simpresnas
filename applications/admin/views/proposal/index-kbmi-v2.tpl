@@ -20,6 +20,12 @@
 						{/foreach}
 					</select>
 				</div>
+				<div class="form-group">
+					<select name="tampilan" class="form-control input-sm">
+						<option value="submited" {if $tampilan == 'submited'}selected{/if}>Sudah Submit</option>
+						<option value="all" {if $tampilan == 'all'}selected{/if}>Semua Usulan</option>
+					</select>
+				</div>
 				<button type="submit" class="btn btn-sm btn-default">
 					Lihat
 				</button>
@@ -48,7 +54,7 @@
 	<script type="text/javascript">
 		$('#table').DataTable({
 			stateSave: true,
-			ajax: { url: '{site_url('proposal/index-kbmi-v2-data')}/{if !empty($smarty.get.kegiatan_id)}{$smarty.get.kegiatan_id}{else}0{/if}', type: 'POST' },
+			ajax: { url: '{site_url('proposal/index-kbmi-v2-data')}/{$kegiatan_id}/{$tampilan}', type: 'POST' },
 			processing: true,
 			serverSide: true,
 			columns: [
