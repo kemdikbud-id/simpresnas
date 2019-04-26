@@ -179,6 +179,13 @@ class Kbmi extends Mahasiswa_Controller
 			redirect('home'); exit();
 		}
 		
+		// Prevent URL Hack
+		if ($step < 0 || $step > 31 || !is_numeric($step))
+		{
+			echo '<html><body><p>Halaman tidak ditemukan.</p></body></html>';
+			exit();
+		}
+		
 		$proposal = $this->proposal_model->get_by_ketua($kegiatan->id, $this->session->user->mahasiswa_id);
 		
 		if ($this->input->method() == 'post')
