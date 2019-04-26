@@ -71,7 +71,7 @@ class Proposal extends Admin_Controller
 		$this->smarty->display();
 	}
 	
-	public function index_kbmi_v2_data($kegiatan_id, $tampilan)
+	public function index_kbmi_v2_data($kegiatan_id, $tampilan = 'submited')
 	{
 		echo json_encode(
 			$this->proposal_model->list_all_per_kegiatan_v2_dt($kegiatan_id, $tampilan, $this->input->post(), TRUE)
