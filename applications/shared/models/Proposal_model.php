@@ -18,6 +18,11 @@
  */
 class Proposal_model extends CI_Model
 {
+	/**
+	 * Mendapatkan list data semua proposal per kegiatan (versi 2018 kebawah)
+	 * @param int $kegiatan_id
+	 * @return array
+	 */
 	public function list_all_per_kegiatan($kegiatan_id)
 	{
 		return $this->db
@@ -33,6 +38,70 @@ class Proposal_model extends CI_Model
 			->where(['p.kegiatan_id' => $kegiatan_id])
 			->group_by("p.id, p.judul, pt.nama_pt, ktg.nama_kategori, p.nim_ketua, p.nama_ketua, p.created_at")
 			->get()->result();
+	}
+	
+	/**
+	 * Mendapatkan list data semua proposal per kegiatan (versi 2019) untuk datatables
+	 * @param int $kegiatan_id
+	 * @return array Array untuk diformat json kebutuhan datatables
+	 */
+	public function list_all_per_kegiatan_v2_dt($kegiatan_id, $dt_params, $debug_query = false)
+	{
+		$result = new stdClass();
+		
+		// Match query draw
+		$result->draw = $dt_params['draw'];
+		
+		// Basic Query
+		$this->db
+			->select('p.id, p.judul, m.nama, pt.nama_pt, p.updated_at')
+			->from('proposal p')
+			->join('anggota_proposal ap', 'ap.proposal_id = p.id AND ap.no_urut = 1')
+			->join('mahasiswa m', 'm.id = ap.mahasiswa_id')
+			->join('perguruan_tinggi pt', 'pt.id = p.perguruan_tinggi_id')
+			->where('p.kegiatan_id', $kegiatan_id)
+			->where('p.is_submited', 1);
+		
+		// Total records
+		$result->recordsTotal = $this->db->count_all_results('', FALSE);
+		
+		// Sorting
+		if (count($dt_params['order']) > 0)
+		{
+			if ($dt_params['order'][0]['column'] == 0) $this->db->order_by('p.judul', $dt_params['order'][0]['dir']);
+			if ($dt_params['order'][0]['column'] == 1) $this->db->order_by('m.nama', $dt_params['order'][0]['dir']);
+			if ($dt_params['order'][0]['column'] == 2) $this->db->order_by('pt.nama_pt', $dt_params['order'][0]['dir']);
+			if ($dt_params['order'][0]['column'] == 3) $this->db->order_by('p.updated_at', $dt_params['order'][0]['dir']);
+		}
+		
+		// Search
+		if ($dt_params['search']['value'] != '')
+		{
+			$this->db->group_start();
+			$this->db->like('lower(p.judul)', $dt_params['search']['value'], 'both', FALSE);
+			$this->db->or_like('lower(m.nama)', $dt_params['search']['value'], 'both', FALSE);
+			$this->db->or_like('lower(pt.nama_pt)', $dt_params['search']['value'], 'both', FALSE);
+			$this->db->group_end();
+			
+			$result->recordsFiltered = $this->db->count_all_results('', FALSE);
+		}
+		else
+		{
+			$result->recordsFiltered = $result->recordsTotal;
+		}
+		
+		// Paging
+		$this->db->limit($dt_params['length'], $dt_params['start']);
+		
+		// Get Data
+		$result->data = $this->db->get()->result();
+		
+		if ($debug_query)
+		{
+			$result->sql = $this->db->last_query();
+		}
+		
+		return $result;
 	}
 	
 	public function list_by_perguruan_tinggi($perguruan_tinggi_id, $kegiatan_id)

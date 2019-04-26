@@ -53,6 +53,24 @@ class Proposal extends Admin_Controller
 		$this->smarty->display();
 	}
 	
+	public function index_kbmi_v2()
+	{
+		if ( ! empty($this->input->get('kegiatan_id')))
+		{
+			// SAMPAI SINI
+		}
+		
+		$this->smarty->assign('kegiatan_set', $this->kegiatan_model->list_all(PROGRAM_KBMI));
+		$this->smarty->display();
+	}
+	
+	public function index_kbmi_v2_data($kegiatan_id)
+	{
+		echo json_encode(
+			$this->proposal_model->list_all_per_kegiatan_v2_dt($kegiatan_id, $this->input->post(), TRUE)
+		);
+	}
+	
 	public function view()
 	{
 		// id proposal

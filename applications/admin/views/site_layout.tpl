@@ -65,6 +65,7 @@
 								<ul class="dropdown-menu">
 									<li><a href="{site_url('proposal/index-pbbt')}">Proposal PBBT</a></li>
 									<li><a href="{site_url('proposal/index-kbmi')}">Proposal KBMI</a></li>
+									<li><a href="{site_url('proposal/index-kbmi-v2')}">Proposal KBMI (2019)</a></li>
 									<li role="separator" class="divider"></li>
 									<li><h5 style="padding: 3px 20px; margin: 0"><i>Workshop</i></h5></li>
 									<li><a href="{site_url('workshop/peserta')}">Daftar Peserta</a></li>
