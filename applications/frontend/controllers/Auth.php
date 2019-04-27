@@ -177,7 +177,9 @@ class Auth extends Frontend_Controller
 	public function logout()
 	{
 		$this->session->unset_userdata('user');
+		$this->session->unset_userdata('perguruan_tinggi');
 		$this->session->unset_userdata('program_id');
+		$this->session->unset_userdata('kegiatan');
 
 		// redirect to home
 		redirect(base_url());
