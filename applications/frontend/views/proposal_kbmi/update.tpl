@@ -39,7 +39,11 @@
 					<div class="form-group">
 						<label class="col-lg-2 control-label">Nama (Calon) Perusahaan</label>
 						<div class="col-lg-10">
-							<input type="text" name="judul" class="form-control" placeholder="Nama (Calon) Perusahaan atau nama usaha atau nama produk yang diusulkan" required value="{$proposal->judul}"/>
+							{if $proposal->is_reviewed == FALSE}
+								<input type="text" name="judul" class="form-control" placeholder="Nama (Calon) Perusahaan atau nama usaha atau nama produk yang diusulkan" required value="{$proposal->judul}"/>
+							{else}
+								<p class="form-control-static">{$proposal->judul}</p>
+							{/if}
 						</div>
 					</div>
 

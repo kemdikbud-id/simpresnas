@@ -174,9 +174,13 @@ class Proposal_KBMI extends Frontend_Controller
 		
 		if ($this->input->method() == 'post')
 		{
-			$proposal->judul = $this->input->post('judul');
-			$proposal->updated_at = date('Y-m-d H:i:s');
-			$this->proposal_model->update($proposal->id, $proposal);
+			// Jika sudah di review, perubahan judul tidak bisa dilakukan lagi
+			if ($proposal->is_reviewed)
+			{
+				$proposal->judul = $this->input->post('judul');
+				$proposal->updated_at = date('Y-m-d H:i:s');
+				$this->proposal_model->update($proposal->id, $proposal);
+			}
 			
 			$mahasiswa->email = $this->input->post('email');
 			$mahasiswa->no_hp = $this->input->post('no_hp');

@@ -9,6 +9,7 @@
  * @property int $kegiatan_id
  * @property int $dosen_id
  * @property bool $is_submited
+ * @property bool $is_reviewed
  * @property string $updated_at
  * @property Anggota_proposal_model $ketua
  * @property File_proposal_model[] $file_proposal_set
@@ -123,7 +124,7 @@ class Proposal_model extends CI_Model
 	public function list_by_perguruan_tinggi($perguruan_tinggi_id, $kegiatan_id)
 	{
 		return $this->db
-			->select('p.id, p.judul, ap.mahasiswa_id, m.nim, m.nama, ps.nama as nama_program_studi, d.nama as nama_dosen, p.is_submited, count(ip.id) as jumlah_isian')
+			->select('p.id, p.judul, ap.mahasiswa_id, m.nim, m.nama, ps.nama as nama_program_studi, d.nama as nama_dosen, p.is_submited, p.is_reviewed, count(ip.id) as jumlah_isian')
 			->from('proposal p')
 			->join('anggota_proposal ap', 'ap.proposal_id = p.id AND ap.no_urut = 1') // Ketua di No Urut 1
 			->join('mahasiswa m', 'm.id = ap.mahasiswa_id')
