@@ -119,7 +119,7 @@ class Auth extends Frontend_Controller
 						else if ($user->tipe_user == TIPE_USER_REVIEWER)
 						{
 							// tambahkan session reviewer
-							$user->reviewer = $this->reviewer_model->get_single($this->session->user->reviewer_id);
+							$user->reviewer = $this->reviewer_model->get_single($user->reviewer_id);
 							$redirect_to = base_url() . 'reviewer';
 						}
 						else if ($user->tipe_user == TIPE_USER_MAHASISWA)
