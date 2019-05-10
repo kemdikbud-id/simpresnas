@@ -64,6 +64,11 @@ class Anggota_proposal_model extends CI_Model
 			->get()->result();
 	}
 	
+	public function delete($id)
+	{
+		return $this->db->delete('anggota_proposal', ['id' => $id], 1);
+	}
+	
 	public function delete_by_proposal($proposal_id)
 	{
 		return $this->db->delete('anggota_proposal', ['proposal_id' => $proposal_id]);

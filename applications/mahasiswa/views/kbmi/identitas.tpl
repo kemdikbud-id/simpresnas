@@ -250,6 +250,16 @@
 			
 			$('.btn-hapus').on('click', function(e) {
 				e.preventDefault();
+				var no_urut = $(this).data('no-urut');
+				var anggota_id = $('input[name="anggota_id['+no_urut+']"]').val();
+				$.ajax({
+					url: "{site_url('kbmi/delete-anggota')}", type: 'POST', dataType: 'json',
+					data: { anggota_id: anggota_id } 
+				}).done(function(data) {
+					$('input[name="anggota_id['+no_urut+']"]').val(null);
+					$('#anggota-tambah-' + no_urut).show();
+					$('#anggota-view-' + no_urut).hide();
+				});
 			});
 		});
 	</script>

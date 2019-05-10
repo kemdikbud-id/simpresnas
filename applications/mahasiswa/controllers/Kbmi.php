@@ -131,6 +131,16 @@ class Kbmi extends Mahasiswa_Controller
 			echo json_encode(['result' => $update_result]);
 		}
 	}
+	
+	public function delete_anggota()
+	{
+		if ($this->input->method() == 'post')
+		{			
+			$update_result = $this->anggota_model->delete($this->input->post('anggota_id'));
+			
+			echo json_encode(['result' => $update_result]);
+		}
+	}
     
     public function cari_dosen()
     {
