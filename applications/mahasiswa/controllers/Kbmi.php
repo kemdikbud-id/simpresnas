@@ -393,39 +393,48 @@ class Kbmi extends Mahasiswa_Controller
 		// Tombol Submit Proposal
 		if ($this->input->post('tombol') == 'Submit Proposal')
 		{
-			$expiration = time() - $this::CAPTCHA_TIMEOUT;
-			
-			// Hapus file captcha lama yang expired
-			$captcha_set = $this->db
-				->where('length(word)', $this::CAPTCHA_LENGTH)
-				->where('captcha_time < ', $expiration)
-				->get('captcha')->result();
-			foreach ($captcha_set as $captcha_row)
-				@unlink('./assets/captcha/'.$captcha_row->filename);
-			// Hapus record db
-			$this->db
-				->where('length(word)', $this::CAPTCHA_LENGTH)
-				->where('captcha_time < ', $expiration)
-				->delete('captcha');
-			
-			// ambil data captcha
-			$captcha_count = $this->db->query(
-				"SELECT COUNT(*) AS count FROM captcha WHERE word = ? AND ip_address = ? AND captcha_time > ?",
-				[$this->input->post('captcha'), $this->input->ip_address(), $expiration])
-				->row()->count;
-			
-			// Jika captcha match
-			if ($captcha_count > 0)
-			{				
-				// Proses submit proposal
-				$this->proposal_model->submit($proposal->id);
-				
-				redirect('kbmi/submited');
-				exit();
+			// Memastikan waktu submit sesuai jadwal
+			if (time() < strtotime($kegiatan->tgl_akhir_upload))
+			{
+				$expiration = time() - $this::CAPTCHA_TIMEOUT;
+
+				// Hapus file captcha lama yang expired
+				$captcha_set = $this->db
+					->where('length(word)', $this::CAPTCHA_LENGTH)
+					->where('captcha_time < ', $expiration)
+					->get('captcha')->result();
+				foreach ($captcha_set as $captcha_row)
+					@unlink('./assets/captcha/'.$captcha_row->filename);
+				// Hapus record db
+				$this->db
+					->where('length(word)', $this::CAPTCHA_LENGTH)
+					->where('captcha_time < ', $expiration)
+					->delete('captcha');
+
+				// ambil data captcha
+				$captcha_count = $this->db->query(
+					"SELECT COUNT(*) AS count FROM captcha WHERE word = ? AND ip_address = ? AND captcha_time > ?",
+					[$this->input->post('captcha'), $this->input->ip_address(), $expiration])
+					->row()->count;
+
+				// Jika captcha match
+				if ($captcha_count > 0)
+				{				
+					// Proses submit proposal
+					$this->proposal_model->submit($proposal->id);
+
+					redirect('kbmi/submited');
+					exit();
+				}
+				else
+				{
+					$this->smarty->assign('error_message', 'Kode keamanan tidak sesuai. Silahkan ulangi.');
+				}
 			}
 			else
 			{
-				$this->smarty->assign('error_message', 'Kode keamanan tidak sesuai. Silahkan ulangi.');
+				$error_message = 'Batas waktu submit sudah selesai. Batas Akhir : ' . strftime('%d/%m/%Y %H:%M:%S', strtotime($kegiatan->tgl_akhir_upload)) . ' . Waktu sistem : ' . strftime('%d/%m/%Y %H:%M:%S');
+				$this->smarty->assign('error_message', $error_message);
 			}
 		}
 		
