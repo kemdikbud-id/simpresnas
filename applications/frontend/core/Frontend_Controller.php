@@ -25,6 +25,14 @@ class Frontend_Controller extends CI_Controller
 		if ($this->session->userdata('user') == NULL)
 		{
 			redirect($this->config->item('base_url'));
+			exit();
+		}
+		
+		// Memastikan yang login disini adalah admin PT
+		if ($this->session->user->tipe_user != TIPE_USER_NORMAL)
+		{
+			redirect('auth/logout');
+			exit();
 		}
 	}
 }
