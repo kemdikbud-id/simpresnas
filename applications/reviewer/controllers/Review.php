@@ -241,6 +241,22 @@ class Review extends Reviewer_Controller
 			->order_by('kp.urutan')
 			->get()->result();
 		
+		foreach ($penilaian_set as &$penilaian)
+		{
+			$penilaian->isian_set = $isian_set = $this->db
+				->select('ip.isian_ke, ip.isian')
+				->from('isian_proposal ip')
+				->join('proposal p', 'p.id = ip.proposal_id')
+				->join('tahapan_proposal tp', 'tp.proposal_id = p.id')
+				->join('plot_reviewer pr', 'pr.tahapan_proposal_id = tp.id')
+				->join('komponen_penilaian_isian kpi', 'kpi.isian_ke = ip.isian_ke')
+				->where('pr.id', $plot_reviewer_id)
+				->where('kpi.komponen_penilaian_id', $penilaian->komponen_penilaian_id)
+				->order_by('kpi.isian_ke')
+				->get()->result();
+		}
+		
+		
 		if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
 			// replace input
