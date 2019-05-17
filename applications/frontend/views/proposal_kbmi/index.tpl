@@ -49,10 +49,12 @@
 									<input type="hidden" name="mahasiswa_id" value="{$data->mahasiswa_id}" />
 								</form>
 								<a href="{site_url('proposal-kbmi/update')}/{$data->id}" class="btn btn-xs btn-success">Edit</a>
-								{if $data->is_submited == 0}{* Jika belum disubmit, bisa dihapus *}
-									<a href="{site_url('proposal-kbmi/delete')}/{$data->id}" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i></a>
-								{else if $data->is_reviewed == 0}{* Jika belum di review, bisa dibatalkan *}
-									<a href="{site_url('proposal-kbmi/cancel-submit')}/{$data->id}" class="btn btn-xs btn-default" style="margin-top: 5px">Batalkan Submit</a>
+								{if time() < strtotime($kegiatan->tgl_akhir_upload)}
+									{if $data->is_submited == 0}{* Jika belum disubmit, bisa dihapus *}
+										<a href="{site_url('proposal-kbmi/delete')}/{$data->id}" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i></a>
+									{else if $data->is_reviewed == 0}{* Jika belum di review, bisa dibatalkan *}
+										<a href="{site_url('proposal-kbmi/cancel-submit')}/{$data->id}" class="btn btn-xs btn-default" style="margin-top: 5px">Batalkan Submit</a>
+									{/if}
 								{/if}
 							</td>
 						</tr>
