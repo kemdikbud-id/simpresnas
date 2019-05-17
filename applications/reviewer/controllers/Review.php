@@ -364,7 +364,7 @@ class Review extends Reviewer_Controller
 		
 		if ($kegiatan->program_id == PROGRAM_PBBT) { $program_folder = 'pbbt'; $username = $pt->npsn . '01'; }
 		if ($kegiatan->program_id == PROGRAM_KBMI) { $program_folder = 'kbmi'; $username = $pt->npsn . '02'; }
-		$preview_url = $this->config->item('global_base_url') . '/upload/file-proposal/'.$program_folder.'/'.$username.'/'.$proposal->id.'/';
+		$preview_url = $this->config->item('global_base_url') . '/upload/lampiran/';
 		$this->smarty->assign('preview_url', $preview_url);
 		
 		$this->smarty->assign('penilaian_set', $penilaian_set);
