@@ -48,8 +48,9 @@ class Review extends Reviewer_Controller
 	{
 		$kegiatan_id = $this->input->get('kegiatan_id');
 		$tahapan_id = $this->input->get('tahapan_id');
+		$order_by = $this->input->get('order_by');
 		
-		$data_set = $this->proposal_model->list_proposal_per_reviewer($kegiatan_id, $tahapan_id, $this->session->userdata('user')->reviewer_id);
+		$data_set = $this->proposal_model->list_proposal_per_reviewer($kegiatan_id, $tahapan_id, $this->session->userdata('user')->reviewer_id, $order_by);
 		
 		// reformat data
 		foreach ($data_set as &$data)

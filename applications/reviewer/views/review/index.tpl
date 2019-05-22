@@ -32,13 +32,16 @@
 				</form>
 			{else}
 				<form class="form-inline" action="{current_url()}" method="get" style="margin-bottom: 10px">
+					{form_hidden('kegiatan_id', $smarty.get.kegiatan_id)}
+					{form_hidden('tahapan_id', $smarty.get.tahapan_id)}
 					<a href="{site_url('review')}" class="btn btn-default" >Kembali</a>
 					<div class="form-group" style="float: right">
 						<label for="order_by">Urut:</label>
-						<select class="form-control" name="order_by" style="display: inline-block; width: auto !important;">
-							<option value="judul">Judul</option>
-							<option value="nilai_asc">Belum Dinilai</option>
-							<option value="nilai_desc">Sudah Dinilai</option>
+						<select class="form-control" name="order_by" style="display: inline-block; width: auto !important;" onchange="javascript:this.form.submit();">
+							<option value="judul" {if isset($smarty.get.order_by)}{if $smarty.get.order_by == 'judul'}selected{/if}{/if}>Judul</option>
+							<option value="pt" {if isset($smarty.get.order_by)}{if $smarty.get.order_by == 'pt'}selected{/if}{/if}>Perguruan Tinggi</option>
+							<option value="nilai" {if isset($smarty.get.order_by)}{if $smarty.get.order_by == 'nilai'}selected{/if}{/if}>Nilai</option>
+							<option value="rekomendasi" {if isset($smarty.get.order_by)}{if $smarty.get.order_by == 'rekomendasi'}selected{/if}{/if}>Rekomendasi</option>
 						</select>
 					</div>
 				</form>
@@ -73,7 +76,7 @@
 			var dataTable = $('#table').DataTable({
 				lengthMenu: [[10, 20, 25, 50, -1], [10, 20, 25, 50, 'Semua']],
 				stateSave: true,
-				ajax: '{site_url('review/index-data/')}?kegiatan_id=' + keg_id + '&tahapan_id=' + thp_id,
+				ajax: '{site_url('review/index-data/')}' + window.location.search,
 				ordering: false,
 				columns: [
 					{

@@ -224,8 +224,22 @@ class Proposal_model extends CI_Model
 			->count_all_results();
 	}
 	
-	public function list_proposal_per_reviewer($kegiatan_id, $tahapan_id, $reviewer_id)
+	public function list_proposal_per_reviewer($kegiatan_id, $tahapan_id, $reviewer_id, $order_by = 'judul')
 	{
+		switch ($order_by)
+		{
+			case 'judul':
+				$order_column = 'p.judul asc'; break;
+			case 'pt':
+				$order_column = 'pt.nama_pt asc'; break;
+			case 'nilai':
+				$order_column = 'pr.nilai_reviewer desc'; break;
+			case 'rekomendasi':
+				$order_column = 'pr.biaya_rekomendasi desc'; break;
+			default: 
+				$order_column = 'p.judul asc'; break;
+		}
+		
 		$sql = 
 			"select pr.id, p.judul, m.nama as nama_ketua, pt.nama_pt, pr.biaya_rekomendasi, pr.nilai_reviewer
 			from plot_reviewer pr
@@ -235,7 +249,8 @@ class Proposal_model extends CI_Model
 			join anggota_proposal ap on ap.proposal_id = p.id and ap.no_urut = 1
 			join mahasiswa m on m.id = ap.mahasiswa_id
 			where tp.kegiatan_id = ? and tp.tahapan_id = ? and pr.reviewer_id = ?
-			order by p.judul";
+			order by {$order_column}";
+		
 		return $this->db->query($sql, array(
 			$kegiatan_id, $tahapan_id, $reviewer_id
 		))->result();
