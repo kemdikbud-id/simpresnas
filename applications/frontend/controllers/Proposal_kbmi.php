@@ -175,7 +175,7 @@ class Proposal_KBMI extends Frontend_Controller
 		if ($this->input->method() == 'post')
 		{
 			// Jika sudah di submit / review, perubahan judul tidak bisa dilakukan lagi
-			if ($proposal->is_submited || $proposal->is_reviewed)
+			if (!$proposal->is_submited || !$proposal->is_reviewed)
 			{
 				$proposal->judul = $this->input->post('judul');
 				$proposal->updated_at = date('Y-m-d H:i:s');
