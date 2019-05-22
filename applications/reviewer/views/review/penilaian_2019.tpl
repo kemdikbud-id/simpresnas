@@ -91,7 +91,7 @@
 					<thead>
 						<tr>
 							<th class="text-center">No</th>
-							<th>Kriteria</th>
+							<th style="width: 35%">Kriteria</th>
 							<th>Isian</th>
 							<th class="text-center">Nilai</th>
 						</tr>
