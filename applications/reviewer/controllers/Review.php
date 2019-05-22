@@ -353,6 +353,9 @@ class Review extends Reviewer_Controller
 			}
 		}
 		
+		// Additional data
+		$proposal->jumlah_anggota = $this->proposal_model->get_jumlah_anggota($tahapan_proposal->proposal_id);
+		
 		$this->smarty->assign('plot_reviewer', $plot_reviewer);
 		$this->smarty->assign('tahapan_proposal', $tahapan_proposal);
 		$this->smarty->assign('proposal', $proposal);

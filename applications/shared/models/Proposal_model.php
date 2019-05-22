@@ -422,4 +422,14 @@ class Proposal_model extends CI_Model
 		
 		return (count($hasil) == 0) ? TRUE : $hasil;
 	}
+	
+	/**
+	 * Mendapatkan jumlah anggota
+	 * @param int $id
+	 * @return int Jumlah anggota
+	 */
+	function get_jumlah_anggota($id)
+	{
+		return $this->db->where('proposal_id', $id)->from('anggota_proposal')->count_all_results();
+	}
 }

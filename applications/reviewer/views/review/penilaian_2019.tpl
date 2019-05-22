@@ -4,7 +4,7 @@
 		h2.page-header { margin-bottom: 0 }
 		h4.judul { color: #555555;}
 		.table { font-size: 14px; }
-		.form-horizontal .form-group { margin-bottom: 5px; }
+		/* .form-horizontal .form-group { margin-bottom: 5px; } */
 		.form-horizontal .control-label { padding-top: 5px; }
 		input.form-control, .input-group-addon { padding: 4px 8px; height: auto; }
 		.form-control-static { padding-top: 4px; padding-bottom:4px; }
@@ -12,6 +12,7 @@
 		.angka { font-size: 18px; font-weight: bold; }
 		td.has-error { background-color: #f2dede; }
 		td>ol { margin-bottom: 0 }
+		.table>tbody>tr>td.kriteria, .table>tbody>tr>td.isian { vertical-align: top; }
 	</style>
 {/block}
 {block name='content'}
@@ -24,7 +25,8 @@
 				{if $updated}
 					<div class="alert alert-success alert-dismissible" role="alert">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<strong>Berhasil Simpan !</strong> Data penilaian sudah berhasil disimpan.
+						<strong>Berhasil Simpan !</strong> Data penilaian sudah berhasil disimpan. <br/>
+						<p><a href="{site_url('review')}?kegiatan_id={$tahapan_proposal->kegiatan_id}&tahapan_id={$tahapan_proposal->tahapan_id}" class="btn btn-sm btn-default">Kembali Daftar Proposal</a></p>
 					</div>
 				{else}
 					<div class="alert alert-danger alert-dismissible" role="alert">
@@ -50,19 +52,11 @@
 					</div>
 				</div>
 					
-				<div {if form_error('biaya_rekomendasi')}class="form-group has-error"{else}class="form-group"{/if}>
-					<label class="col-md-2 col-sm-3 control-label">Biaya Direkomendasikan</label>
-					<div class="col-md-3 col-sm-4" style="padding-top: 5px;">
-						<div class="input-group">
-							<div class="input-group-addon">Rp.</div>
-							<input type="text" class="form-control number" name="biaya_rekomendasi" value="{$plot_reviewer->biaya_rekomendasi}"/>
-						</div>
+				<div class="form-group">
+					<label class="col-md-2 col-sm-3 control-label">Anggota</label>
+					<div class="col-md-10 col-sm-9">
+						<p class="form-control-static">{$proposal->jumlah_anggota}</p>
 					</div>
-					{if form_error('biaya_rekomendasi')}
-						<div class="col-md-7 col-sm-4" style="padding-top: 5px;">
-							{form_error('biaya_rekomendasi')}
-						</div>
-					{/if}
 				</div>
 					
 				<div class="form-group">
@@ -76,12 +70,14 @@
 							</p>
 						{/foreach}
 					</div>
-					<div class="col-md-2 col-sm-2">
+					
+				</div>
+					
+				<div class="form-group">
+					<div class="col-sm-offset-3 col-sm-3 col-md-offset-2 col-md-2">
 						<a href="javascript: setTidakLolos();" class="btn btn-sm btn-danger">Tidak Lolos Administrasi</a>
 					</div>
 				</div>
-					
-				
 
 				<div class="panel panel-default" id="panelPreview" style="display: none">
 					<div class="panel-heading"><span class="nama-file"></span> <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
@@ -97,51 +93,60 @@
 							<th class="text-center">No</th>
 							<th>Kriteria</th>
 							<th>Isian</th>
-							<th class="text-center">Bobot</th>
-							<th class="text-center">Skor</th>
 							<th class="text-center">Nilai</th>
 						</tr>
 					</thead>
 					<tbody>
 						{foreach $penilaian_set as $penilaian}
 							<tr>
-								<td class="text-center">{$penilaian->urutan}</td>
-								<td>{$penilaian->kriteria}</td>
-								<td style="vertical-align: top">
+								<td class="text-center" rowspan="2">{$penilaian->urutan}</td>
+								<td class="kriteria">{$penilaian->kriteria}</td>
+								<td class="isian" colspan="2">
 									<ul>
 										{foreach $penilaian->isian_set as $isian}
 											<li>{$isian->isian|nl2br}</li>
 										{/foreach}
 									</ul>
 								</td>
-								<td class="text-center angka">{$penilaian->bobot}</td>
-								<td {if form_error("skor[`$penilaian->komponen_penilaian_id`]")}class="text-center has-error"{else}class="text-center"{/if}>
+							</tr>
+							<tr>
+								<td {if form_error("skor[`$penilaian->komponen_penilaian_id`]")}class="text-center has-error"{else}class="text-center"{/if} colspan="2">
+									<label class="angka">Bobot: {$penilaian->bobot} x </label>
 									<select class="form-control" name="skor[{$penilaian->komponen_penilaian_id}]" 
 											data-kpid="{$penilaian->komponen_penilaian_id}" data-bobot="{$penilaian->bobot}"
-											style="width: auto; display: block; margin: 0 auto">
+											style="width: auto; display: inline-block;">
 										<option value="">-- Pilih Skor --</option>
 										{* Ambil dari inputan skor, jika tdk ambil dari skor di db *}
 										{$selected_skor = set_value("skor[`$penilaian->komponen_penilaian_id`]", $penilaian->skor)}
 										{html_options options=$skor_option_set selected=$selected_skor}
 									</select>
 								</td>
-								<td class="text-center angka">
-									<label name="nilai[{$penilaian->komponen_penilaian_id}]">{$penilaian->nilai}</label>
-								</td>
+								<td class="text-center angka"><label name="nilai[{$penilaian->komponen_penilaian_id}]">{$penilaian->nilai}</label></td>
 							</tr>
 						{/foreach}
 					</tbody>
 					<tfoot>
 						<tr>
-							<td colspan="5" class="text-right">Jumlah</td>
+							<td colspan="3" class="text-right">Jumlah</td>
 							<td class="text-center angka">
 								<label name="nilai_reviewer">{$plot_reviewer->nilai_reviewer}</label>
 							</td>
 						</tr>
 					</tfoot>
 				</table>
+							
+				<div {if form_error('biaya_rekomendasi')}class="form-group has-error"{else}class="form-group"{/if} style="margin: 0 0 15px 0">
+					<label class="control-label">Biaya Direkomendasikan</label>
+					<div class="input-group">
+						<span class="input-group-addon">Rp.</span>
+						<input type="text" class="form-control number" name="biaya_rekomendasi" value="{$plot_reviewer->biaya_rekomendasi}"/>
+					</div>
+					{if form_error('biaya_rekomendasi')}
+						{form_error('biaya_rekomendasi')}
+					{/if}
+				</div>
 					
-				<div class="form-group" style="margin: 0 0 5px 0">
+				<div class="form-group" style="margin: 0 0 15px 0">
 					<label for="komentar">Komentar</label>
 					<textarea class="form-control" rows="5" name="komentar">{set_value('komentar', $plot_reviewer->komentar)}</textarea>
 				</div>
