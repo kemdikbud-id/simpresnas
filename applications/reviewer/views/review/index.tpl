@@ -13,29 +13,29 @@
 		<div class="col-lg-12">
 
 			{if empty($smarty.get.kegiatan_id) or empty($smarty.get.tahapan_id)}
-				<form class="form-inline" action="{current_url()}" method="get" style="margin-bottom: 10px" id="formFilter">
+				<form action="{current_url()}" method="get" style="margin-bottom: 10px" id="formFilter">
 					<div class="form-group">
 						<label for="kegiatan_id">Kegiatan</label>
-						<select name="kegiatan_id" class="form-control input-sm">
+						<select name="kegiatan_id" class="form-control">
 							<option value="">-- Pilih Kegiatan --</option>
 							{html_options options=$kegiatan_option_set selected=$smarty.get.kegiatan_id}
 						</select>
 					</div>
 					<div class="form-group">
 						<label for="tahapan_id">Tahapan</label>
-						<select name="tahapan_id" class="form-control input-sm">
+						<select name="tahapan_id" class="form-control">
 							<option value="">-- Pilih Tahapan --</option>
 							{html_options options=$tahapan_option_set selected=$smarty.get.tahapan_id}
 						</select>
 					</div>
-					<button type="submit" class="btn btn-sm btn-primary">Lihat</button>
+					<button type="submit" class="btn btn-primary">Lihat</button>
 				</form>
 			{else}
 				<form class="form-inline" action="{current_url()}" method="get" style="margin-bottom: 10px">
-					<a href="{site_url('review')}" class="btn btn-sm btn-default" >Kembali</a>
+					<a href="{site_url('review')}" class="btn btn-default" >Kembali</a>
 					<div class="form-group" style="float: right">
 						<label for="order_by">Urut:</label>
-						<select class="form-control input-sm" name="order_by" style="display: inline-block; width: auto !important;">
+						<select class="form-control" name="order_by" style="display: inline-block; width: auto !important;">
 							<option value="judul">Judul</option>
 							<option value="nilai_asc">Belum Dinilai</option>
 							<option value="nilai_desc">Sudah Dinilai</option>
