@@ -3,7 +3,7 @@
 	<h2 class="page-header">Login SIM-PKMI</h2>
 
 	<div class="row">
-        <div class="col-lg-5">
+        <div class="col-sm-6 col-lg-5">
 			<form action="{current_url()}" method="post">
 				<div class="panel panel-default">
 					<div class="panel-heading"><h3 class="panel-title"><strong>Login</strong></h3></div>
@@ -30,7 +30,7 @@
 			</form>
         </div>
 				
-		<div class="col-lg-5">
+		<div class="col-sm-6 col-lg-5">
 			<h3 style="margin-top: 10px">Hal yang perlu diperhatikan</h3>
 			<ul>
 				<li>Username & password yang Resmi hanya yang berasal dari Kemenristekdikti.</li>
