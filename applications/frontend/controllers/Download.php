@@ -10,6 +10,8 @@ class Download extends Frontend_Controller
 {
 	public function index()
 	{
+		$this->load->helper('file');
+		
 		$this->load->model(MODEL_FILE_PROPOSAL, 'file_proposal_model');
 		$this->load->model(MODEL_PROPOSAL, 'proposal_model');
 		$this->load->model(MODEL_KEGIATAN, 'kegiatan_model');
@@ -36,7 +38,7 @@ class Download extends Frontend_Controller
 		
 		if (file_exists($file_location))
 		{
-			header('Content-Type: application/pdf');
+			header('Content-Type: ' . get_mime_by_extension($file_location));
 			header('Content-Disposition: '.$disposition.'; filename="'.$file_proposal->nama_asli.'"');
 			header('Expires: 0');
 			header('Cache-Control: must-revalidate');
