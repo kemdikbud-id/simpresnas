@@ -245,7 +245,7 @@ class Review extends Reviewer_Controller
 		foreach ($penilaian_set as &$penilaian)
 		{
 			$penilaian->isian_set = $isian_set = $this->db
-				->select('ip.isian_ke, ip.isian')
+				->select('kpi.pertanyaan, ip.isian_ke, ip.isian')
 				->from('isian_proposal ip')
 				->join('proposal p', 'p.id = ip.proposal_id')
 				->join('tahapan_proposal tp', 'tp.proposal_id = p.id')
@@ -253,7 +253,7 @@ class Review extends Reviewer_Controller
 				->join('komponen_penilaian_isian kpi', 'kpi.isian_ke = ip.isian_ke')
 				->where('pr.id', $plot_reviewer_id)
 				->where('kpi.komponen_penilaian_id', $penilaian->komponen_penilaian_id)
-				->order_by('kpi.isian_ke')
+				->order_by('kpi.urutan')
 				->get()->result();
 		}
 		

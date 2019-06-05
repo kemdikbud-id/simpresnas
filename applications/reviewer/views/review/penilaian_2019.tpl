@@ -8,11 +8,14 @@
 		.form-horizontal .control-label { padding-top: 5px; }
 		input.form-control, .input-group-addon { padding: 4px 8px; height: auto; }
 		.form-control-static { padding-top: 4px; padding-bottom:4px; }
-		p { margin-bottom: 5px; }
-		.angka { font-size: 18px; font-weight: bold; }
+		p, p.lead { margin-bottom: 5px; }
+		.angka { font-size: 30px; font-weight: bold; }
 		td.has-error { background-color: #f2dede; }
 		td>ol { margin-bottom: 0 }
+		.table>thead>tr>th { border-bottom: 2px solid black; }
+		.table>tbody>tr>td { line-height: 155%; }
 		.table>tbody>tr>td.kriteria, .table>tbody>tr>td.isian { vertical-align: top; }
+		.table>tbody>tr>td.border-tebal { border-bottom: 2px solid black; }
 	</style>
 {/block}
 {block name='content'}
@@ -65,8 +68,8 @@
 						{foreach $file_proposal_set as $file_proposal}
 							<p class="form-control-static" style="min-height: 0; padding: 2px 0">
 								{$file_proposal->nama_asli} 
-								&bull; <a href="{$download_url}?id={$file_proposal->id}&mode=download" target="_blank">Download</a> 
-								&bull; <a href="#" class="open-file" data-nama-file="{$file_proposal->nama_asli}" data-file="{$file_proposal->nama_file}">Buka</a>
+								&bull; <a class="btn btn-sm btn-default" href="{$download_url}?id={$file_proposal->id}&mode=download" target="_blank">Download <i class="glyphicon glyphicon-download-alt"></i></a> 
+								&bull; <a class="btn btn-sm btn-default open-file" href="#" data-nama-file="{$file_proposal->nama_asli}" data-file="{$file_proposal->nama_file}">Buka</a>
 							</p>
 						{/foreach}
 					</div>
@@ -91,43 +94,42 @@
 					<thead>
 						<tr>
 							<th class="text-center">No</th>
-							<th style="width: 35%">Kriteria</th>
+							<th>Kriteria</th>
 							<th>Isian</th>
 							<th class="text-center">Nilai</th>
 						</tr>
 					</thead>
 					<tbody>
 						{foreach $penilaian_set as $penilaian}
+							{$jumlah_isian = count($penilaian->isian_set)}
 							<tr>
-								<td class="text-center" rowspan="2">{$penilaian->urutan}</td>
-								<td class="kriteria">{$penilaian->kriteria}</td>
-								<td class="isian" colspan="2">
-									<ul>
-										{foreach $penilaian->isian_set as $isian}
-											<li>{$isian->isian|nl2br}</li>
-										{/foreach}
-									</ul>
-								</td>
+								<td class="text-center border-tebal" rowspan="{$jumlah_isian + 2}">{$penilaian->urutan}</td>
+								<td class="kriteria" colspan="2">{$penilaian->kriteria}</td>
+								<td class="text-center angka border-tebal" rowspan="{$jumlah_isian + 2}"><label name="nilai[{$penilaian->komponen_penilaian_id}]">{$penilaian->nilai}</label></td>
 							</tr>
+							{foreach $penilaian->isian_set as $komponen_isian}
+								<tr>
+									<td><i>{$komponen_isian->pertanyaan}</i></td>
+									<td>{$komponen_isian->isian|nl2br}</td>
+								</tr>
+							{/foreach}
 							<tr>
-								<td {if form_error("skor[`$penilaian->komponen_penilaian_id`]")}class="text-center has-error"{else}class="text-center"{/if} colspan="2">
-									<label class="angka">Bobot: {$penilaian->bobot} x </label>
+								<td {if form_error("skor[`$penilaian->komponen_penilaian_id`]")}class="text-center border-tebal has-error"{else}class="text-center border-tebal"{/if} colspan="2">
+									<label>Bobot: {$penilaian->bobot} x </label>
 									<select class="form-control" name="skor[{$penilaian->komponen_penilaian_id}]" 
 											data-kpid="{$penilaian->komponen_penilaian_id}" data-bobot="{$penilaian->bobot}"
 											style="width: auto; display: inline-block;">
 										<option value="">-- Pilih Skor --</option>
-										{* Ambil dari inputan skor, jika tdk ambil dari skor di db *}
 										{$selected_skor = set_value("skor[`$penilaian->komponen_penilaian_id`]", $penilaian->skor)}
 										{html_options options=$skor_option_set selected=$selected_skor}
 									</select>
 								</td>
-								<td class="text-center angka"><label name="nilai[{$penilaian->komponen_penilaian_id}]">{$penilaian->nilai}</label></td>
 							</tr>
 						{/foreach}
 					</tbody>
 					<tfoot>
 						<tr>
-							<td colspan="3" class="text-right">Jumlah</td>
+							<td colspan="3" class="text-right" style="vertical-align: middle">Jumlah</td>
 							<td class="text-center angka">
 								<label name="nilai_reviewer">{$plot_reviewer->nilai_reviewer}</label>
 							</td>
