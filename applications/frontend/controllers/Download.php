@@ -34,7 +34,10 @@ class Download extends Frontend_Controller
 		if ($kegiatan->program_id == 1) { $program_folder = 'pbbt'; $username = $pt->npsn . '01'; }
 		if ($kegiatan->program_id == 2) { $program_folder = 'kbmi'; $username = $pt->npsn . '02'; }
 		
-		$file_location = APPPATH . '../../upload/lampiran/'.$file_proposal->nama_file;
+		if ($kegiatan->tahun <= 2018)
+			$file_location = APPPATH . '../../upload/file-proposal/'.$program_folder.'/'.$username.'/'.$proposal->id.'/'.$file_proposal->nama_file;
+		else
+			$file_location = APPPATH . '../../upload/lampiran/'.$file_proposal->nama_file;
 		
 		if (file_exists($file_location))
 		{
