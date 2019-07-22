@@ -51,6 +51,8 @@ class Syarat_model extends CI_Model
 		$syarat->syarat			= $post['syarat'];
 		$syarat->keterangan		= $post['keterangan'];
 		$syarat->is_wajib		= $post['is_wajib'];
+		$syarat->is_upload		= $post['is_upload'];
+		$syarat->allowed_types	= $post['allowed_types'];
 		
 		return $this->db->insert('syarat', $syarat);
 	}
@@ -69,6 +71,8 @@ class Syarat_model extends CI_Model
 		$syarat->syarat			= $post['syarat'];
 		$syarat->keterangan		= $post['keterangan'];
 		$syarat->is_wajib		= $post['is_wajib'];
+		$syarat->is_upload		= $post['is_upload'];
+		$syarat->allowed_types	= $post['allowed_types'];
 		
 		return $this->db->update('syarat', $syarat, ['id' => $id]);
 	}
