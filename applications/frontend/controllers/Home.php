@@ -17,10 +17,20 @@ class Home extends Frontend_Controller
 	public function index()
 	{
 		
-		if ($this->session->program_id == PROGRAM_PBBT) $template = 'home/index-pbbt.tpl';
-		if ($this->session->program_id == PROGRAM_KBMI) $template = 'home/index-kbmi.tpl';
-		if ($this->session->program_id == PROGRAM_EXPO) $template = 'home/index-expo.tpl';
-		if ($this->session->program_id == PROGRAM_WORKSHOP) $template = 'home/index-workshop.tpl';
+		if ($this->session->program_id == PROGRAM_PBBT) 
+			$template = 'home/index-pbbt.tpl';
+		
+		if ($this->session->program_id == PROGRAM_KBMI) 
+			$template = 'home/index-kbmi.tpl';
+		
+		if ($this->session->program_id == PROGRAM_EXPO) 
+			$template = 'home/index-expo.tpl';
+		
+		if ($this->session->program_id == PROGRAM_WORKSHOP) 
+			$template = 'home/index-workshop.tpl';
+		
+		if ($this->session->program_id == PROGRAM_STARTUP)
+			$template = 'home/index-startup.tpl';
 		
 		$this->smarty->display($template);
 	}
