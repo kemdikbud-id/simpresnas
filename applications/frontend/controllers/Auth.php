@@ -56,6 +56,7 @@ class Auth extends Frontend_Controller
 					'page_title' => 'Registrasi Akun SIM-PKMI',
 					'message'	=> 'Request user telah berhasil. Dokumen yang diupload akan diverifikasi oleh tim admin maksimal 1x24 jam. User login akan dikirimkan ke email : '.$this->input->post('email')
 				));
+				
 				redirect(site_url('alert/success'));
 			}
 			else

@@ -19,18 +19,21 @@
 				<!-- Multiple Radios -->
 				<div class="form-group">
 					<label class="col-md-3 control-label" for="program_id">Program</label>
-					<div class="col-md-6">
+					<div class="col-md-9">
 						<label class="checkbox-inline">
-							<input name="program_id" id="program_id-0" value="1" type="radio" {set_radio('program_id', '1')}> PBBT
+							<input name="program_id" id="program_id-5" value="{$smarty.const.PROGRAM_STARTUP}" type="radio" {set_radio('program_id', $smarty.const.PROGRAM_STARTUP)}> Akselerasi Startup
 						</label>
 						<label class="checkbox-inline">
-							<input name="program_id" id="program_id-1" value="2" type="radio" {set_radio('program_id', '2')}> KBMI
+							<input name="program_id" id="program_id-0" value="{$smarty.const.PROGRAM_PBBT}" type="radio" {set_radio('program_id', $smarty.const.PROGRAM_PBBT)}> PBBT
 						</label>
 						<label class="checkbox-inline">
-							<input name="program_id" id="program_id-3" value="3" type="radio" {set_radio('program_id', '3')}> Expo KMI
+							<input name="program_id" id="program_id-1" value="{$smarty.const.PROGRAM_KBMI}" type="radio" {set_radio('program_id', $smarty.const.PROGRAM_KBMI)}> KBMI
 						</label>
 						<label class="checkbox-inline">
-							<input name="program_id" id="program_id-4" value="4" type="radio" {set_radio('program_id', '4')}> Workshop Kewirausahaan
+							<input name="program_id" id="program_id-3" value="{$smarty.const.PROGRAM_EXPO}" type="radio" {set_radio('program_id', $smarty.const.PROGRAM_EXPO)}> Expo KMI
+						</label>
+						<label class="checkbox-inline">
+							<input name="program_id" id="program_id-4" value="{$smarty.const.PROGRAM_WORKSHOP}" type="radio" {set_radio('program_id', $smarty.const.PROGRAM_WORKSHOP)}> Workshop Kewirausahaan
 						</label>
 					</div>
 				</div>

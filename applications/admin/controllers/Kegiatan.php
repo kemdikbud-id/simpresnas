@@ -244,6 +244,8 @@ class Kegiatan extends Admin_Controller
 		$wajib_set = [1 => 'Wajib', 0 => 'Tidak Wajib'];
 		$this->smarty->assign('wajib_set', $wajib_set);
 		
+		$this->smarty->assign('upload_set', [1 => 'Upload', 0 => 'Link']);
+		
 		$this->smarty->display();
 	}
 	
@@ -286,6 +288,8 @@ class Kegiatan extends Admin_Controller
 		
 		$wajib_set = [1 => 'Wajib', 0 => 'Tidak Wajib'];
 		$this->smarty->assign('wajib_set', $wajib_set);
+		
+		$this->smarty->assign('upload_set', [1 => 'Upload', 0 => 'Link']);
 		
 		$this->smarty->display();
 	}

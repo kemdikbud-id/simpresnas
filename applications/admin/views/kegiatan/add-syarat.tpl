@@ -50,6 +50,25 @@
 						</div>
 					</div>
 							
+					<!-- Select Box -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="is_upload">File Upload</label>
+						<div class="col-md-3">
+							<select name="is_upload" class="form-control input-md">
+							{html_options options=$upload_set}
+							</select>
+						</div>
+					</div>
+							
+					<!-- Text input-->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="allowed_types">Jenis File</label>  
+						<div class="col-md-6">
+							<input id="allowed_types" name="allowed_types" placeholder="" class="form-control input-md" type="text" value="">
+							<span class="help-block">Jenis file ekstensi, dipisahkan dengan koma. Contoh: pdf,doc</span>
+						</div>
+					</div>
+							
 					<!-- Button -->
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="singlebutton"></label>

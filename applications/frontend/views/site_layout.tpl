@@ -50,6 +50,9 @@
 							*}
 							<li><a href="{site_url('proposal-kbmi')}">Proposal KBMI</a></li>
 							{/if}
+							{if $ci->session->program_id == PROGRAM_STARTUP}
+							<li><a href="{site_url('proposal-startup')}">Usulan Startup</a></li>
+							{/if}
 							{if $ci->session->program_id == PROGRAM_EXPO}
 							<li>
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Expo KMI<span class="caret"></span></a>

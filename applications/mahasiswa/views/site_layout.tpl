@@ -37,10 +37,18 @@
 				<div id="navbar" class="collapse navbar-collapse">
 					{if $ci->session->user}
 						<ul class="nav navbar-nav">
-							<li><a href="{site_url('kbmi/identitas')}">Identitas Proposal</a></li>
-							<li><a href="{site_url('kbmi/step/0')}">Isi Proposal</a></li>
-							<li><a href="{site_url('kbmi/upload')}">Unggah Berkas</a></li>
-							<li><a href="{site_url('kbmi/confirm')}">Submit Proposal</a></li>
+							<li>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Program KBMI <span class="caret"></span></a>
+								<ul class="dropdown-menu">
+									<li><a href="{site_url('kbmi/identitas')}">Identitas Proposal</a></li>
+									<li><a href="{site_url('kbmi/step/0')}">Isi Proposal</a></li>
+									<li><a href="{site_url('kbmi/upload')}">Unggah Berkas</a></li>
+									<li><a href="{site_url('kbmi/confirm')}">Submit Proposal</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Program Akselerasi Startup <span class="caret"></span></a>
+							</li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
 							{if $ci->session->user}

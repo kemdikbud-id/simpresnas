@@ -1,4 +1,9 @@
 {extends file='site_layout.tpl'}
+{block name='head'}
+	<style type='text/css'>
+		.table>tbody>tr>td:last-child { width: 1%; white-space: nowrap; }
+	</style>
+{/block}
 {block name='content'}
 	<h1 class="page-header">Syarat Upload <small>{$kegiatan->nama_program} {$kegiatan->tahun}</small></h1>
 	

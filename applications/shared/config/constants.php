@@ -35,6 +35,7 @@ define('PROGRAM_PBBT', 1);
 define('PROGRAM_KBMI', 2);
 define('PROGRAM_EXPO', 3);
 define('PROGRAM_WORKSHOP', 4);
+define('PROGRAM_STARTUP', 5);
 
 // Jenis User
 define('TIPE_USER_NORMAL', 1);
