@@ -30,7 +30,11 @@ class Proposal_Startup extends Frontend_Controller
 	{
 		$current_pt = $this->session->perguruan_tinggi;
 		$kegiatan_aktif = $this->kegiatan_model->get_aktif(PROGRAM_STARTUP);
-		$data_set = $this->proposal_model->list_by_perguruan_tinggi($current_pt->id, $kegiatan_aktif->id);
+        
+        if ($kegiatan_aktif != null)
+            $data_set = $this->proposal_model->list_by_perguruan_tinggi($current_pt->id, $kegiatan_aktif->id);
+        else
+            $data_set = null;
 		
 		$this->smarty->assign('kegiatan', $kegiatan_aktif);
 		$this->smarty->assign('data_set', $data_set);
