@@ -19,9 +19,10 @@
 					<tr>
 						<th></th>
 						<th>Usulan</th>
-						<th>Pitchdeck</th>
-						<th>Produk</th>
-						<th>Status</th>
+						<th class="text-center">Pitchdeck</th>
+						<th class="text-center">Presentasi</th>
+						<th class="text-center">Produk</th>
+						<th class="text-center">Status</th>
 						<th>Aksi</th>
 					</tr>
 				</thead>
@@ -34,10 +35,25 @@
 								<p class="sub-judul">{$data->nama} - {$data->nim} - {$data->nama_program_studi}</p>
 							</td>
 							<td class="text-center">
-								<a href="#"><i class="glyphicon glyphicon-paperclip"></i></a>
+								{if $data->file_pitchdeck != ''}
+									<a href="{base_url()}upload/lampiran/{$data->file_pitchdeck}" target="_blank"><i class="glyphicon glyphicon-paperclip"></i></a>
+									{else}
+									<span class="label label-default">Belum Upload</span>
+								{/if}
 							</td>
 							<td class="text-center">
-								<a href="#"><i class="glyphicon glyphicon-new-window"></i></a>
+								{if $data->link_presentasi != ''}
+									<a href="{$data->link_presentasi}" target="_blank"><i class="glyphicon glyphicon-film"></i></a>
+									{else}
+									<span class="label label-default">Belum Ada</span>
+								{/if}
+							</td>
+							<td class="text-center">
+								{if $data->link_produk != ''}
+									<a href="{$data->link_produk}" target="_blank"><i class="glyphicon glyphicon-new-window"></i></a>
+									{else}
+									<span class="label label-default">Belum Ada</span>
+								{/if}
 							</td>
 							<td class="text-center">
 								{if $data->is_reviewed == TRUE}
@@ -65,13 +81,13 @@
 						</tr>
 					{foreachelse}
 						<tr>
-							<td colspan="5">Data kosong</td>
+							<td colspan="7">Data kosong</td>
 						</tr>
 					{/foreach}
 				</tbody>
 				<tfoot>
 					<tr>
-						<td colspan="6">
+						<td colspan="7">
 							{if $kegiatan != null}
 								<a href="{site_url('proposal-startup/create')}" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Tambah</a>
 							{else}

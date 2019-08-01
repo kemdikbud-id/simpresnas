@@ -123,8 +123,26 @@ class Proposal_model extends CI_Model
 	
 	public function list_by_perguruan_tinggi($perguruan_tinggi_id, $kegiatan_id)
 	{
+		$select_file_pitchdeck = $this->db
+			->select('fp.nama_file')->from('file_proposal fp')
+			->join('syarat s', 's.id = fp.syarat_id and s.syarat = \'Pitchdeck\'')
+			->where('fp.proposal_id = p.id')->get_compiled_select();
+		
+		$select_link_presentasi = $this->db
+			->select('fp.nama_file')->from('file_proposal fp')
+			->join('syarat s', 's.id = fp.syarat_id and s.syarat = \'Presentasi\'')
+			->where('fp.proposal_id = p.id')->get_compiled_select();
+		
+		$select_link_produk = $this->db
+			->select('fp.nama_file')->from('file_proposal fp')
+			->join('syarat s', 's.id = fp.syarat_id and s.syarat = \'Produk\'')
+			->where('fp.proposal_id = p.id')->get_compiled_select();
+		
 		return $this->db
 			->select('p.id, p.judul, ap.mahasiswa_id, m.nim, m.nama, ps.nama as nama_program_studi, d.nama as nama_dosen, p.is_submited, p.is_reviewed, count(ip.id) as jumlah_isian')
+			->select("({$select_file_pitchdeck}) as file_pitchdeck", FALSE)
+			->select("({$select_link_presentasi}) as link_presentasi", FALSE)
+			->select("({$select_link_produk}) as link_produk", FALSE)
 			->from('proposal p')
 			->join('anggota_proposal ap', 'ap.proposal_id = p.id AND ap.no_urut = 1') // Ketua di No Urut 1
 			->join('mahasiswa m', 'm.id = ap.mahasiswa_id')
