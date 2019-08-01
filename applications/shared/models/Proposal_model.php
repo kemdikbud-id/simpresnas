@@ -136,6 +136,37 @@ class Proposal_model extends CI_Model
 			->get()->result();
 	}
 	
+	public function list_by_mahasiswa($mahasiswa_id, $program_id)
+	{
+		$select_file_pitchdeck = $this->db
+			->select('fp.nama_file')->from('file_proposal fp')
+			->join('syarat s', 's.id = fp.syarat_id and s.syarat = \'Pitchdeck\'')
+			->where('fp.proposal_id = p.id')->get_compiled_select();
+		
+		$select_link_presentasi = $this->db
+			->select('fp.nama_file')->from('file_proposal fp')
+			->join('syarat s', 's.id = fp.syarat_id and s.syarat = \'Presentasi\'')
+			->where('fp.proposal_id = p.id')->get_compiled_select();
+		
+		$select_link_produk = $this->db
+			->select('fp.nama_file')->from('file_proposal fp')
+			->join('syarat s', 's.id = fp.syarat_id and s.syarat = \'Produk\'')
+			->where('fp.proposal_id = p.id')->get_compiled_select();
+		
+		return $this->db
+			->select('p.id, k.tahun, p.judul, p.is_submited')
+			->select("({$select_file_pitchdeck}) as file_pitchdeck", FALSE)
+			->select("({$select_link_presentasi}) as link_presentasi", FALSE)
+			->select("({$select_link_produk}) as link_produk", FALSE)
+			->from('mahasiswa m')
+			->join('anggota_proposal ap', 'ap.mahasiswa_id = m.id AND ap.no_urut = 1') // Ketua di No Urut 1
+			->join('proposal p', 'p.id = ap.proposal_id')
+			->join('kegiatan k', 'k.id = p.kegiatan_id')
+			->join('program pr', 'pr.id = k.program_id')
+			->where(['m.id' => $mahasiswa_id, 'pr.id' => $program_id])
+			->get()->result();
+	}
+
 	/**
 	 * Mengambil satu data Proposal
 	 * @param int $id

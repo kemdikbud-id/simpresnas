@@ -23,7 +23,7 @@ class Syarat_model extends CI_Model
 		if ($proposal_id != 0)
 		{
 			return $this->db
-				->select('s.id, s.syarat, s.keterangan, s.is_wajib, s.allowed_types, s.max_size, s.is_aktif')
+				->select('s.id, s.syarat, s.keterangan, s.is_wajib, s.allowed_types, s.max_size, s.is_aktif, s.is_upload')
 				->select('fp.id as file_proposal_id, fp.nama_file, fp.nama_asli')
 				->from('syarat s')->join('file_proposal fp', 'fp.syarat_id = s.id AND fp.proposal_id = '.$proposal_id, 'LEFT')
 				->where(['s.kegiatan_id' => $kegiatan_id])->order_by('urutan')

@@ -17,14 +17,16 @@ class Home extends Mahasiswa_Controller
 	
 	public function index()
 	{
-		$kegiatan = $this->session->kegiatan;
+		$kegiatan_kbmi = $this->kegiatan_model->get_aktif(PROGRAM_KBMI);
+		$kegiatan_startup = $this->kegiatan_model->get_aktif(PROGRAM_STARTUP);
 		
-		$kegiatan->available = (strtotime($kegiatan->tgl_awal_upload) < time()) && (time() < strtotime($kegiatan->tgl_akhir_upload));
+		$proposal_kbmi_set = $this->proposal_model->list_by_mahasiswa($this->session->user->mahasiswa->id, PROGRAM_KBMI);
+		$proposal_startup_set = $this->proposal_model->list_by_mahasiswa($this->session->user->mahasiswa->id, PROGRAM_STARTUP);
 		
-		$proposal = $this->proposal_model->get_by_ketua($kegiatan->id, $this->session->user->mahasiswa_id);
-		
-		$this->smarty->assign('proposal', $proposal);
-		$this->smarty->assign('kegiatan', $kegiatan);
+		$this->smarty->assign('kegiatan_kbmi', $kegiatan_kbmi);
+		$this->smarty->assign('kegiatan_startup', $kegiatan_startup);
+		$this->smarty->assign('proposal_kbmi_set', $proposal_kbmi_set);
+		$this->smarty->assign('proposal_startup_set', $proposal_startup_set);
 		$this->smarty->display();
 	}
 }

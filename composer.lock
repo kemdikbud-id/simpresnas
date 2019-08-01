@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eeb8059528b792a9b1a4629728478045",
+    "content-hash": "cfcace1e5ca0ccfa6717bfb6eb8ce42f",
     "packages": [
         {
             "name": "codeigniter/framework",
@@ -974,6 +974,34 @@
             "time": "2016-05-25T06:50:04+00:00"
         },
         {
+            "name": "nerones/codeigniter-phpcs",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nerones/CodeIgniter-for-PHP_CodeSniffer.git",
+                "reference": "0f097e3141b722bc207137ba212478c44d3bdb6e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nerones/CodeIgniter-for-PHP_CodeSniffer/zipball/0f097e3141b722bc207137ba212478c44d3bdb6e",
+                "reference": "0f097e3141b722bc207137ba212478c44d3bdb6e",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Thomas ERNEST",
+                    "email": "thomas.ernest@gmail.com"
+                }
+            ],
+            "description": "Rules for codeigniter",
+            "time": "2019-06-19T15:02:10+00:00"
+        },
+        {
             "name": "nnnick/chartjs",
             "version": "v2.8.0",
             "source": {
@@ -1126,7 +1154,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "nerones/codeigniter-phpcs": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
