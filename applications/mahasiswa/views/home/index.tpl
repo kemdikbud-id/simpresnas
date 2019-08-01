@@ -22,12 +22,6 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td>2019</td>
-								<td>Manecu</td>
-								<td></td>
-								<td></td>
-							</tr>
-							<tr>
 								<td colspan="4"><i>Tidak ada judul terdaftar</i></td>
 							</tr>
 						</tbody>
@@ -58,21 +52,21 @@
 									<td>{$proposal_startup->judul}</td>
 									<td>
 										{if $proposal_startup->file_pitchdeck != ''}
-											<a href="{$proposal_startup->file_pitchdeck}"><i class="glyphicon glyphicon-paperclip"></i></a>
+											<a href="{base_url()}../upload/lampiran/{$proposal_startup->file_pitchdeck}" target="_blank"><i class="glyphicon glyphicon-paperclip"></i></a>
 											{else}
 											<span class="label label-default">Belum Upload</span>
 										{/if}
 									</td>
 									<td>
 										{if $proposal_startup->link_presentasi != ''}
-											<a href="{$proposal_startup->link_presentasi}"><i class="glyphicon glyphicon-film"></i></a>
+											<a href="{$proposal_startup->link_presentasi}" target="_blank"><i class="glyphicon glyphicon-film"></i></a>
 											{else}
 											<span class="label label-default">Belum Ada</span>
 										{/if}
 									</td>
 									<td>
 										{if $proposal_startup->link_produk != ''}
-											<a href="{$proposal_startup->link_produk}"><i class="glyphicon glyphicon-new-window"></i></a>
+											<a href="{$proposal_startup->link_produk}" target="_blank"><i class="glyphicon glyphicon-new-window"></i></a>
 											{else}
 											<span class="label label-default">Belum Ada</span>
 										{/if}
@@ -86,7 +80,7 @@
 								</tr>
 							{foreachelse}
 								<tr>
-									<td colspan="5"><i>Tidak ada judul terdaftar</i></td>
+									<td colspan="6"><i>Tidak ada judul terdaftar</i></td>
 								</tr>
 							{/foreach}
 						</tbody>
