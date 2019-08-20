@@ -78,6 +78,19 @@ class Proposal extends Admin_Controller
 		);
 	}
 	
+	public function index_startup()
+	{
+		if ( ! empty($this->input->get('kegiatan_id')))
+		{
+			$data_set = $this->proposal_model->list_all_startup($this->input->get('kegiatan_id'));
+			
+			$this->smarty->assign('data_set', $data_set);
+		}
+		
+		$this->smarty->assign('kegiatan_set', $this->kegiatan_model->list_all(PROGRAM_STARTUP));
+		$this->smarty->display();
+	}
+	
 	public function view()
 	{
 		// id proposal
