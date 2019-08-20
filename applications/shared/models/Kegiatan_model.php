@@ -107,8 +107,13 @@ class Kegiatan_model extends CI_Model
 			->get()->result();
 	}
 	
-	public function list_aktif_for_option()
+	public function list_aktif_for_option($program_id = 0)
 	{
+		if ($program_id != 0)
+		{
+			$this->db->where('p.id', $program_id);
+		}
+		
 		$kegiatan_set = $this->db
 			->select('k.id, concat(p.nama_program, \' Tahun \', k.tahun) nama_program')
 			->from('kegiatan k')->join('program p', 'p.id = k.program_id')

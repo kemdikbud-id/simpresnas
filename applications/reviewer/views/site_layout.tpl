@@ -41,6 +41,9 @@
 								<a href="{site_url('review')}">Penilaian KBMI</a>
 							</li>
 							<li>
+								<a href="{site_url('review-startup')}">Penilaian Startup</a>
+							</li>
+							<li>
 								<a href="{site_url('workshop')}">Workshop</a>
 							</li>
 						</ul>
