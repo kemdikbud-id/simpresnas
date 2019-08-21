@@ -124,7 +124,7 @@
 				</div>
 					
 				<button type="submit" class="btn btn-primary">Simpan</button>
-				<a href="{site_url('review')}?kegiatan_id={$tahapan_proposal->kegiatan_id}&tahapan_id={$tahapan_proposal->tahapan_id}" class="btn btn-default">Kembali</a>
+				<a href="{site_url('review-startup')}?kegiatan_id={$tahapan_proposal->kegiatan_id}&tahapan_id={$tahapan_proposal->tahapan_id}" class="btn btn-default">Kembali</a>
 			</form>
 		</div>
 	</div>

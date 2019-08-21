@@ -34,7 +34,7 @@
 				<form class="form-inline" action="{current_url()}" method="get" style="margin-bottom: 10px">
 					{form_hidden('kegiatan_id', $smarty.get.kegiatan_id)}
 					{form_hidden('tahapan_id', $smarty.get.tahapan_id)}
-					<a href="{site_url('review')}" class="btn btn-default" >Kembali</a>
+					<a href="{site_url('review-startup')}" class="btn btn-default" >Kembali</a>
 					<div class="form-group" style="float: right">
 						<label for="order_by">Urut:</label>
 						<select class="form-control" name="order_by" style="display: inline-block; width: auto !important;" onchange="javascript:this.form.submit();">
