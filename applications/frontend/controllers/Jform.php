@@ -81,4 +81,60 @@ class Jform extends Frontend_Controller
 		
 		$this->smarty->display();
 	}
+	
+	public function startup_meetup()
+	{
+		if ($this->input->method() == 'post')
+		{
+			$add_result = $this->peserta_model->add_single();
+			
+			if ($add_result)
+			{
+				$this->session->set_flashdata('result', array(
+					'page_title' => 'Pendaftaran Startup Meetup',
+					'message' => 'Pendaftaran berhasil. <br/>'
+					. 'Untuk informasi lebih lengkap silahkan download <a href="'.base_url('download/panduan_workshop_2019.pdf').'">Panduan Workshop</a>',
+					'link_1' => '<a href="'.site_url().'" class="alert-link">Kembali ke halaman depan</a>',
+				));
+				
+				redirect(site_url('alert/success'));
+			}
+			else
+			{
+				$this->session->set_flashdata('result', array(
+					'page_title' => 'Pendaftaran Startup Meetup',
+					'message' => 'Pendaftaran gagal. Silahkan ulangi pendaftaran.',
+					'link_1' => '<a href="'.site_url().'" class="alert-link">Kembali ke halaman depan</a>',
+				));
+				
+				redirect(site_url('alert/error'));
+			}
+			
+			exit();
+		}
+		
+		$kegiatan = $this->kegiatan_model->get_by_program(PROGRAM_STARTUP_MEETUP, 2019);
+		
+		if ($kegiatan == null)
+		{
+			echo "Tidak ada kegiatan workshpo aktif. Hubungi Admin.<br/>";
+			echo anchor(site_url(), 'Kembali ke halaman depan');
+			exit();
+		}
+
+		$pt_set		= $this->pt_model->list_all_order_name();
+		$lokasi_set = $this->lokasi_model->list_all_aktif($kegiatan->id);
+		
+		// Pre process untuk format waktu pelaksanaan
+		setlocale(LC_TIME, 'id_ID');
+		foreach ($lokasi_set as &$lokasi)
+		{
+			$lokasi->waktu_pelaksanaan = strftime('%d %B %Y', strtotime($lokasi->waktu_pelaksanaan));
+		}
+		
+		$this->smarty->assign('lokasi_set', $lokasi_set);
+		$this->smarty->assign('pt_set', $pt_set);
+		
+		$this->smarty->display();
+	}
 }

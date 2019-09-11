@@ -36,6 +36,7 @@ define('PROGRAM_KBMI', 2);
 define('PROGRAM_EXPO', 3);
 define('PROGRAM_WORKSHOP', 4);
 define('PROGRAM_STARTUP', 5);
+define('PROGRAM_STARTUP_MEETUP', 6);
 
 // Jenis User
 define('TIPE_USER_NORMAL', 1);

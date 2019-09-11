@@ -94,6 +94,7 @@ class Kegiatan_model extends CI_Model
 			->from('kegiatan')
 			->join('program', 'program.id = kegiatan.program_id')
 			->where(['program_id' => PROGRAM_WORKSHOP])
+			->or_where(['program_id' => PROGRAM_STARTUP_MEETUP])
 			->get()->result();
 	}
 	

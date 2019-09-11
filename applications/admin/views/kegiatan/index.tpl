@@ -30,16 +30,16 @@
 							<td class="text-center">
 								{if $data->is_aktif == 1}<span class="label label-success">AKTIF</span>{else}<span class="label label-default">NONAKTIF</span>{/if}
 							</td>
-							{if $data->program_id != 4}
+							{if $data->program_id == PROGRAM_WORKSHOP or $data->program_id == PROGRAM_STARTUP_MEETUP}
+								<td colspan="5" class="text-center">
+									<a href="{site_url("kegiatan/lokasi")}?kegiatan_id={$data->id}" class="btn btn-sm btn-default">Lokasi</a>
+								</td>
+							{else}
 								<td>{$data->tgl_awal_upload|date_format:"%d %b %Y %T"}</td>
 								<td>{$data->tgl_akhir_upload|date_format:"%d %b %Y %T"}</td>
 								<td>{$data->tgl_awal_review|date_format:"%d %b %Y %T"}</td>
 								<td>{$data->tgl_akhir_review|date_format:"%d %b %Y %T"}</td>
 								<td>{$data->tgl_pengumuman|date_format:"%d %b %Y %T"}</td>
-							{else}
-								<td colspan="5" class="text-center">
-									<a href="{site_url("kegiatan/lokasi")}?kegiatan_id={$data->id}" class="btn btn-sm btn-default">Lokasi Workshop</a>
-								</td>
 							{/if}
 							<td>
 								<a href="{site_url("kegiatan/update/{$data->id}")}" class="btn btn-xs btn-default">Edit</a>
