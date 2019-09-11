@@ -92,8 +92,7 @@ class Jform extends Frontend_Controller
 			{
 				$this->session->set_flashdata('result', array(
 					'page_title' => 'Pendaftaran Startup Meetup',
-					'message' => 'Pendaftaran berhasil. <br/>'
-					. 'Untuk informasi lebih lengkap silahkan download <a href="'.base_url('download/panduan_workshop_2019.pdf').'">Panduan Workshop</a>',
+					'message' => 'Pendaftaran berhasil.',
 					'link_1' => '<a href="'.site_url().'" class="alert-link">Kembali ke halaman depan</a>',
 				));
 				
