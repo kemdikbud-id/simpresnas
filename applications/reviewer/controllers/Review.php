@@ -508,7 +508,10 @@ class Review extends Reviewer_Controller
 		
 		$this->smarty->assign('penilaian_set', $penilaian_set);
 		
-		$skor_set = $this->db->select("skor, concat(skor,' - ',keterangan) as keterangan", FALSE)->get('skor')->result_array();
+		$skor_set = $this->db
+			->select("skor, concat(skor,' - ',keterangan) as keterangan", FALSE)
+			->where_in('id', [7, 8, 9, 10])	// TODO: Kedepan perlu diganti menggunakan sistem on/off
+			->get('skor')->result_array();
 		$this->smarty->assign('skor_option_set', array_column($skor_set, 'keterangan', 'skor'));
 		
 		$this->smarty->display();
