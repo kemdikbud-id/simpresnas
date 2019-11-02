@@ -254,8 +254,8 @@ class Expo extends Frontend_Controller
 						$anggota				= new stdClass();
 						$anggota->proposal_id	= $proposal->id;
 						$anggota->no_urut		= $i;
-						$anggota->nim			= $this->input->post('nim_anggota_'.$i);
-						$anggota->nama			= $this->input->post('nama_anggota_'.$i);
+						$anggota->nim			= trim($this->input->post('nim_anggota_'.$i));
+						$anggota->nama			= trim($this->input->post('nama_anggota_'.$i));
 						$anggota->created_at	= $now;
 						
 						$this->db->insert('anggota_proposal', $anggota);
@@ -265,9 +265,14 @@ class Expo extends Frontend_Controller
 					else
 					{
 						$anggota				= $proposal->anggota_proposal_set[$i - 1];
-						$anggota->nim			= $this->input->post('nim_anggota_'.$i);
-						$anggota->nama			= $this->input->post('nama_anggota_'.$i);
+						$anggota->nim			= trim($this->input->post('nim_anggota_'.$i));
+						$anggota->nama			= trim($this->input->post('nama_anggota_'.$i));
 						$anggota->updated_at	= $now;
+						
+						// Tidak menggunakan relasi mahasiswa, mahasiswa_id dihapus
+						unset($anggota->mahasiswa_id);
+						unset($anggota->program_studi_id);
+						unset($anggota->nama_program_studi);
 						
 						$this->db->update('anggota_proposal', $anggota, ['proposal_id' => $proposal->id, 'no_urut' => $i]);
 					}
