@@ -157,21 +157,38 @@ class Expo extends Frontend_Controller
 	
 	public function add()
 	{	
-		if ($_SERVER['REQUEST_METHOD'] == 'POST')
+		if ($this->input->method() == 'post')
 		{
 			$now = date('Y-m-d H:i:s');
 
 			// Mendapatkan kegiatan expo yg aktif
 			$kegiatan = $this->kegiatan_model->get_aktif(PROGRAM_EXPO);
+			
+			// Cek Kategori apakah sudah ada KMI Award
+			$has_kmi_award = $this->proposal_model->has_kmi_award($kegiatan->id, $this->session->perguruan_tinggi->id, $this->input->post('kategori_id'));
+			
+			if (($this->input->post('is_kmi_award') == '1') && $has_kmi_award)
+			{
+				// set message
+				$this->session->set_flashdata('result', array(
+					'page_title' => 'Tambah usulan untuk ikut Expo KMI',
+					'message' => 'Penambahan gagal ! Kategori ini sudah ada usulan KMI Award. Pastikan hanya 1 usulan per kategori yang diikutkan KMI Award',
+					'link_1' => '<a href="'.site_url('expo/add').'" class="alert-link">Kembali</a>'
+				));
+
+				redirect(site_url('alert/error'));
+
+				exit();
+			}
 
 			$proposal = new stdClass();
 			$proposal->perguruan_tinggi_id	= $this->session->perguruan_tinggi->id;
 			$proposal->is_kmi_award			= ($this->input->post('is_kmi_award') == '1') ? 1 : 0 ;
-			$proposal->judul				= $this->input->post('judul');
+			$proposal->judul				= trim($this->input->post('judul'));
 			$proposal->kegiatan_id			= $kegiatan->id;
 			$proposal->kategori_id			= $this->input->post('kategori_id');
-			$proposal->nim_ketua			= $this->input->post('nim_ketua');
-			$proposal->nama_ketua			= $this->input->post('nama_ketua');
+			$proposal->nim_ketua			= trim($this->input->post('nim_ketua'));
+			$proposal->nama_ketua			= trim($this->input->post('nama_ketua'));
 			$proposal->created_at			= $now;
 
 			$this->db->insert('proposal', $proposal);
@@ -187,8 +204,8 @@ class Expo extends Frontend_Controller
 					$anggota				= new stdClass();
 					$anggota->proposal_id	= $proposal->id;
 					$anggota->no_urut		= $i;
-					$anggota->nim			= $this->input->post('nim_anggota_'.$i);
-					$anggota->nama			= $this->input->post('nama_anggota_'.$i);
+					$anggota->nim			= trim($this->input->post('nim_anggota_'.$i));
+					$anggota->nama			= trim($this->input->post('nama_anggota_'.$i));
 					$anggota->created_at	= $now;
 
 					$this->db->insert('anggota_proposal', $anggota);
@@ -212,10 +229,6 @@ class Expo extends Frontend_Controller
 		
 		// get kegiatan aktif
 		$kegiatan = $this->kegiatan_model->get_aktif(PROGRAM_EXPO);
-		
-		// cek apa sudah terdapat usulan kmi award
-		$has_kmi_award = $this->proposal_model->has_kmi_award($kegiatan->id, $this->session->perguruan_tinggi->id);
-		$this->smarty->assign('has_kmi_award', $has_kmi_award);
 		
 		$this->smarty->display();
 	}

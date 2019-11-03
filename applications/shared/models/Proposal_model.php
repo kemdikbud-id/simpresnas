@@ -342,13 +342,18 @@ class Proposal_model extends CI_Model
 		], ['id' => $id]);
 	}
 	
-	public function has_kmi_award($kegiatan_id, $perguruan_tinggi_id)
+	public function has_kmi_award($kegiatan_id, $perguruan_tinggi_id, $kategori_id = null)
 	{
 		$this->db->where(array(
 			'kegiatan_id' => $kegiatan_id, 
 			'perguruan_tinggi_id' => $perguruan_tinggi_id,
 			'is_kmi_award' => 1
 		));
+		
+		if ($kategori_id != null)
+		{
+			$this->db->where('kategori_id', $kategori_id);
+		}
 		
 		$count = $this->db->count_all_results('proposal');
 		

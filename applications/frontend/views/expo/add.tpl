@@ -22,7 +22,7 @@
 					<div class="form-group">
 						<label for="is_kmi_award" class="col-lg-2 control-label">Usulkan KMI Award</label>
 						<div class="col-lg-4">
-							<select name="is_kmi_award" class="form-control" {if $has_kmi_award == TRUE}disabled{/if}>
+							<select name="is_kmi_award" class="form-control">
 								<option value="0" {set_select('is_kmi_award', '0', TRUE)}>Tidak</option>
 								<option value="1" {set_select('is_kmi_award', '1')}>Ya</option>
 							</select>
