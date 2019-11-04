@@ -19,6 +19,7 @@
 					<tr>
 						<th>#</th>
 						<th>Perguruan Tinggi</th>
+						<th>Jumlah Submit</th>
 						<th>Jumlah Lolos</th>
 						<th>Jumlah Tidak Lolos</th>
 					</tr>
@@ -29,9 +30,11 @@
 						<tr {if $data->jumlah_lolos == 0 and $data->jumlah_ditolak == 0}class="warning"{/if}>
 							<td>{$data@index + 1}</td>
 							<td>{$data->npsn} - {$data->nama_pt}</td>
+							<td>{$data->jumlah_submit}</td>
 							<td>{$data->jumlah_lolos}</td>
 							<td>{$data->jumlah_ditolak}</td>
 						</tr>
+						{$jumlah_submit = $jumlah_submit + $data->jumlah_submit}
 						{$jumlah_lolos = $jumlah_lolos + $data->jumlah_lolos}
 						{$jumlah_ditolak = $jumlah_ditolak + $data->jumlah_ditolak}
 					{/foreach}
@@ -39,6 +42,7 @@
 				<tfoot>
 					<tr>
 						<td colspan="2"></td>
+						<td class="text-center">{$jumlah_submit}</td>
 						<td class="text-center">{$jumlah_lolos}</td>
 						<td class="text-center">{$jumlah_ditolak}</td>
 					</tr>
