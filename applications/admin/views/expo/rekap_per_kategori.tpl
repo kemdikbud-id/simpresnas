@@ -5,10 +5,12 @@
 		.table>thead>tr>th:nth-child(3),
 		.table>thead>tr>th:nth-child(4),
 		.table>thead>tr>th:nth-child(5),
+		.table>thead>tr>th:nth-child(6),
 		.table>tbody>tr>td:nth-child(1),
 		.table>tbody>tr>td:nth-child(3),
 		.table>tbody>tr>td:nth-child(4),
-		.table>tbody>tr>td:nth-child(5){ text-align: center }
+		.table>tbody>tr>td:nth-child(5),
+		.table>tbody>tr>td:nth-child(6){ text-align: center }
 	</style>
 {/block}
 {block name='content'}
