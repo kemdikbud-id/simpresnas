@@ -21,21 +21,24 @@
 					<tr>
 						<th>#</th>
 						<th>Kategori</th>
+						<th>Jumlah Submit</th>
 						<th>Jumlah Lolos</th>
 						<th>Jumlah PT</th>
 						<th>Jumlah Tidak Lolos</th>
 					</tr>
 				</thead>
 				<tbody>
-					{$jumlah_lolos = 0}{$jumlah_ditolak = 0}
+					{$jumlah_submit = 0}{$jumlah_lolos = 0}{$jumlah_ditolak = 0}
 					{foreach $data_set as $data}
 						<tr {if $data->jumlah_lolos == 0 and $data->jumlah_ditolak == 0}class="warning"{/if}>
 							<td>{$data@index + 1}</td>
 							<td>{$data->nama_kategori}</td>
+							<td>{$data->jumlah_submit}</td>
 							<td>{$data->jumlah_lolos}</td>
 							<td>{$data->jumlah_pt}</td>
 							<td>{$data->jumlah_ditolak}</td>
 						</tr>
+						{$jumlah_submit = $jumlah_submit + $data->jumlah_submit}
 						{$jumlah_lolos = $jumlah_lolos + $data->jumlah_lolos}
 						{$jumlah_ditolak = $jumlah_ditolak + $data->jumlah_ditolak}
 					{/foreach}
@@ -43,6 +46,7 @@
 				<tfoot>
 					<tr>
 						<td colspan="2"></td>
+						<td class="text-center">{$jumlah_submit}</td>
 						<td class="text-center">{$jumlah_lolos}</td>
 						<td></td>
 						<td class="text-center">{$jumlah_ditolak}</td>

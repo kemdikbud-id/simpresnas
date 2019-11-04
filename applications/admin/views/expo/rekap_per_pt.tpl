@@ -25,7 +25,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					{$jumlah_lolos = 0}{$jumlah_ditolak = 0}
+					{$jumlah_submit = 0}{$jumlah_lolos = 0}{$jumlah_ditolak = 0}
 					{foreach $data_set as $data}
 						<tr {if $data->jumlah_lolos == 0 and $data->jumlah_ditolak == 0}class="warning"{/if}>
 							<td>{$data@index + 1}</td>
