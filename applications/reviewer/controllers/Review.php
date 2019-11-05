@@ -27,6 +27,7 @@ class Review extends Reviewer_Controller
 		$this->load->model(MODEL_FILE_PROPOSAL, 'file_proposal_model');
 		$this->load->model(MODEL_REVIEWER, 'reviewer_model');
 		$this->load->model(MODEL_PLOT_REVIEWER, 'plotr_model');
+		$this->load->model(MODEL_FILE_EXPO, 'file_expo_model');
 		
 		$this->load->library('form_validation');
 	}
@@ -627,7 +628,14 @@ class Review extends Reviewer_Controller
 		$this->smarty->assign('tahapan', $tahapan);
 		$this->smarty->assign('file_proposal_set', $file_proposal_set);
 		$this->smarty->assign('pt', $pt);
+		$this->smarty->assign('kegiatan', $kegiatan);
 		$this->smarty->assign('penilaian_set', $penilaian_set);
+		
+		if ($kegiatan->program_id == PROGRAM_EXPO)
+		{
+			$file_expo = $this->file_expo_model->get_single($kegiatan->id, $proposal->perguruan_tinggi_id);
+			$this->smarty->assign('file_expo', $file_expo);
+		}
 		
 		// Skor Penilaian
 		$skor_set = $this->db

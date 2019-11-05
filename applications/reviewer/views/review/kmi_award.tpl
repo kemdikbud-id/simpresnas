@@ -48,6 +48,21 @@
 						<p class="form-control-static">{$pt->nama_pt}</p>
 					</div>
 				</div>
+					
+				{if $kegiatan->program_id == $smarty.const.PROGRAM_EXPO}
+					<div class="form-group">
+						<label class="col-md-2 col-sm-3 control-label">Proposal Expo KMI</label>
+						<div class="col-md-10 col-sm-9">
+							<p class="form-control-static">
+								{if $file_expo}
+									<a href="{base_url()}../upload/usulan-expo/{$file_expo->nama_file}" target="_blank">{$file_expo->nama_asli}</a>
+								{else}
+									Belum Upload
+								{/if}
+							</p>
+						</div>
+					</div>	
+				{/if}
 			
 				<table class="table table-bordered table-condensed">
 					<thead>
