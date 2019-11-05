@@ -41,6 +41,12 @@ class Expo extends Frontend_Controller
 		$file_expo = $this->file_expo_model->get_single($kegiatan->id, $this->session->perguruan_tinggi->id);
 		$this->smarty->assign('file_expo', $file_expo);
 		
+		if ($kegiatan != null)
+		{
+			$is_kegiatan_aktif = strtotime($kegiatan->tgl_awal_upload) < time() && time() < strtotime($kegiatan->tgl_akhir_upload);
+			$this->smarty->assign('is_kegiatan_aktif', $is_kegiatan_aktif);
+		}
+		
 		if ($this->input->method() == 'post')
 		{
 			// Inisialisasi file upload

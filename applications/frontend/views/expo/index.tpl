@@ -35,10 +35,12 @@
 				</fieldset>
 			</form>
 
-			{if count($data_set) < $kegiatan->proposal_per_pt}
-				<p>
-					<a href="{site_url('expo/add')}" class="btn btn-primary">Tambah Usaha</a>
-				</p>
+			{if $is_kegiatan_aktif == true}
+				{if count($data_set) < $kegiatan->proposal_per_pt}
+					<p>
+						<a href="{site_url('expo/add')}" class="btn btn-primary">Tambah Usaha</a>
+					</p>
+				{/if}
 			{/if}
 
 			<table class="table table-bordered table-hover table-condensed">
@@ -74,7 +76,9 @@
 								{if $data->is_submited == 0}
 									<a href="{site_url('expo/edit')}/{$data->id}" class="btn btn-xs btn-success">Edit</a>
 									<a href="{site_url('expo/hapus')}/{$data->id}" class="btn btn-xs btn-danger">Hapus</a>
-									<a href="{site_url('expo/submit')}/{$data->id}" class="btn btn-xs btn-primary">Ajukan Untuk Seleksi</a>
+									{if $is_kegiatan_aktif == true}
+										<a href="{site_url('expo/submit')}/{$data->id}" class="btn btn-xs btn-primary">Ajukan Untuk Seleksi</a>
+									{/if}
 								{/if}
 							</td>
 						</tr>
