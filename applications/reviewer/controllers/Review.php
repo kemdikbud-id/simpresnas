@@ -206,7 +206,10 @@ class Review extends Reviewer_Controller
 		
 		$this->smarty->assign('penilaian_set', $penilaian_set);
 		
-		$skor_set = $this->db->select("skor, concat(skor,' - ',keterangan) as keterangan", FALSE)->get('skor')->result_array();
+		$skor_set = $this->db
+			->select("skor, concat(skor,' - ',keterangan) as keterangan", FALSE)
+			->where('is_aktif', 1)
+			->get('skor')->result_array();
 		$this->smarty->assign('skor_option_set', array_column($skor_set, 'keterangan', 'skor'));
 		
 		$this->smarty->display();
@@ -375,7 +378,7 @@ class Review extends Reviewer_Controller
 		
 		$skor_set = $this->db
 			->select("skor, concat(skor,' - ',keterangan) as keterangan", FALSE)
-			->where('id >=', 7)->where('id <=', 10)
+			->where('is_aktif', 1)
 			->get('skor')->result_array();
 		$this->smarty->assign('skor_option_set', array_column($skor_set, 'keterangan', 'skor'));
 		
@@ -510,7 +513,7 @@ class Review extends Reviewer_Controller
 		
 		$skor_set = $this->db
 			->select("skor, concat(skor,' - ',keterangan) as keterangan", FALSE)
-			->where_in('id', [7, 8, 9, 10])	// TODO: Kedepan perlu diganti menggunakan sistem on/off
+			->where('is_aktif', 1)
 			->get('skor')->result_array();
 		$this->smarty->assign('skor_option_set', array_column($skor_set, 'keterangan', 'skor'));
 		
@@ -541,7 +544,7 @@ class Review extends Reviewer_Controller
 			->order_by('kp.urutan')
 			->get()->result();
 		
-		if ($_SERVER['REQUEST_METHOD'] == 'POST')
+		if ($this->input->method() == 'post')
 		{
 			// Isian komponen nilai
 			foreach ($this->input->post('skor') as $komponen_penilaian_id => $skor)
@@ -627,7 +630,10 @@ class Review extends Reviewer_Controller
 		$this->smarty->assign('penilaian_set', $penilaian_set);
 		
 		// Skor Penilaian
-		$skor_set = $this->db->select("skor, concat(skor,' - ',keterangan) as keterangan", FALSE)->get('skor')->result_array();
+		$skor_set = $this->db
+			->select("skor, concat(skor,' - ',keterangan) as keterangan", FALSE)
+			->where('is_aktif', 1)
+			->get('skor')->result_array();
 		$this->smarty->assign('skor_option_set', array_column($skor_set, 'keterangan', 'skor'));
 		
 		$this->smarty->display();

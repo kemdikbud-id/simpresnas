@@ -290,13 +290,13 @@ class Proposal_model extends CI_Model
 		}
 		
 		$sql = 
-			"select pr.id, p.judul, m.nama as nama_ketua, pt.nama_pt, pr.biaya_rekomendasi, pr.nilai_reviewer
+			"select pr.id, p.judul, coalesce(m.nama, ap.nama) as nama_ketua, pt.nama_pt, pr.biaya_rekomendasi, pr.nilai_reviewer
 			from plot_reviewer pr
 			join tahapan_proposal tp on tp.id = pr.tahapan_proposal_id
 			join proposal p on p.id = tp.proposal_id
 			join perguruan_tinggi pt on pt.id = p.perguruan_tinggi_id
 			join anggota_proposal ap on ap.proposal_id = p.id and ap.no_urut = 1
-			join mahasiswa m on m.id = ap.mahasiswa_id
+			left join mahasiswa m on m.id = ap.mahasiswa_id
 			where tp.kegiatan_id = ? and tp.tahapan_id = ? and pr.reviewer_id = ?
 			order by {$order_column}";
 		

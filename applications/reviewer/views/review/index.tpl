@@ -99,6 +99,8 @@
 								return '<a class="btn btn-info" href="{site_url('review/penilaian-2019/')}' + data + '">Nilai</a>';
 							else if (thp_id === '{$smarty.const.TAHAPAN_MONEV}')
 								return '<a class="btn btn-info" href="{site_url('review/monev/')}' + data + '">Nilai</a>';
+							else if (thp_id === '{$smarty.const.TAHAPAN_SELEKSI_EXPO}')
+								return '<a class="btn btn-info" href="{site_url('review/kmi-award/')}' + data + '">Nilai</a>';
 							else if (thp_id === '{$smarty.const.TAHAPAN_KMI_AWARD}')
 								return '<a class="btn btn-info" href="{site_url('review/kmi-award/')}' + data + '">Nilai</a>';
 							else
