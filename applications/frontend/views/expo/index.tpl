@@ -28,7 +28,9 @@
 						<div class="col-lg-5">
 							<p class="form-control-static">
 								<a href="{base_url()}upload/usulan-expo/{$file_expo->nama_file}">{$file_expo->nama_asli}</a>
-								<a class="btn btn-xs btn-warning" id="btnChangeFile">Ubah</a>
+								{if $is_kegiatan_aktif == true}
+									<a class="btn btn-xs btn-warning" id="btnChangeFile">Ubah</a>
+								{/if}
 							</p>
 						</div>
 					</div>
