@@ -632,9 +632,4 @@ class Review extends Reviewer_Controller
 		
 		$this->smarty->display();
 	}
-	
-	public function stan_expo($plot_reviewer_id)
-	{
-		$this->smarty->display();
-	}
 }
