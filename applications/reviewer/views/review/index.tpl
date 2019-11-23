@@ -112,12 +112,17 @@
 				responsive: true
 			});
 
-			// Jika KMI Award hilangkan kolom rekom
-			if (thp_id === '{$smarty.const.TAHAPAN_KMI_AWARD}') {
-				dataTable.column(3).visible(false);
-			} else {
-				dataTable.column(3).visible(true);
-			}
+			// Force visible kolom aksi
+			dataTable.column(1).visible(false);
+			// Force hide kolom rekomendasi
+			dataTable.column(3).visible(true);
+
+            // Jika KMI Award hilangkan kolom rekom
+			//if (thp_id === '{$smarty.const.TAHAPAN_KMI_AWARD}') {
+			//	dataTable.column(3).visible(false);
+			//} else {
+			//	dataTable.column(3).visible(true);
+			//}
 
 		}
 	</script>
