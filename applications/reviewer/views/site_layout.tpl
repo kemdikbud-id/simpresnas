@@ -9,7 +9,7 @@
 			<link href="{base_url('../vendor/twbs/bootstrap/dist/css/bootstrap.css')}" rel="stylesheet"/>
 		{/if}
 		{if ENVIRONMENT == 'production'}
-			<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+			<link href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 			<link href="https://fonts.googleapis.com/css?family=Oswald|Comfortaa|Nunito+Sans:400,700" rel="stylesheet">
 		{/if}
 		<link href="{base_url('../assets/css/bootstrap-cerulean.min.css')}" rel="stylesheet"/>		
@@ -79,8 +79,8 @@
 			<script src="{base_url('../vendor/twbs/bootstrap/dist/js/bootstrap.js')}"></script>
 		{/if}
 		{if ENVIRONMENT == 'production'}
-			<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+			<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.12.4.min.js"></script>
+			<script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"></script>
 		{/if}
 		{block name='footer-script'}
 		{/block}
