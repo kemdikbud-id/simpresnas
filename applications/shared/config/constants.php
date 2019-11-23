@@ -51,3 +51,4 @@ define('TAHAPAN_MONEV', 2);
 define('TAHAPAN_SELEKSI_EXPO', 3);
 define('TAHAPAN_KMI_AWARD', 4);
 define('TAHAPAN_STAN_EXPO', 5);
+define('TAHAPAN_STARTUP_SUMMIT', 6);
