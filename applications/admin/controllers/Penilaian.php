@@ -176,7 +176,7 @@ class Penilaian extends Admin_Controller
 				->select('p.is_afirmasi')
 				->from('tahapan_proposal tp')
 				->join('proposal p', 'p.id = tp.proposal_id')
-				->join('kategori k', 'k.id = p.kategori_id')
+				->join('kategori k', 'k.id = p.kategori_id', 'LEFT')
 				->join('perguruan_tinggi pt', 'pt.id = p.perguruan_tinggi_id')
 				->join('plot_reviewer pr1', 'pr1.tahapan_proposal_id = tp.id AND pr1.no_urut = 1', 'LEFT')
 				->join('reviewer r1', 'r1.id = pr1.reviewer_id', 'LEFT')
