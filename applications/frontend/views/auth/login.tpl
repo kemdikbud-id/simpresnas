@@ -1,6 +1,6 @@
 {extends file='site_layout.tpl'}
 {block name='content'}
-	<h2 class="page-header">Login SIM-PKMI</h2>
+	<h2 class="page-header">Login Simpresnas</h2>
 
 	<div class="row">
         <div class="col-sm-6 col-lg-5">
@@ -33,12 +33,12 @@
 		<div class="col-sm-6 col-lg-5">
 			<h3 style="margin-top: 10px">Hal yang perlu diperhatikan</h3>
 			<ul>
-				<li>Username & password yang Resmi hanya yang berasal dari Kemenristekdikti.</li>
+				<li>Username & password yang Resmi hanya yang berasal dari Kemdikbud.</li>
 				<li>Pastikan mengisi isian captcha agar bisa login</li>
 				<li>Ketika mengganti password selalu gunakan password yang sulit ditebak</li>
 				<li>Jangan membagikan password ke sembarang orang</li>
 				<li>Selalu Logout setelah menggunakan sistem</li>
-				<li>Jika terdapat kesulitan silahkan menghubungi helpdesk melalui email : <a href="mailto:kk.ditmawa@ristekdikti.go.id">kk.ditmawa@ristekdikti.go.id</a></li>
+				<li>Jika terdapat kesulitan silahkan menghubungi helpdesk melalui email : <a href="mailto:puspresnas@kemdikbud.go.id">puspresnas@kemdikbud.go.id</a></li>
 			</ul>
 		</div>
     </div>

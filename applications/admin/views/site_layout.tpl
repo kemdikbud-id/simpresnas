@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>Program Kewirausahaan Mahasiswa Indonesia</title>
+		<title>Simpresnas</title>
 		{if ENVIRONMENT == 'development'}
 			<link href="{base_url('../vendor/twbs/bootstrap/dist/css/bootstrap.css')}" rel="stylesheet"/>
 		{/if}
@@ -29,9 +29,9 @@
 						<span class="icon-bar"></span>
 					</button>
 					{if $ci->session->user}
-						<a class="navbar-brand" href="{site_url('home')}">SIM-PKMI</a>
+						<a class="navbar-brand" href="{site_url('home')}">Simpresnas</a>
 					{else}
-						<a class="navbar-brand" href="{base_url()}">SIM-PKMI</a>
+						<a class="navbar-brand" href="{base_url()}">Simpresnas</a>
 					{/if}
 				</div>
 				<div id="navbar" class="collapse navbar-collapse">
@@ -119,9 +119,9 @@
 
 		<footer class="footer">
 			<div class="container">
-				<p class="text-center">&copy; Direktorat Jenderal Pembelajaran dan Kemahasiswaan<br/>
+				<p class="text-center">&copy; 2020 Pusat Prestasi Nasional<br/>
 					Gedung D Lt 7, Jl. Jenderal Sudirman, Pintu I Senayan, Daerah Khusus Ibukota Jakarta 10270, Indonesia<br/>
-					Email: kk.ditmawa@ristekdikti.go.id</p>
+                    Email: <a href="mailto:puspresnas@kemdikbud.go.id">puspresnas@kemdikbud.go.id</a></p>
 			</div>
 		</footer>
 

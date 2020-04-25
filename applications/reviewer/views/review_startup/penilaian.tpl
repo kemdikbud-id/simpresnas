@@ -15,7 +15,7 @@
 	</style>
 {/block}
 {block name='content'}
-	<h2 class="page-header">{$tahapan->tahapan} Usulan Startup</h2>
+	<h2 class="page-header">{$tahapan->tahapan} - Penilaian</h2>
 
 	<div class="row">
 		<div class="col-lg-12">

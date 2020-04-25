@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>SIM-PKMI Program Kewirausahaan Mahasiswa Indonesia</title>
+		<title>Simpresnas</title>
 		{if ENVIRONMENT == 'development'}
 			<link href="{base_url('vendor/twbs/bootstrap/dist/css/bootstrap.css')}" rel="stylesheet"/>
 		{/if}
@@ -29,25 +29,15 @@
 						<span class="icon-bar"></span>
 					</button>
 					{if $ci->session->user}
-						<a class="navbar-brand" href="{site_url('home')}">SIM-PKMI</a>
+						<a class="navbar-brand" href="{site_url('home')}">Simpresnas</a>
 					{else}
-						<a class="navbar-brand" href="{base_url()}">SIM-PKMI</a>
+						<a class="navbar-brand" href="{base_url()}">Simpresnas</a>
 					{/if}
 				</div>
 				<div id="navbar" class="collapse navbar-collapse">
 					{if $ci->session->user}
 						<ul class="nav navbar-nav">
 							{if $ci->session->program_id == PROGRAM_KBMI}
-							{*
-							Ini untuk link pengusulan proposal Tahun 2017, 2018
-							<li>
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Proposal {if $ci->session->program_id == 1}PBBT{else}KBMI{/if}<span class="caret"></span></a>
-								<ul class="dropdown-menu">
-									<li><a href="{site_url('proposal')}">Daftar Proposal {if $ci->session->program_id == 1}PBBT{else}KBMI{/if}</a></li>
-									<li><a href="{site_url('proposal/create')}">Usulan Baru</a></li>
-								</ul>
-							</li>
-							*}
 							<li><a href="{site_url('proposal-kbmi')}">Proposal KBMI</a></li>
 							{/if}
 							{if $ci->session->program_id == PROGRAM_STARTUP}
@@ -78,12 +68,7 @@
 					{else}
 						<ul class="nav navbar-nav">
 							<li><a href="{site_url()}">Halaman depan</a></li>
-							<li><a href="{site_url('site/download')}">Download</a></li>
-							<li><a href="{site_url('auth/reg')}" title="Registrasi Perguruan Tinggi">Registrasi PT</a></li>
 							<li><a href="{site_url('auth/login')}">Login</a></li>
-							{*
-							<li><a href="#">Tanya Jawab</a></li>
-							*}
 						</ul>
 					{/if}
 
@@ -99,9 +84,9 @@
 
 		<footer class="footer">
 			<div class="container">
-				<p class="text-center">&copy; {date('Y')} Direktorat Jenderal Pembelajaran dan Kemahasiswaan<br/>
+				<p class="text-center">&copy; 2020 Pusat Prestasi Nasional<br/>
 					Gedung D Lt 7, Jl. Jenderal Sudirman, Pintu I Senayan, Daerah Khusus Ibukota Jakarta 10270, Indonesia<br/>
-					Email: kk.ditmawa@ristekdikti.go.id</p>
+                    Email: <a href="mailto:puspresnas@kemdikbud.go.id">puspresnas@kemdikbud.go.id</a></p>
 			</div>
 		</footer>
 
