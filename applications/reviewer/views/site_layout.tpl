@@ -73,7 +73,7 @@
 		<footer class="footer">
 			<div class="container">
 				<p class="text-center">&copy; 2020 Pusat Prestasi Nasional<br/>
-					Gedung D Lt 7, Jl. Jenderal Sudirman, Pintu I Senayan, Daerah Khusus Ibukota Jakarta 10270, Indonesia<br/>
+					Gedung C Lt 19, Jl. Jenderal Sudirman, Pintu I Senayan, Daerah Khusus Ibukota Jakarta 10270, Indonesia<br/>
                     Email: <a href="mailto:puspresnas@kemdikbud.go.id">puspresnas@kemdikbud.go.id</a></p>
 			</div>
 		</footer>
