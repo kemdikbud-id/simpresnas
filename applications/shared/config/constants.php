@@ -37,6 +37,9 @@ define('PROGRAM_EXPO', 3);
 define('PROGRAM_WORKSHOP', 4);
 define('PROGRAM_STARTUP', 5);
 define('PROGRAM_STARTUP_MEETUP', 6);
+define('PROGRAM_PENULISAN_OPINI', 7);
+define('PROGRAM_POSTER', 8);
+define('PROGRAM_VIDEO_OPINI', 9);
 
 // Jenis User
 define('TIPE_USER_NORMAL', 1);

@@ -14,7 +14,10 @@ class Tahapan_model extends CI_Model
 	
 	public function list_all_for_option()
 	{
-		$tahapan_set = $this->db->get('tahapan')->result_array();
+		$tahapan_set = $this
+			->db
+			->where('is_aktif', 1)
+			->get('tahapan')->result_array();
 		return array_column($tahapan_set, 'tahapan', 'id');
 	}
 }

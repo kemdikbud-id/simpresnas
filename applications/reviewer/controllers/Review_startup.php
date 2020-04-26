@@ -37,7 +37,8 @@ class Review_startup extends Reviewer_Controller
 		
 		$this->smarty->assign('tahapan', $this->tahapan_model->get_single($tahapan_id));
 		
-		$this->smarty->assign('kegiatan_option_set', $this->kegiatan_model->list_aktif_for_option(PROGRAM_STARTUP));
+		$this->smarty->assign('kegiatan_option_set', $this->kegiatan_model
+			->list_aktif_for_option([PROGRAM_STARTUP, PROGRAM_PENULISAN_OPINI, PROGRAM_POSTER, PROGRAM_VIDEO_OPINI]));
 		$this->smarty->assign('tahapan_option_set', $this->tahapan_model->list_all_for_option());
 		$this->smarty->assign('reviewer_id', $this->session->userdata('user')->reviewer_id);
 		
@@ -177,7 +178,10 @@ class Review_startup extends Reviewer_Controller
 		
 		$this->smarty->assign('penilaian_set', $penilaian_set);
 		
-		$skor_set = $this->db->select("skor, concat(skor,' - ',keterangan) as keterangan", FALSE)->where('id between 7 and 10', null, false)->get('skor')->result_array();
+		$skor_set = $this->db
+			->where('is_aktif', 1)
+			->select("skor, concat(skor,' - ',keterangan) as keterangan", FALSE)
+			->get('skor')->result_array();
 		$this->smarty->assign('skor_option_set', array_column($skor_set, 'keterangan', 'skor'));
 		
 		$this->smarty->display();
