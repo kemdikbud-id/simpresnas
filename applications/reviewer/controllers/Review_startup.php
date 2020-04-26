@@ -34,8 +34,10 @@ class Review_startup extends Reviewer_Controller
 	public function index()
 	{
 		$tahapan_id = $this->input->get('tahapan_id');
+		$kegiatan_id = $this->input->get('kegiatan_id');
 		
 		$this->smarty->assign('tahapan', $this->tahapan_model->get_single($tahapan_id));
+		$this->smarty->assign('kegiatan', $this->kegiatan_model->get_single($kegiatan_id));
 		
 		$this->smarty->assign('kegiatan_option_set', $this->kegiatan_model
 			->list_aktif_for_option([PROGRAM_STARTUP, PROGRAM_PENULISAN_OPINI, PROGRAM_POSTER, PROGRAM_VIDEO_OPINI]));
@@ -174,6 +176,7 @@ class Review_startup extends Reviewer_Controller
 		$this->smarty->assign('proposal', $proposal);
 		$this->smarty->assign('tahapan', $tahapan);
 		$this->smarty->assign('file_proposal_set', $file_proposal_set);
+		$this->smarty->assign('kegiatan', $kegiatan);
 		$this->smarty->assign('pt', $pt);
 		
 		$this->smarty->assign('penilaian_set', $penilaian_set);

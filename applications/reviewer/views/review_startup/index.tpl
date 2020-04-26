@@ -7,7 +7,7 @@
 	</style>
 {/block}
 {block name='content'}
-	<h2 class="page-header">{if $tahapan}{$tahapan->tahapan}{else}Penilaian Lomba{/if}</h2>
+	<h2 class="page-header">{if $tahapan}{$tahapan->tahapan} - {$kegiatan->nama_program}{else}Penilaian Lomba{/if}</h2>
 
 	<div class="row">
 		<div class="col-lg-12">
